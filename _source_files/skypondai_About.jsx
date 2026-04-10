@@ -341,7 +341,7 @@ function Location() {
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
             {[
               { num:"LTC Only",  sub:"Our entire focus",             color:C.p },
-              { num:"3–5 Yrs",   sub:"Deep domain experience",       color:C.accent },
+              { num:"10–15 Yrs",   sub:"Deep domain experience",       color:C.accent },
               { num:"6",         sub:"Specialized services",         color:C.green },
               { num:"100%",      sub:"Client satisfaction target",   color:C.amber },
             ].map((s, i) => (
