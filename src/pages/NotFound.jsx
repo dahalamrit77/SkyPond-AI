@@ -2,6 +2,7 @@ import C from '../tokens.js'
 import { Link } from 'react-router-dom'
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
+import { CONTACT_EMAIL } from '../config/constants.js'
 
 export default function NotFound() {
   return (
@@ -169,7 +170,7 @@ export default function NotFound() {
             <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, lineHeight: 1.6 }}>
               Looking for something specific? Email us at{' '}
               <a
-                href="mailto:info@skypondtech.com"
+                href={`mailto:${CONTACT_EMAIL}`}
                 style={{ color: 'rgba(255,255,255,0.75)', fontWeight: 600, textDecoration: 'none' }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.textDecoration = 'underline'
@@ -178,7 +179,7 @@ export default function NotFound() {
                   e.currentTarget.style.textDecoration = 'none'
                 }}
               >
-                info@skypondtech.com
+                {CONTACT_EMAIL}
               </a>
             </p>
           </div>

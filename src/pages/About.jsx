@@ -2,6 +2,8 @@ import C from '../tokens.js'
 import { useState, useEffect } from "react";
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
+import { Search, Wrench, TrendingUp, Target, Microscope, Link as LinkIcon, Users, MapPin, Mail, Phone } from 'lucide-react'
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../config/constants.js'
 
 const Badge = ({ c=C.p, children }) => (
   <span style={{ display:"inline-flex", alignItems:"center", gap:5, padding:"4px 13px",
@@ -111,16 +113,16 @@ function StorySection() {
           {/* Right — visual timeline */}
           <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
             {[
-              { year:"Early 2020s", color:C.p,      icon:"🔍",
+              { year:"Early 2020s", color:C.p,      icon:<Search size={17} />,
                 title:"The Gap Identified",
                 desc:"After nearly a decade working inside LTC pharmacy — hands-on with dispensing systems, DEA workflows, and facility integrations — the team saw the same problem everywhere: pharmacies patching critical operations together with manual work and software that was never built for them." },
-              { year:"Year One",    color:C.accent,  icon:"🛠️",
+              { year:"Year One",    color:C.accent,  icon:<Wrench size={17} />,
                 title:"First Builds",
                 desc:"First custom integrations and internal tools built specifically for LTC pharmacy operations — not adapted from other industries, designed for this one." },
-              { year:"Growing",     color:C.green,   icon:"📈",
+              { year:"Growing",     color:C.green,   icon:<TrendingUp size={17} />,
                 title:"Expanding the Platform",
                 desc:"Grew from integration work into AI automation, Power BI analytics, and PointClickCare API solutions — all staying within the LTC pharmacy ecosystem." },
-              { year:"Today",       color:C.amber,   icon:"🎯",
+              { year:"Today",       color:C.amber,   icon:<Target size={17} />,
                 title:"Purpose-Built, Still",
                 desc:"A focused team serving LTC pharmacies with six specialized services and a product suite. Deep expertise in the workflows, regulations, and systems that matter." },
             ].map((item, i, arr) => (
@@ -153,13 +155,13 @@ function StorySection() {
 
 function Mission() {
   const pillars = [
-    { icon:"🎯", color:C.p,     title:"Purpose-Built for LTC Pharmacy",
+    { icon:<Target size={22} />, color:C.p,     title:"Purpose-Built for LTC Pharmacy",
       desc:"We don't serve general healthcare. We don't serve retail pharmacy. We serve LTC pharmacy specifically — which means every tool, every integration, and every recommendation is shaped by the specific constraints of this industry." },
-    { icon:"🔬", color:C.accent, title:"Insider Knowledge, Not Consulting Theory",
+    { icon:<Microscope size={22} />, color:C.accent, title:"Insider Knowledge, Not Consulting Theory",
       desc:"Our team spent close to a decade working inside LTC pharmacy before building technology for it. That means we know PointClickCare, DEA compliance, prior auth workflows, and dispensing cycles from the inside — not from a discovery call." },
-    { icon:"🔗", color:C.amber, title:"Fluent in the Systems You Already Use",
+    { icon:<LinkIcon size={22} />, color:C.amber, title:"Fluent in the Systems You Already Use",
       desc:"We work directly with the pharmacy management systems and EHRs LTC pharmacies run on — QS/1 (NRx), FrameworkLTC, MatrixCare, American HealthTech (AHT), and PointClickCare. No ramp-up time learning your stack. We already know how these systems behave, where their integration limits are, and how to build around them." },
-    { icon:"🤝", color:C.green, title:"Honest About What We Can Do",
+    { icon:<Users size={22} />, color:C.green, title:"Honest About What We Can Do",
       desc:"If something isn't in our wheelhouse, we say so. LTC pharmacy is high-stakes — your technology partner needs to be straight with you about scope, timelines, and what a realistic solution looks like." },
   ];
   return (
@@ -269,9 +271,9 @@ function Location() {
             </P>
             <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
               {[
-                { icon:"📍", label:"Lafayette, CO (Boulder/Denver metro)" },
-                { icon:"📧", label:"info@skypondtech.com", href:"mailto:info@skypondtech.com" },
-                { icon:"📞", label:"(720) 724-6828", href:"tel:+17207246828" },
+                { icon:<MapPin size={15} />, label:"Lafayette, CO (Boulder/Denver metro)" },
+                { icon:<Mail size={15} />, label:CONTACT_EMAIL, href:`mailto:${CONTACT_EMAIL}` },
+                { icon:<Phone size={15} />, label:CONTACT_PHONE_DISPLAY, href:`tel:${CONTACT_PHONE}` },
               ].map((item, i) => (
                 item.href
                   ? <a key={i} href={item.href} style={{ display:"inline-flex", alignItems:"center",
@@ -293,7 +295,7 @@ function Location() {
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
             {[
               { num:"LTC Only",  sub:"Our entire focus",             color:C.p },
-              { num:"3–5 Yrs",   sub:"Deep domain experience",       color:C.accent },
+              { num:"10–15 Yrs",   sub:"Deep domain experience",       color:C.accent },
               { num:"6",         sub:"Specialized services",         color:C.green },
               { num:"100%",      sub:"Client satisfaction target",   color:C.amber },
             ].map((s, i) => (

@@ -2,6 +2,8 @@ import C from '../tokens.js'
 import { useState, useEffect, useRef } from "react";
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
+import { Search, ClipboardList, Pill, TrendingUp, Link as LinkIcon, FileText, Hospital, Settings, BarChart3, Laptop, Cloud, CheckCircle2, Box, Inbox } from 'lucide-react'
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../config/constants.js'
 
 /* ─── PRIMITIVES ──────────────────────────────────────────────────────────── */
 const Badge = ({ c=C.p, children }) => (
@@ -72,33 +74,33 @@ function Card({ children, style={}, ac, hover=true }) {
 
 /* ─── DATA ────────────────────────────────────────────────────────────────── */
 const PRODUCTS = [
-  { icon:"🔍", color:C.p,      tag:"Compliance",  title:"DEA Lookup Tool",
+  { icon:<Search size={18} />, color:C.p,      tag:"Compliance",  title:"DEA Lookup Tool",
     desc:"Real-time DEA registration verification, bulk prescriber lookups, instant flags on expired/invalid registrations — with full audit trail.",
     metric:"90% faster", ml:"vs manual lookup" },
-  { icon:"📋", color:C.accent, tag:"Compliance",  title:"DEA Compliance Reporting",
+  { icon:<ClipboardList size={18} />, color:C.accent, tag:"Compliance",  title:"DEA Compliance Reporting",
     desc:"Automated ARCOS reporting, DEA Form 222 tracking, discrepancy detection, and scheduled archival — replacing hours of manual documentation.",
     metric:"8 hrs saved", ml:"per week" },
-  { icon:"💊", color:C.violet, tag:"Inventory",   title:"Controlled Substance Inventory",
+  { icon:<Pill size={18} />, color:C.violet, tag:"Inventory",   title:"Controlled Substance Inventory",
     desc:"Real-time CS tracking, discrepancy alerts, per-transaction audit trails, biennial inventory support, and multi-facility management.",
     metric:"99.8%", ml:"inventory accuracy" },
-  { icon:"📈", color:C.p,      tag:"Analytics",   title:"LTC Analytics Dashboard",
+  { icon:<TrendingUp size={18} />, color:C.p,      tag:"Analytics",   title:"LTC Analytics Dashboard",
     desc:"Dispensing trends, facility benchmarking, error rate tracking, census-to-dispensing correlation, and executive-ready report exports.",
     metric:"3×", ml:"faster decisions" },
-  { icon:"🔗", color:C.accent, tag:"Integration", title:"PointClickCare Data Feed",
+  { icon:<LinkIcon size={18} />, color:C.accent, tag:"Integration", title:"PointClickCare Data Feed",
     desc:"Live bidirectional PCC sync — MAR updates, ADT event handling, order reconciliation, and HIPAA-compliant data transmission.",
     metric:"Zero", ml:"duplicate manual entry" },
-  { icon:"📄", color:C.violet, tag:"Automation",  title:"Document Automation",
+  { icon:<FileText size={18} />, color:C.violet, tag:"Automation",  title:"Document Automation",
     desc:"AI-powered prior auth generation, compliance document templating, e-signature integration, fax automation, and audit-ready archival.",
     metric:"75% less", ml:"processing time" },
 ];
 
 const SERVICES = [
-  { icon:"🏥", color:C.p,      title:"LTC Pharmacy IT",        desc:"Telepharmacy apps, pharmacy-facility integration, migration, and custom reporting — exclusively for LTC." },
-  { icon:"⚙️", color:C.accent, title:"AI Automation",          desc:"Intelligent workflow automation replacing manual bottlenecks: order entry, prior auth, compliance reporting, and more." },
-  { icon:"📊", color:C.violet, title:"Data Analytics & Power BI", desc:"Custom Power BI dashboards and automated data pipelines that make your pharmacy data genuinely actionable." },
-  { icon:"💻", color:C.p,      title:"Custom Development",     desc:"Full-stack applications — React, Node.js, Azure — built around your specific LTC workflows and integrations." },
-  { icon:"☁️", color:C.accent, title:"Microsoft Cloud",        desc:"Microsoft 365, Azure, and Power Platform properly configured for healthcare compliance and LTC operations." },
-  { icon:"🔗", color:C.violet, title:"PointClickCare Integration", desc:"End-to-end PCC data bridges built and maintained by specialists who know both systems inside and out." },
+  { icon:<Hospital size={20} />, color:C.p,      title:"LTC Pharmacy IT",        desc:"Telepharmacy apps, pharmacy-facility integration, migration, and custom reporting — exclusively for LTC." },
+  { icon:<Settings size={20} />, color:C.accent, title:"AI Automation",          desc:"Intelligent workflow automation replacing manual bottlenecks: order entry, prior auth, compliance reporting, and more." },
+  { icon:<BarChart3 size={20} />, color:C.violet, title:"Data Analytics & Power BI", desc:"Custom Power BI dashboards and automated data pipelines that make your pharmacy data genuinely actionable." },
+  { icon:<Laptop size={20} />, color:C.p,      title:"Custom Development",     desc:"Full-stack applications — React, Node.js, Azure — built around your specific LTC workflows and integrations." },
+  { icon:<Cloud size={20} />, color:C.accent, title:"Microsoft Cloud",        desc:"Microsoft 365, Azure, and Power Platform properly configured for healthcare compliance and LTC operations." },
+  { icon:<LinkIcon size={20} />, color:C.violet, title:"PointClickCare Integration", desc:"End-to-end PCC data bridges built and maintained by specialists who know both systems inside and out." },
 ];
 
 const TESTIMONIALS = [
@@ -110,13 +112,13 @@ const TESTIMONIALS = [
 /* ─── LIVE AGENT WIDGET ───────────────────────────────────────────────────── */
 function AgentWidget() {
   const pipeline = [
-    { label:"Parsing eRx",            sub:"Extracting order details",             icon:"📥" },
-    { label:"DEA Verification",       sub:"Prescriber registration — valid ✓",    icon:"🔍" },
-    { label:"CS Compliance Check",    sub:"Schedule II — audit trail created",    icon:"💊" },
-    { label:"Inventory Updated",      sub:"Oxycodone 5mg: 1,239 units remaining", icon:"📦" },
-    { label:"PointClickCare Sync",    sub:"MAR updated · Facility 3B",            icon:"🔗" },
-    { label:"Analytics Logged",       sub:"Dispensing +1 · Error rate 0.18%",     icon:"📊" },
-    { label:"Order Complete",         sub:"Ready for RPh review",                 icon:"✅" },
+    { label:"Parsing eRx",            sub:"Extracting order details",             icon:<Inbox size={12} /> },
+    { label:"DEA Verification",       sub:"Prescriber registration — valid ✓",    icon:<Search size={12} /> },
+    { label:"CS Compliance Check",    sub:"Schedule II — audit trail created",    icon:<Pill size={12} /> },
+    { label:"Inventory Updated",      sub:"Oxycodone 5mg: 1,239 units remaining", icon:<Box size={12} /> },
+    { label:"PointClickCare Sync",    sub:"MAR updated · Facility 3B",            icon:<LinkIcon size={12} /> },
+    { label:"Analytics Logged",       sub:"Dispensing +1 · Error rate 0.18%",     icon:<BarChart3 size={12} /> },
+    { label:"Order Complete",         sub:"Ready for RPh review",                 icon:<CheckCircle2 size={12} /> },
   ];
 
   const [step, setStep] = useState(0);
@@ -634,13 +636,13 @@ function Services() {
 
 function IndustriesSection() {
   const verticals = [
-    { icon:"💊", color:C.p,      tag:"Primary Focus",  title:"LTC Pharmacy",
+    { icon:<Pill size={20} />, color:C.p,      tag:"Primary Focus",  title:"LTC Pharmacy",
       desc:"Our deepest domain. Nearly a decade inside LTC pharmacy operations — dispensing, DEA compliance, PointClickCare, prior auth, and everything in between.",
       href:"/services" },
-    { icon:"🏥", color:C.accent, tag:"Near-Primary",   title:"LTC Facilities",
+    { icon:<Hospital size={20} />, color:C.accent, tag:"Near-Primary",   title:"LTC Facilities",
       desc:"SNF, ALF, memory care, and behavioral health. Same compliance demands, overlapping systems, same need for technology that understands the care setting.",
       href:"/industries" },
-    { icon:"📊", color:C.amber,  tag:"Analytics & Dev", title:"Financial & Retail",
+    { icon:<BarChart3 size={20} />, color:C.amber,  tag:"Analytics & Dev", title:"Financial & Retail",
       desc:"Our Data Analytics and Custom Development services travel outside healthcare. We've built analytics platforms and custom applications for financial firms and retail organizations.",
       href:"/industries" },
   ];
@@ -760,13 +762,13 @@ function CTABanner() {
           <PBtn light onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior:"smooth" })}>
             Schedule a Demo →
           </PBtn>
-          <a href="tel:+17207246828" style={{ display:"inline-flex", alignItems:"center", gap:8,
+          <a href={`tel:${CONTACT_PHONE}`} style={{ display:"inline-flex", alignItems:"center", gap:8,
             padding:"12px 24px", borderRadius:10, background:"transparent",
             color:"rgba(255,255,255,0.78)", fontWeight:600, fontSize:14, textDecoration:"none",
             border:"1.5px solid rgba(255,255,255,0.22)", fontFamily:"inherit", transition:"border-color 0.15s" }}
             onMouseEnter={e => e.currentTarget.style.borderColor="rgba(255,255,255,0.55)"}
             onMouseLeave={e => e.currentTarget.style.borderColor="rgba(255,255,255,0.22)"}>
-            📞 (720) 724-6828
+            📞 {CONTACT_PHONE_DISPLAY}
           </a>
         </div>
       </div>
@@ -793,7 +795,7 @@ function Contact() {
           <Card hover={false} style={{ padding:"48px 36px", textAlign:"center" }}>
             <div style={{ fontSize:48, marginBottom:14 }}>✅</div>
             <H size="h3" style={{ marginBottom:10 }}>We'll Be in Touch</H>
-            <P>Our team responds within one business day. Reach us directly at info@skypondtech.com or (720) 724-6828.</P>
+            <P>Our team responds within one business day. Reach us directly at {CONTACT_EMAIL} or {CONTACT_PHONE_DISPLAY}.</P>
           </Card>
         ) : (
           <Card hover={false} style={{ padding:"34px 30px" }}>

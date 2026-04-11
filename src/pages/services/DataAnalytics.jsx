@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
+import { Shuffle, Timer, HelpCircle, AlertTriangle, TrendingDown, FolderArchive, Pill, Hospital, ClipboardList, TrendingUp, BarChart3, Settings } from 'lucide-react'
+import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../config/constants.js'
 
 const Badge = ({ c=C.p, children }) => (
   <span style={{ display:"inline-flex", alignItems:"center", gap:5, padding:"4px 13px",
@@ -180,14 +182,14 @@ function DashboardWidget() {
 function Hero() {
   return (
     <section style={{ minHeight:"88vh", display:"flex", alignItems:"center",
-      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.bg }}>
+      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.dark }}>
       <div style={{ position:"absolute", inset:0,
-        backgroundImage:`linear-gradient(${C.violet}06 1px,transparent 1px),linear-gradient(90deg,${C.violet}06 1px,transparent 1px)`,
+        backgroundImage:`linear-gradient(${C.violet}08 1px,transparent 1px),linear-gradient(90deg,${C.violet}08 1px,transparent 1px)`,
         backgroundSize:"52px 52px", pointerEvents:"none" }} />
       <div style={{ position:"absolute", top:-160, right:-80, width:680, height:680, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.violet}14 0%,transparent 68%)`, pointerEvents:"none" }} />
+        background:`radial-gradient(circle,${C.violet}22 0%,transparent 68%)`, pointerEvents:"none" }} />
       <div style={{ position:"absolute", bottom:-80, left:-40, width:480, height:480, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.p}10 0%,transparent 68%)`, pointerEvents:"none" }} />
+        background:`radial-gradient(circle,${C.p}30 0%,transparent 68%)`, pointerEvents:"none" }} />
 
       <div style={{ maxWidth:1100, margin:"0 auto", width:"100%", position:"relative", zIndex:1 }}>
         <div style={{ display:"grid", gridTemplateColumns:"1.05fr 1fr", gap:64, alignItems:"center" }}>
@@ -196,38 +198,38 @@ function Hero() {
               <Badge c={C.violet}>📊 Service</Badge>
               <Badge c={C.muted}>Data Analytics & Power BI</Badge>
             </div>
-            <H size="hero" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
+            <H size="hero" color="#fff" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
               Your Pharmacy Data Should{" "}
               <span style={{ background:`linear-gradient(90deg,${C.violet},${C.accent})`,
                 WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
                 Tell You Something
               </span>
             </H>
-            <P style={{ maxWidth:520, marginBottom:32, fontSize:"1.08rem", animation:"fadeUp 0.6s 0.18s ease both" }}>
+            <P style={{ maxWidth:520, color:"rgba(255,255,255,0.7)", marginBottom:32, fontSize:"1.08rem", animation:"fadeUp 0.6s 0.18s ease both" }}>
               Most LTC pharmacies are sitting on data they can't act on — scattered across PMS exports, spreadsheets, and facility reports.
               We build the dashboards, pipelines, and automated reports that turn that data into decisions.
             </P>
             <div style={{ display:"flex", gap:12, flexWrap:"wrap", animation:"fadeUp 0.6s 0.25s ease both" }}>
               <PBtn href="/schedule-demo">Request a Demo Dashboard →</PBtn>
               <a href="#dashboards" style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
-                borderRadius:10, background:"transparent", color:C.head, fontWeight:600, fontSize:14.5,
-                border:`1.5px solid ${C.border}`, textDecoration:"none", transition:"all 0.15s" }}
-                onMouseEnter={e=>{ e.currentTarget.style.borderColor=C.violet; e.currentTarget.style.background=`${C.violet}08`; }}
-                onMouseLeave={e=>{ e.currentTarget.style.borderColor=C.border; e.currentTarget.style.background="transparent"; }}>
+                borderRadius:10, background:"transparent", color:"rgba(255,255,255,0.8)", fontWeight:600, fontSize:14.5,
+                border:"1.5px solid rgba(255,255,255,0.2)", textDecoration:"none", transition:"border-color 0.15s" }}
+                onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.5)"}
+                onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.2)"}>
                 See What We Build ↓
               </a>
             </div>
 
             <div style={{ display:"flex", gap:0, marginTop:52,
-              borderTop:`1px solid ${C.border}`, paddingTop:30,
+              borderTop:"1px solid rgba(255,255,255,0.1)", paddingTop:30,
               animation:"fadeUp 0.6s 0.4s ease both" }}>
               {[["Power BI","Microsoft-certified"],["Real-time","Live data pipelines"],["LTC-specific","Built for your metrics"],["Automated","Scheduled delivery"]].map(([v,l],i,a) => (
                 <div key={i} style={{ flex:1, paddingRight:18,
-                  borderRight:i<a.length-1?`1px solid ${C.border}`:"none",
+                  borderRight:i<a.length-1?"1px solid rgba(255,255,255,0.1)":"none",
                   marginRight:i<a.length-1?18:0 }}>
                   <div style={{ fontSize:"clamp(1rem,1.5vw,1.2rem)", fontWeight:900, color:C.violet,
                     letterSpacing:"-0.02em", fontFamily:"'DM Sans',sans-serif" }}>{v}</div>
-                  <div style={{ color:C.muted, fontSize:11.5, marginTop:2, fontWeight:500 }}>{l}</div>
+                  <div style={{ color:"rgba(255,255,255,0.4)", fontSize:11.5, marginTop:2, fontWeight:500 }}>{l}</div>
                 </div>
               ))}
             </div>
@@ -243,10 +245,10 @@ function Hero() {
 
 function Problem() {
   const pains = [
-    { icon:"📁", title:"Data trapped in PMS exports and spreadsheets", desc:"Your pharmacy management system holds valuable data — but it lives in flat exports that require manual manipulation before you can see anything useful." },
-    { icon:"🔀", title:"Metrics spread across disconnected systems", desc:"Dispensing data is in your PMS. Facility performance is in spreadsheets. Error rates are in incident logs. Nobody has a unified view of what's actually happening across your operation." },
-    { icon:"🐢", title:"Reports that take hours to produce once a month", desc:"Your operations team spends hours assembling reports manually. By the time the report is ready, the data is stale — and the decisions it should inform have already been made without it." },
-    { icon:"❓", title:"No visibility into facility-level performance", desc:"You have 20 facilities, but no consistent way to benchmark them against each other. Problems fester at the facility level because nobody is looking at the right data in the right way." },
+    { icon:<FolderArchive size={18} />, title:"Data trapped in PMS exports and spreadsheets", desc:"Your pharmacy management system holds valuable data — but it lives in flat exports that require manual manipulation before you can see anything useful." },
+    { icon:<Shuffle size={18} />, title:"Metrics spread across disconnected systems", desc:"Dispensing data is in your PMS. Facility performance is in spreadsheets. Error rates are in incident logs. Nobody has a unified view of what's actually happening across your operation." },
+    { icon:<Timer size={18} />, title:"Reports that take hours to produce once a month", desc:"Your operations team spends hours assembling reports manually. By the time the report is ready, the data is stale — and the decisions it should inform have already been made without it." },
+    { icon:<HelpCircle size={18} />, title:"No visibility into facility-level performance", desc:"You have 20 facilities, but no consistent way to benchmark them against each other. Problems fester at the facility level because nobody is looking at the right data in the right way." },
   ];
   return (
     <section style={{ padding:"88px 5vw", background:C.surface }}>
@@ -287,35 +289,35 @@ function Dashboards() {
   const [active, setActive] = useState(0);
   const boards = [
     {
-      icon:"💊", title:"Dispensing Operations Dashboard", tag:"Operations",
+      icon:<Pill size={20} />, title:"Dispensing Operations Dashboard", tag:"Operations",
       desc:"A real-time view of dispensing volume, fill time trends, batch performance, and order queue status. Built for pharmacy operations managers who need to see what's happening across the dispensing floor right now — and spot bottlenecks before they become problems.",
       metrics:["Total Rx dispensed (daily/weekly/monthly)","Average fill time by drug type and batch","Order queue depth and aging","Technician throughput and efficiency","Batch performance by facility"],
       audience:"Operations Manager, Director of Pharmacy",
       color:C.violet,
     },
     {
-      icon:"🏥", title:"Facility Performance Dashboard", tag:"Multi-Site",
+      icon:<Hospital size={20} />, title:"Facility Performance Dashboard", tag:"Multi-Site",
       desc:"Benchmarks each LTC facility you serve against a consistent set of KPIs — dispensing accuracy, census-to-order ratios, on-time delivery, and communication responsiveness. Gives you early warning on facilities that are trending in the wrong direction.",
       metrics:["Per-facility dispensing accuracy rate","Census-to-order ratio by facility","On-time delivery performance","Communication response rates","Month-over-month trend by facility"],
       audience:"COO, Regional Director, VP of Operations",
       color:C.p,
     },
     {
-      icon:"⚠️", title:"Medication Error Rate Tracker", tag:"Safety & Quality",
+      icon:<AlertTriangle size={20} />, title:"Medication Error Rate Tracker", tag:"Safety & Quality",
       desc:"Tracks medication errors, near-misses, and dispensing discrepancies in real time — with root cause categorization, trend analysis, and automatic alerts when error rates cross defined thresholds. Supports your QA process without manual log review.",
       metrics:["Error rate by drug class and type","Near-miss and caught-error trends","Root cause categorization","Facility-level error benchmarks","Threshold alerts and escalation log"],
       audience:"Pharmacist in Charge, Quality Assurance, Compliance Officer",
       color:C.red,
     },
     {
-      icon:"📋", title:"DEA Compliance Dashboard", tag:"Compliance",
+      icon:<ClipboardList size={20} />, title:"DEA Compliance Dashboard", tag:"Compliance",
       desc:"A compliance-ready view of your DEA verification status, ARCOS reporting schedule, CS inventory levels, and audit trail completeness. Designed for pharmacies that need to stay ahead of DEA audits — not scramble to prepare for them.",
       metrics:["DEA registration status by prescriber","ARCOS report filing status and history","CS inventory levels vs. threshold","Audit trail completeness score","Open discrepancies and resolution status"],
       audience:"Compliance Officer, Pharmacist in Charge, COO",
       color:C.amber,
     },
     {
-      icon:"📈", title:"Executive Summary Dashboard", tag:"Leadership",
+      icon:<TrendingUp size={20} />, title:"Executive Summary Dashboard", tag:"Leadership",
       desc:"A single-screen operational summary for pharmacy leadership — revenue indicators, patient census, dispensing volume, error rates, and facility satisfaction — delivered as a scheduled email report or always-on Power BI view. Built for decisions, not data analysis.",
       metrics:["Revenue and dispensing volume trends","Patient census vs. dispensing ratio","Error rate summary","Facility satisfaction indicators","Month-over-month operational KPIs"],
       audience:"CEO, COO, Owner-Operator",
@@ -436,16 +438,16 @@ function HowItWorks() {
 
 function UseCases() {
   const cases = [
-    { icon:"🏥", title:"Unified View Across 18 Facilities",
+    { icon:<Hospital size={18} />, title:"Unified View Across 18 Facilities",
       who:"Regional LTC pharmacy serving 18 skilled nursing and memory care facilities",
       outcome:"Built a facility benchmarking dashboard in Power BI that surfaces per-facility dispensing accuracy, on-time delivery, and error rates in a single view. Operations team now identifies underperforming facilities in minutes, not weeks." },
-    { icon:"📉", title:"Error Rate Reduction via Data Visibility",
+    { icon:<TrendingDown size={18} />, title:"Error Rate Reduction via Data Visibility",
       who:"LTC pharmacy with a rising medication error rate and no clear root cause",
       outcome:"Data pipeline built to aggregate error logs, dispensing records, and shift data. Dashboard revealed a pattern in error timing tied to a specific batch process. Rate dropped 40% within 60 days of process correction." },
-    { icon:"📊", title:"Executive Reporting Automated",
+    { icon:<BarChart3 size={18} />, title:"Executive Reporting Automated",
       who:"Owner-operator spending 4 hours per month building an executive summary report",
       outcome:"Automated Power BI report scheduled for Monday morning delivery. Leadership now receives a complete operational summary — dispensing volume, error trends, facility performance, financial indicators — without any manual compilation." },
-    { icon:"⚠️", title:"DEA Compliance Dashboard",
+    { icon:<AlertTriangle size={18} />, title:"DEA Compliance Dashboard",
       who:"LTC pharmacy that failed a DEA inspection due to documentation gaps",
       outcome:"Built a compliance dashboard covering DEA verification status, ARCOS filing history, CS inventory levels, and audit trail completeness. Pharmacy passed its next inspection with zero findings." },
   ];
@@ -526,11 +528,11 @@ function FAQ() {
 
 function Related() {
   const items = [
-    { icon:"🏥", color:C.p, tag:"Service", title:"LTC Pharmacy IT", href:"/services/ltc-pharmacy-it",
+    { icon:<Hospital size={20} />, color:C.p, tag:"Service", title:"LTC Pharmacy IT", href:"/services/ltc-pharmacy-it",
       desc:"Custom LTC pharmacy applications, telepharmacy platforms, and full-stack system integrations." },
-    { icon:"⚙️", color:C.accent, tag:"Service", title:"AI Automation", href:"/services/ai-automation",
+    { icon:<Settings size={20} />, color:C.accent, tag:"Service", title:"AI Automation", href:"/services/ai-automation",
       desc:"Intelligent workflow automation replacing manual bottlenecks across your pharmacy operations." },
-    { icon:"📈", color:C.violet, tag:"Product", title:"LTC Analytics Dashboard", href:"/products/ltc-analytics",
+    { icon:<TrendingUp size={20} />, color:C.violet, tag:"Product", title:"LTC Analytics Dashboard", href:"/products/ltc-analytics",
       desc:"Our pre-built LTC analytics product — faster time to insight for standard LTC pharmacy metrics." },
   ];
   return (
@@ -573,13 +575,13 @@ function CTA() {
         </P>
         <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
           <PBtn light href="/schedule-demo">Book a Data Discovery Session →</PBtn>
-          <a href="tel:+17207246828" style={{ display:"inline-flex", alignItems:"center", gap:8,
+          <a href={`tel:${CONTACT_PHONE}`} style={{ display:"inline-flex", alignItems:"center", gap:8,
             padding:"12px 24px", borderRadius:10, background:"transparent",
             color:"rgba(255,255,255,0.78)", fontWeight:600, fontSize:14, textDecoration:"none",
             border:"1.5px solid rgba(255,255,255,0.22)", fontFamily:"inherit" }}
             onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.55)"}
             onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.22)"}>
-            📞 (720) 724-6828
+            📞 {CONTACT_PHONE_DISPLAY}
           </a>
         </div>
       </div>

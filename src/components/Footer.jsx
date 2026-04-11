@@ -1,5 +1,6 @@
 import C from '../tokens.js'
 import { Link } from 'react-router-dom'
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../config/constants.js'
 
 export function Footer() {
   return (
@@ -21,7 +22,7 @@ export function Footer() {
               The complete LTC pharmacy technology platform. DEA compliance, AI automation, analytics, PointClickCare, and more.
             </p>
             <span style={{ display:"block", color:C.body, fontSize:12.5, marginBottom:4 }}>📍 Lafayette, CO</span>
-            {[["✉ info@skypondtech.com","mailto:info@skypondtech.com"],["☎ (720) 724-6828","tel:+17207246828"]].map(([t,h]) => (
+            {[["✉ " + CONTACT_EMAIL,`mailto:${CONTACT_EMAIL}`],["☎ " + CONTACT_PHONE_DISPLAY,`tel:${CONTACT_PHONE}`]].map(([t,h]) => (
               <a key={t} href={h} style={{ display:"block", color:C.body, fontSize:12.5, textDecoration:"none", marginBottom:4 }}>{t}</a>
             ))}
           </div>

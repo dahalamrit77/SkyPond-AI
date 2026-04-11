@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
+import { Search, ClipboardList, Pill, TrendingUp, Link as LinkIcon, FileText } from 'lucide-react'
 
 const Badge = ({ c = C.p, children }) => (
   <span
@@ -27,7 +28,7 @@ const Badge = ({ c = C.p, children }) => (
 
 const PRODUCTS = [
   {
-    icon: '🔍',
+    icon: <Search size={30} />,
     color: C.p,
     tag: 'Compliance',
     title: 'DEA Lookup Tool',
@@ -37,7 +38,7 @@ const PRODUCTS = [
     href: '/products/dea-lookup',
   },
   {
-    icon: '📋',
+    icon: <ClipboardList size={30} />,
     color: C.accent,
     tag: 'Compliance',
     title: 'DEA Compliance Reporting',
@@ -47,7 +48,7 @@ const PRODUCTS = [
     href: '/products/dea-compliance-reporting',
   },
   {
-    icon: '💊',
+    icon: <Pill size={30} />,
     color: C.violet,
     tag: 'Inventory',
     title: 'CS Inventory Management',
@@ -57,7 +58,7 @@ const PRODUCTS = [
     href: '/products/cs-inventory',
   },
   {
-    icon: '📈',
+    icon: <TrendingUp size={30} />,
     color: C.p,
     tag: 'Analytics',
     title: 'LTC Analytics Dashboard',
@@ -67,7 +68,7 @@ const PRODUCTS = [
     href: '/products/ltc-analytics',
   },
   {
-    icon: '🔗',
+    icon: <LinkIcon size={30} />,
     color: C.accent,
     tag: 'Integration',
     title: 'PointClickCare Data Feed',
@@ -77,7 +78,7 @@ const PRODUCTS = [
     href: '/products/pointclickcare-feed',
   },
   {
-    icon: '📄',
+    icon: <FileText size={30} />,
     color: C.violet,
     tag: 'Automation',
     title: 'Document Automation',

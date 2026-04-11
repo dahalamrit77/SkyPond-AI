@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
+import { Hospital, CheckCircle2, Zap, Lock, Frown, Timer, ClipboardList, DollarSign, Smartphone, Link as LinkIcon, RefreshCw, ShieldCheck, BarChart3, Wrench, Settings } from 'lucide-react'
+import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../config/constants.js'
 
 /* ── primitives ── */
 const Badge = ({ c=C.p, children }) => (
@@ -48,12 +50,14 @@ function Card({ children, style={}, ac, hover=true }) {
 function Hero() {
   return (
     <section style={{ minHeight:"88vh", display:"flex", alignItems:"center",
-      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.bg }}>
+      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.dark }}>
       <div style={{ position:"absolute", inset:0,
-        backgroundImage:`linear-gradient(${C.p}06 1px,transparent 1px),linear-gradient(90deg,${C.p}06 1px,transparent 1px)`,
+        backgroundImage:`linear-gradient(${C.accent}08 1px,transparent 1px),linear-gradient(90deg,${C.accent}08 1px,transparent 1px)`,
         backgroundSize:"52px 52px", pointerEvents:"none" }} />
       <div style={{ position:"absolute", top:-180, right:-80, width:700, height:700, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.p}14 0%,transparent 68%)`, pointerEvents:"none" }} />
+        background:`radial-gradient(circle,${C.accent}22 0%,transparent 68%)`, pointerEvents:"none" }} />
+      <div style={{ position:"absolute", bottom:-80, left:-60, width:500, height:500, borderRadius:"50%",
+        background:`radial-gradient(circle,${C.p}30 0%,transparent 68%)`, pointerEvents:"none" }} />
 
       <div style={{ maxWidth:1100, margin:"0 auto", width:"100%", position:"relative", zIndex:1 }}>
         <div style={{ display:"grid", gridTemplateColumns:"1.1fr 1fr", gap:72, alignItems:"center" }}>
@@ -62,19 +66,19 @@ function Hero() {
               <Badge c={C.p}>🏥 Service</Badge>
               <Badge c={C.muted}>LTC Pharmacy IT</Badge>
             </div>
-            <H size="hero" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
+            <H size="hero" color="#fff" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
               LTC Pharmacy IT Built by People Who Know the Industry
             </H>
-            <P style={{ maxWidth:520, marginBottom:32, fontSize:"1.08rem", animation:"fadeUp 0.6s 0.18s ease both" }}>
+            <P style={{ maxWidth:520, color:"rgba(255,255,255,0.7)", marginBottom:32, fontSize:"1.08rem", animation:"fadeUp 0.6s 0.18s ease both" }}>
               We don't learn LTC pharmacy on your project. Our team has built telepharmacy platforms, DEA compliance systems, and pharmacy-facility integrations inside real LTC operations — and we bring that depth to every engagement.
             </P>
             <div style={{ display:"flex", gap:12, flexWrap:"wrap", animation:"fadeUp 0.6s 0.25s ease both" }}>
               <PBtn href="/schedule-demo">Schedule a Consultation →</PBtn>
               <a href="#capabilities" style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
-                borderRadius:10, background:"transparent", color:C.head, fontWeight:600, fontSize:14.5,
-                border:`1.5px solid ${C.border}`, textDecoration:"none", transition:"all 0.15s" }}
-                onMouseEnter={e=>{ e.currentTarget.style.borderColor=C.p; e.currentTarget.style.background=`${C.p}08`; }}
-                onMouseLeave={e=>{ e.currentTarget.style.borderColor=C.border; e.currentTarget.style.background="transparent"; }}>
+                borderRadius:10, background:"transparent", color:"rgba(255,255,255,0.8)", fontWeight:600, fontSize:14.5,
+                border:"1.5px solid rgba(255,255,255,0.2)", textDecoration:"none", transition:"border-color 0.15s" }}
+                onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.5)"}
+                onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.2)"}>
                 See Capabilities ↓
               </a>
             </div>
@@ -83,17 +87,18 @@ function Hero() {
           {/* Stat cards */}
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, animation:"fadeUp 0.7s 0.2s ease both" }}>
             {[
-              { icon:"🏥", val:"50+", label:"LTC projects delivered", color:C.p },
-              { icon:"✅", val:"100%", label:"Client satisfaction rate", color:C.green },
-              { icon:"⚡", val:"LTC", label:"Exclusive industry focus", color:C.accent },
-              { icon:"🔒", val:"HIPAA", label:"Compliant by design", color:C.violet },
+              { icon:<Hospital size={26} />, val:"50+", label:"LTC projects delivered", color:C.p },
+              { icon:<CheckCircle2 size={26} />, val:"100%", label:"Client satisfaction rate", color:C.green },
+              { icon:<Zap size={26} />, val:"LTC", label:"Exclusive industry focus", color:C.accent },
+              { icon:<Lock size={26} />, val:"HIPAA", label:"Compliant by design", color:C.violet },
             ].map((s,i) => (
-              <Card key={i} ac={s.color} style={{ padding:"22px 20px" }}>
+              <div key={i} style={{ padding:"22px 20px", borderRadius:12,
+                background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.08)" }}>
                 <div style={{ fontSize:26, marginBottom:10 }}>{s.icon}</div>
                 <div style={{ fontSize:"clamp(1.6rem,2.5vw,2rem)", fontWeight:900, color:s.color,
                   letterSpacing:"-0.03em", fontFamily:"'DM Sans',sans-serif", lineHeight:1 }}>{s.val}</div>
-                <div style={{ color:C.muted, fontSize:12.5, marginTop:5, fontWeight:500 }}>{s.label}</div>
-              </Card>
+                <div style={{ color:"rgba(255,255,255,0.42)", fontSize:12.5, marginTop:5, fontWeight:500 }}>{s.label}</div>
+              </div>
             ))}
           </div>
         </div>
@@ -105,10 +110,10 @@ function Hero() {
 /* ── Problem ── */
 function Problem() {
   const pains = [
-    { icon:"😤", title:"Generic IT firms that don't speak LTC", desc:"You spend half the project explaining dispensing workflows, DEA schedules, and facility coordination to a team that's never worked in pharmacy." },
-    { icon:"🐢", title:"Slow integrations with LTC systems", desc:"PointClickCare, pharmacy management systems, and facility EHRs have their own complexity. Most developers discover this on your timeline and budget." },
-    { icon:"📋", title:"Compliance gaps that create audit risk", desc:"Off-the-shelf tools miss the DEA reporting, CS tracking, and controlled substance audit trail requirements that are specific to LTC pharmacy operations." },
-    { icon:"💸", title:"Rework costs from misaligned solutions", desc:"Projects built without LTC domain knowledge get rebuilt. That costs twice — in money and in the months of disrupted pharmacy operations while fixes are made." },
+    { icon:<Frown size={22} />, title:"Generic IT firms that don't speak LTC", desc:"You spend half the project explaining dispensing workflows, DEA schedules, and facility coordination to a team that's never worked in pharmacy." },
+    { icon:<Timer size={22} />, title:"Slow integrations with LTC systems", desc:"PointClickCare, pharmacy management systems, and facility EHRs have their own complexity. Most developers discover this on your timeline and budget." },
+    { icon:<ClipboardList size={22} />, title:"Compliance gaps that create audit risk", desc:"Off-the-shelf tools miss the DEA reporting, CS tracking, and controlled substance audit trail requirements that are specific to LTC pharmacy operations." },
+    { icon:<DollarSign size={22} />, title:"Rework costs from misaligned solutions", desc:"Projects built without LTC domain knowledge get rebuilt. That costs twice — in money and in the months of disrupted pharmacy operations while fixes are made." },
   ];
   return (
     <section style={{ padding:"88px 5vw", background:C.surface }}>
@@ -144,35 +149,35 @@ function Capabilities() {
   const [active, setActive] = useState(0);
   const caps = [
     {
-      icon:"📱", title:"Telepharmacy Application Development",
+      icon:<Smartphone size={20} />, title:"Telepharmacy Application Development",
       tag:"Custom Build",
       desc:"We build telepharmacy platforms from the ground up — patient-facing medication management, RPh review interfaces, facility portals, and integration layers with your existing PMS. Built with HIPAA-compliant architecture and LTC-specific workflow logic baked in.",
       bullets:["Web and mobile-first RPh review interfaces","Facility and patient portal development","PMS integration layer (BestRx, QS1, SoftWriters, PioneerRx)","Real-time order queue and status tracking","HIPAA-compliant data architecture","Scalable to multi-site and multi-state operations"],
       metric:"Full-stack", ml:"React · Node.js · Azure",
     },
     {
-      icon:"🔗", title:"Pharmacy-Facility Integration",
+      icon:<LinkIcon size={20} />, title:"Pharmacy-Facility Integration",
       tag:"Integration",
       desc:"We design and build the data bridges between your pharmacy system and LTC facilities — PointClickCare data feeds, MAR sync, ADT event handling, and billing reconciliation. No more manual bridging between systems.",
       bullets:["PointClickCare bidirectional data feed","MAR (Medication Administration Record) sync","ADT (Admit/Discharge/Transfer) event handling","Billing and census reconciliation","Error monitoring and failure alerting","HIPAA-compliant data transmission"],
       metric:"Real-time", ml:"Bidirectional sync",
     },
     {
-      icon:"🔄", title:"System Migration & Modernization",
+      icon:<RefreshCw size={20} />, title:"System Migration & Modernization",
       tag:"Migration",
       desc:"Moving from a legacy PMS to a new platform without disrupting dispensing operations is high-stakes. We manage LTC pharmacy system migrations with a structured approach that protects data integrity and keeps your compliance posture intact throughout.",
       bullets:["Pre-migration data audit and mapping","Zero-downtime cutover planning","Historical data migration and validation","Staff training and workflow documentation","Post-migration support and stabilization","Compliance continuity throughout the process"],
       metric:"Zero", ml:"Dispensing disruption",
     },
     {
-      icon:"🛡️", title:"Regulatory Compliance Tooling",
+      icon:<ShieldCheck size={20} />, title:"Regulatory Compliance Tooling",
       tag:"Compliance",
       desc:"We build the compliance infrastructure that keeps LTC pharmacies audit-ready — DEA lookup, ARCOS reporting, CS inventory tracking, prior authorization management, and document archival systems with full audit trails.",
       bullets:["DEA registration verification system","ARCOS and DEA Form 222 reporting","Controlled substance audit trail","Prior authorization workflow tooling","Document generation and archival","Regulatory reporting dashboards"],
       metric:"Audit-ready", ml:"Built-in from day one",
     },
     {
-      icon:"📊", title:"Custom Reporting & Dashboards",
+      icon:<BarChart3 size={20} />, title:"Custom Reporting & Dashboards",
       tag:"Analytics",
       desc:"We build reporting systems tailored to what LTC pharmacy operators actually need — dispensing metrics, facility performance, error rate tracking, and executive summaries — delivered via Power BI or custom web dashboards.",
       bullets:["Power BI dashboard development","Automated report scheduling and delivery","Dispensing volume and trend analysis","Facility performance benchmarking","Medication error rate tracking","Executive-level summary exports"],
@@ -287,16 +292,16 @@ function Process() {
 /* ── Use Cases ── */
 function UseCases() {
   const cases = [
-    { icon:"🏗️", title:"Building a Telepharmacy Platform from Scratch",
+    { icon:<Wrench size={18} />, title:"Building a Telepharmacy Platform from Scratch",
       who:"Independent LTC pharmacy expanding into remote dispensing",
       outcome:"Full-stack telepharmacy application with RPh review interface, facility portal, PMS integration, and HIPAA-compliant architecture — delivered in 12 weeks." },
-    { icon:"🔄", title:"Migrating Off a Legacy Pharmacy System",
+    { icon:<RefreshCw size={18} />, title:"Migrating Off a Legacy Pharmacy System",
       who:"Multi-location LTC pharmacy chain switching PMS vendors",
       outcome:"Structured migration with full data audit, zero-downtime cutover plan, historical data validation, and staff training across 4 locations." },
-    { icon:"🔗", title:"Connecting Pharmacy to 20+ LTC Facilities",
+    { icon:<LinkIcon size={18} />, title:"Connecting Pharmacy to 20+ LTC Facilities",
       who:"Regional LTC pharmacy serving multiple facilities on PointClickCare",
       outcome:"Centralized PointClickCare data feed with real-time MAR sync, ADT event handling, and an error monitoring dashboard that flags sync issues instantly." },
-    { icon:"📋", title:"Building a DEA Compliance Infrastructure",
+    { icon:<ClipboardList size={18} />, title:"Building a DEA Compliance Infrastructure",
       who:"LTC pharmacy that failed an audit and needed a compliance overhaul",
       outcome:"Complete DEA compliance system: prescriber verification, ARCOS reporting, CS inventory tracking, and audit trail — ready in 8 weeks." },
   ];
@@ -379,11 +384,11 @@ function FAQ() {
 /* ── Related ── */
 function Related() {
   const items = [
-    { icon:"⚙️", color:C.accent, tag:"Service", title:"AI Automation", href:"/services/ai-automation",
+    { icon:<Settings size={20} />, color:C.accent, tag:"Service", title:"AI Automation", href:"/services/ai-automation",
       desc:"Intelligent workflow automation replacing manual bottlenecks in your LTC pharmacy operations." },
-    { icon:"📊", color:C.violet, tag:"Service", title:"Data Analytics & Power BI", href:"/services/data-analytics",
+    { icon:<BarChart3 size={20} />, color:C.violet, tag:"Service", title:"Data Analytics & Power BI", href:"/services/data-analytics",
       desc:"Custom dashboards and analytics pipelines that make your pharmacy data actionable." },
-    { icon:"🔗", color:C.p, tag:"Product", title:"PointClickCare Data Feed", href:"/products/pointclickcare-feed",
+    { icon:<LinkIcon size={20} />, color:C.p, tag:"Product", title:"PointClickCare Data Feed", href:"/products/pointclickcare-feed",
       desc:"Live bidirectional sync between your pharmacy system and PointClickCare." },
   ];
   return (
@@ -427,13 +432,13 @@ function CTA() {
         </P>
         <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
           <PBtn light href="/schedule-demo">Schedule a Consultation →</PBtn>
-          <a href="tel:+17207246828" style={{ display:"inline-flex", alignItems:"center", gap:8,
+          <a href={`tel:${CONTACT_PHONE}`} style={{ display:"inline-flex", alignItems:"center", gap:8,
             padding:"12px 24px", borderRadius:10, background:"transparent",
             color:"rgba(255,255,255,0.78)", fontWeight:600, fontSize:14, textDecoration:"none",
             border:"1.5px solid rgba(255,255,255,0.22)", fontFamily:"inherit" }}
             onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.55)"}
             onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.22)"}>
-            📞 (720) 724-6828
+            📞 {CONTACT_PHONE_DISPLAY}
           </a>
         </div>
       </div>

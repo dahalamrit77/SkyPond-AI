@@ -1,23 +1,24 @@
 import C from '../tokens.js'
 import { useState, useEffect, useRef } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom'
+import { ChevronDown, X, Menu, Hospital, Settings, BarChart3, Link, Laptop, Cloud, Search, ClipboardList, Pill, TrendingUp, FileText } from 'lucide-react'
 
 const SERVICES_NAV = [
-  { icon:"🏥", label:"LTC Pharmacy IT",          slug:"/services/ltc-pharmacy-it",     desc:"Telepharmacy, integrations & migrations" },
-  { icon:"⚙️", label:"AI Automation",             slug:"/services/ai-automation",       desc:"Workflow automation for LTC pharmacies" },
-  { icon:"📊", label:"Data Analytics & Power BI", slug:"/services/data-analytics",      desc:"Dashboards & automated reporting" },
-  { icon:"🔗", label:"PointClickCare Integration",slug:"/services/pointclickcare-integration", desc:"Bidirectional EHR data sync" },
-  { icon:"💻", label:"Custom Development",        slug:"/services/custom-development",  desc:"Full-stack LTC pharmacy apps" },
-  { icon:"☁️", label:"Microsoft Cloud",           slug:"/services/microsoft-cloud",     desc:"365, Azure & Power Platform" },
+  { icon:<Hospital size={18} />, label:"LTC Pharmacy IT",          slug:"/services/ltc-pharmacy-it",     desc:"Telepharmacy, integrations & migrations" },
+  { icon:<Settings size={18} />, label:"AI Automation",             slug:"/services/ai-automation",       desc:"Workflow automation for LTC pharmacies" },
+  { icon:<BarChart3 size={18} />, label:"Data Analytics & Power BI", slug:"/services/data-analytics",      desc:"Dashboards & automated reporting" },
+  { icon:<Link size={18} />, label:"PointClickCare Integration",slug:"/services/pointclickcare-integration", desc:"Bidirectional EHR data sync" },
+  { icon:<Laptop size={18} />, label:"Custom Development",        slug:"/services/custom-development",  desc:"Full-stack LTC pharmacy apps" },
+  { icon:<Cloud size={18} />, label:"Microsoft Cloud",           slug:"/services/microsoft-cloud",     desc:"365, Azure & Power Platform" },
 ];
 
 const PRODUCTS_NAV = [
-  { icon:"🔍", label:"DEA Lookup Tool",              slug:"/products/dea-lookup",              desc:"Real-time prescriber verification" },
-  { icon:"📋", label:"DEA Compliance Reporting",     slug:"/products/dea-compliance-reporting", desc:"Automated ARCOS & DEA reporting" },
-  { icon:"💊", label:"CS Inventory Management",      slug:"/products/cs-inventory",            desc:"Real-time controlled substance tracking" },
-  { icon:"📈", label:"LTC Analytics Dashboard",      slug:"/products/ltc-analytics",           desc:"Dispensing trends & facility benchmarks" },
-  { icon:"🔗", label:"PointClickCare Data Feed",     slug:"/products/pointclickcare-feed",     desc:"Live bidirectional PCC sync" },
-  { icon:"📄", label:"Document Automation",          slug:"/products/document-automation",     desc:"Prior auth, templates & archival" },
+  { icon:<Search size={18} />, label:"DEA Lookup Tool",              slug:"/products/dea-lookup",              desc:"Real-time prescriber verification" },
+  { icon:<ClipboardList size={18} />, label:"DEA Compliance Reporting",     slug:"/products/dea-compliance-reporting", desc:"Automated ARCOS & DEA reporting" },
+  { icon:<Pill size={18} />, label:"CS Inventory Management",      slug:"/products/cs-inventory",            desc:"Real-time controlled substance tracking" },
+  { icon:<TrendingUp size={18} />, label:"LTC Analytics Dashboard",      slug:"/products/ltc-analytics",           desc:"Dispensing trends & facility benchmarks" },
+  { icon:<Link size={18} />, label:"PointClickCare Data Feed",     slug:"/products/pointclickcare-feed",     desc:"Live bidirectional PCC sync" },
+  { icon:<FileText size={18} />, label:"Document Automation",          slug:"/products/document-automation",     desc:"Prior auth, templates & archival" },
 ];
 
 function PBtn({ children, onClick, href, light, to, style: styleProp }) {
@@ -38,9 +39,9 @@ function PBtn({ children, onClick, href, light, to, style: styleProp }) {
 
   if (to) {
     return (
-      <Link to={to} onClick={onClick} style={v} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      <RouterLink to={to} onClick={onClick} style={v} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         {children}
-      </Link>
+      </RouterLink>
     );
   }
 
@@ -75,10 +76,7 @@ function NavDropdown({ label, items, onAnchor, active }) {
           color:btnColor, fontSize:13.5, fontWeight:btnWeight, cursor:"pointer",
           fontFamily:"inherit", transition:"color 0.15s", padding:"4px 0" }}>
         {label}
-        <svg width={12} height={12} viewBox="0 0 12 12" fill="none"
-          style={{ transition:"transform 0.2s", transform: open ? "rotate(180deg)" : "none" }}>
-          <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
+        <ChevronDown size={12} style={{ transition:"transform 0.2s", transform: open ? "rotate(180deg)" : "none" }} />
       </button>
 
       {open && (
@@ -94,7 +92,7 @@ function NavDropdown({ label, items, onAnchor, active }) {
             borderRight:"none", borderBottom:"none", rotate:"45deg" }} />
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:4 }}>
             {items.map((item, i) => (
-              <Link key={i} to={item.slug}
+              <RouterLink key={i} to={item.slug}
                 style={{ display:"flex", alignItems:"center", gap:11, padding:"11px 13px",
                   borderRadius:10, textDecoration:"none", transition:"background 0.15s",
                   background:"transparent" }}
@@ -109,19 +107,19 @@ function NavDropdown({ label, items, onAnchor, active }) {
                     fontFamily:"'DM Sans',sans-serif" }}>{item.label}</div>
                   <div style={{ color:C.body, fontSize:11.5, marginTop:2 }}>{item.desc}</div>
                 </div>
-              </Link>
+              </RouterLink>
             ))}
           </div>
           <div style={{ borderTop:`1px solid ${C.border}`, marginTop:8, paddingTop:8,
             padding:"10px 12px 6px" }}>
-            <Link to={label === "Services" ? "/services" : "/products"}
+            <RouterLink to={label === "Services" ? "/services" : "/products"}
               style={{ fontSize:12.5, fontWeight:700, color:C.p, textDecoration:"none",
                 display:"flex", alignItems:"center", gap:5 }}
               onMouseEnter={e => e.currentTarget.style.opacity="0.75"}
               onMouseLeave={e => e.currentTarget.style.opacity="1"}
               onClick={onAnchor}>
               View all {label} →
-            </Link>
+            </RouterLink>
           </div>
         </div>
       )}
@@ -131,17 +129,9 @@ function NavDropdown({ label, items, onAnchor, active }) {
 
 function HamburgerIcon({ open }) {
   if (open) {
-    return (
-      <svg width={20} height={20} viewBox="0 0 20 20" fill="none" aria-hidden>
-        <path d="M4 4l12 12M16 4L4 16" stroke={C.head} strokeWidth={2} strokeLinecap="round"/>
-      </svg>
-    );
+    return <X size={20} color={C.head} aria-hidden />;
   }
-  return (
-    <svg width={22} height={18} viewBox="0 0 22 18" fill="none" aria-hidden>
-      <path d="M1 1h20M1 9h20M1 17h20" stroke={C.head} strokeWidth={2} strokeLinecap="round"/>
-    </svg>
-  );
+  return <Menu size={22} color={C.head} aria-hidden />;
 }
 
 export function Navbar() {
@@ -239,25 +229,25 @@ export function Navbar() {
         background: useSolidNav ? "rgba(246,247,253,0.95)" : "transparent",
         backdropFilter: useSolidNav ? "blur(18px)" : "none",
         borderBottom: useSolidNav ? `1px solid ${C.border}` : "none", transition:"all 0.3s" }}>
-        <Link to="/" style={{ display:"flex", alignItems:"center", gap:10, textDecoration:"none" }}>
+        <RouterLink to="/" style={{ display:"flex", alignItems:"center", gap:10, textDecoration:"none" }}>
           <img src="/logosymbol.png" alt="SkypondTech" style={logoImgStyle} />
           <span style={{ color:C.head, fontWeight:800, fontSize:17, letterSpacing:"-0.02em",
             fontFamily:"'DM Sans',sans-serif" }}>
             SkypondTech<span style={{ color:C.p }}>.ai</span>
           </span>
-        </Link>
+        </RouterLink>
 
         {!isMobile && (
           <div style={{ display:"flex", alignItems:"center", gap:26 }}>
             <NavDropdown label="Services" items={SERVICES_NAV} active={activeServices} />
             <NavDropdown label="Products" items={PRODUCTS_NAV} active={activeProducts} />
-            <Link to="/industries" style={{
+            <RouterLink to="/industries" style={{
               color: activeIndustries ? C.p : C.body,
               fontSize:13.5,
               fontWeight: activeIndustries ? 700 : 600,
               textDecoration:"none", transition:"color 0.15s" }}
               onMouseEnter={e => { if (!activeIndustries) e.currentTarget.style.color=C.p; }}
-              onMouseLeave={e => { if (!activeIndustries) e.currentTarget.style.color=C.body; }}>Industries</Link>
+              onMouseLeave={e => { if (!activeIndustries) e.currentTarget.style.color=C.body; }}>Industries</RouterLink>
             <button type="button" onClick={handleAbout}
               style={{ background:"none", border:"none",
                 color: activeAbout ? C.p : C.body, fontSize:13.5, fontWeight: activeAbout ? 700 : 600,
@@ -314,17 +304,15 @@ export function Navbar() {
                 fontSize:15,
                 fontWeight: activeServices ? 700 : 600,
               }}>Services</span>
-              <svg width={14} height={14} viewBox="0 0 12 12" fill="none" style={{
+              <ChevronDown size={14} color={C.muted} style={{
                 transform: mobileExpanded === "services" ? "rotate(180deg)" : "none",
                 transition:"transform 0.2s",
-              }}>
-                <path d="M2 4l4 4 4-4" stroke={C.muted} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              }} />
             </button>
             {mobileExpanded === "services" && (
               <div style={{ background:C.alt }}>
                 {SERVICES_NAV.map((item, i) => (
-                  <Link key={i} to={item.slug} onClick={closeMobile} style={mobileSubLinkStyle}>
+                  <RouterLink key={i} to={item.slug} onClick={closeMobile} style={mobileSubLinkStyle}>
                     <span style={{ fontSize:20, width:40, height:40, borderRadius:10, flexShrink:0,
                       background:C.surface, display:"flex", alignItems:"center", justifyContent:"center",
                       border:`1px solid ${C.border}` }}>{item.icon}</span>
@@ -332,12 +320,12 @@ export function Navbar() {
                       <div style={{ color:C.head, fontWeight:700, fontSize:14 }}>{item.label}</div>
                       <div style={{ color:C.muted, fontSize:12, marginTop:2 }}>{item.desc}</div>
                     </div>
-                  </Link>
+                  </RouterLink>
                 ))}
-                <Link to="/services" onClick={closeMobile}
+                <RouterLink to="/services" onClick={closeMobile}
                   style={{ ...mobileLinkStyle, background:C.surface, color:C.p, fontWeight:700, fontSize:13.5 }}>
                   View all Services →
-                </Link>
+                </RouterLink>
               </div>
             )}
 
@@ -355,17 +343,15 @@ export function Navbar() {
                 fontSize:15,
                 fontWeight: activeProducts ? 700 : 600,
               }}>Products</span>
-              <svg width={14} height={14} viewBox="0 0 12 12" fill="none" style={{
+              <ChevronDown size={14} color={C.muted} style={{
                 transform: mobileExpanded === "products" ? "rotate(180deg)" : "none",
                 transition:"transform 0.2s",
-              }}>
-                <path d="M2 4l4 4 4-4" stroke={C.muted} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              }} />
             </button>
             {mobileExpanded === "products" && (
               <div style={{ background:C.alt }}>
                 {PRODUCTS_NAV.map((item, i) => (
-                  <Link key={i} to={item.slug} onClick={closeMobile} style={mobileSubLinkStyle}>
+                  <RouterLink key={i} to={item.slug} onClick={closeMobile} style={mobileSubLinkStyle}>
                     <span style={{ fontSize:20, width:40, height:40, borderRadius:10, flexShrink:0,
                       background:C.surface, display:"flex", alignItems:"center", justifyContent:"center",
                       border:`1px solid ${C.border}` }}>{item.icon}</span>
@@ -373,16 +359,16 @@ export function Navbar() {
                       <div style={{ color:C.head, fontWeight:700, fontSize:14 }}>{item.label}</div>
                       <div style={{ color:C.muted, fontSize:12, marginTop:2 }}>{item.desc}</div>
                     </div>
-                  </Link>
+                  </RouterLink>
                 ))}
-                <Link to="/products" onClick={closeMobile}
+                <RouterLink to="/products" onClick={closeMobile}
                   style={{ ...mobileLinkStyle, background:C.surface, color:C.p, fontWeight:700, fontSize:13.5 }}>
                   View all Products →
-                </Link>
+                </RouterLink>
               </div>
             )}
 
-            <Link
+            <RouterLink
               to="/industries"
               onClick={closeMobile}
               style={{
@@ -392,7 +378,7 @@ export function Navbar() {
               }}
             >
               Industries
-            </Link>
+            </RouterLink>
             <button
               type="button"
               onClick={() => { handleAbout(); closeMobile(); }}

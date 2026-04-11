@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
+import { Hospital, Settings, BarChart3, Laptop, Cloud, Link as LinkIcon } from 'lucide-react'
 
 const Badge = ({ c = C.p, children }) => (
   <span
@@ -27,7 +28,7 @@ const Badge = ({ c = C.p, children }) => (
 
 const SERVICES = [
   {
-    icon: '🏥',
+    icon: <Hospital size={28} />,
     color: C.p,
     title: 'LTC Pharmacy IT',
     desc: 'Telepharmacy apps, pharmacy-facility integration, migration, and custom reporting — exclusively for LTC.',
@@ -35,7 +36,7 @@ const SERVICES = [
     tag: 'Core Service',
   },
   {
-    icon: '⚙️',
+    icon: <Settings size={28} />,
     color: C.accent,
     title: 'AI Automation',
     desc: 'Intelligent workflow automation replacing manual bottlenecks: order entry, prior auth, compliance reporting, and more.',
@@ -43,7 +44,7 @@ const SERVICES = [
     tag: 'High Demand',
   },
   {
-    icon: '📊',
+    icon: <BarChart3 size={28} />,
     color: C.violet,
     title: 'Data Analytics & Power BI',
     desc: 'Custom Power BI dashboards and automated data pipelines that make your pharmacy data genuinely actionable.',
@@ -51,7 +52,7 @@ const SERVICES = [
     tag: 'Analytics',
   },
   {
-    icon: '💻',
+    icon: <Laptop size={28} />,
     color: C.p,
     title: 'Custom Development',
     desc: 'Full-stack applications — React, Node.js, Azure — built around your specific LTC workflows and integrations.',
@@ -59,7 +60,7 @@ const SERVICES = [
     tag: 'Development',
   },
   {
-    icon: '☁️',
+    icon: <Cloud size={28} />,
     color: C.accent,
     title: 'Microsoft Cloud',
     desc: 'Microsoft 365, Azure, and Power Platform properly configured for healthcare compliance and LTC operations.',
@@ -67,7 +68,7 @@ const SERVICES = [
     tag: 'Cloud',
   },
   {
-    icon: '🔗',
+    icon: <LinkIcon size={28} />,
     color: C.violet,
     title: 'PointClickCare Integration',
     desc: 'End-to-end PCC data bridges built and maintained by specialists who know both systems inside and out.',

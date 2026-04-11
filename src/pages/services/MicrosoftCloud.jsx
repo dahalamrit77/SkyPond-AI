@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
+import { Unlock, Shuffle, HelpCircle, Zap, BarChart3, Mail, Cloud, Lock, Hospital, Laptop, Settings } from 'lucide-react'
+import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../config/constants.js'
 
 const Badge = ({ c=C.p, children }) => (
   <span style={{ display:"inline-flex", alignItems:"center", gap:5, padding:"4px 13px",
@@ -161,10 +163,10 @@ function Hero() {
 
 function Problem() {
   const pains = [
-    { icon:"🔓", title:"Generic Microsoft 365 deployments with no HIPAA controls", desc:"Out-of-the-box Microsoft 365 is not HIPAA-compliant by default. Without proper DLP policies, conditional access, audit logging, and a signed BAA, your cloud environment is creating compliance exposure." },
-    { icon:"📊", title:"Power BI deployed without LTC pharmacy data context", desc:"Power BI is powerful, but it needs to be connected to the right data sources with the right metrics defined. Generic Power BI implementations leave pharmacy operators with dashboards that don't reflect their actual operations." },
-    { icon:"🔀", title:"Disconnected Microsoft tools that don't talk to pharmacy systems", desc:"Teams, SharePoint, and Azure are valuable — but only when they're integrated with your pharmacy workflows. Generic IT deployments treat pharmacy software as separate, leaving your team switching between systems manually." },
-    { icon:"❓", title:"No one accountable for ongoing compliance", desc:"Microsoft cloud environments require ongoing maintenance to stay HIPAA-compliant — policy updates, access reviews, audit log monitoring. Without a specialist, compliance drift happens quietly." },
+    { icon:<Unlock size={18} />, title:"Generic Microsoft 365 deployments with no HIPAA controls", desc:"Out-of-the-box Microsoft 365 is not HIPAA-compliant by default. Without proper DLP policies, conditional access, audit logging, and a signed BAA, your cloud environment is creating compliance exposure." },
+    { icon:<BarChart3 size={18} />, title:"Power BI deployed without LTC pharmacy data context", desc:"Power BI is powerful, but it needs to be connected to the right data sources with the right metrics defined. Generic Power BI implementations leave pharmacy operators with dashboards that don't reflect their actual operations." },
+    { icon:<Shuffle size={18} />, title:"Disconnected Microsoft tools that don't talk to pharmacy systems", desc:"Teams, SharePoint, and Azure are valuable — but only when they're integrated with your pharmacy workflows. Generic IT deployments treat pharmacy software as separate, leaving your team switching between systems manually." },
+    { icon:<HelpCircle size={18} />, title:"No one accountable for ongoing compliance", desc:"Microsoft cloud environments require ongoing maintenance to stay HIPAA-compliant — policy updates, access reviews, audit log monitoring. Without a specialist, compliance drift happens quietly." },
   ];
   return (
     <section style={{ padding:"88px 5vw", background:C.surface }}>
@@ -203,19 +205,19 @@ function Problem() {
 function Services() {
   const [active, setActive] = useState(0);
   const svcs = [
-    { icon:"📧", color:C.ms, tag:"Productivity", title:"Microsoft 365 Deployment & Configuration",
+    { icon:<Mail size={20} />, color:C.ms, tag:"Productivity", title:"Microsoft 365 Deployment & Configuration",
       desc:"Full Microsoft 365 deployment configured for LTC pharmacy — Teams, SharePoint, Exchange, OneDrive, and Intune — with HIPAA-compliant settings, data loss prevention policies, conditional access, and a signed BAA in place before any PHI is accessed.",
       includes:["HIPAA-compliant tenant configuration","DLP policies for PHI data types","Conditional access & MFA enforcement","SharePoint document management setup","Teams configuration for pharmacy & facility communication","Microsoft Intune for device management"] },
-    { icon:"☁️", color:"#0078D4", tag:"Infrastructure", title:"Azure Cloud Infrastructure",
+    { icon:<Cloud size={20} />, color:"#0078D4", tag:"Infrastructure", title:"Azure Cloud Infrastructure",
       desc:"Azure deployment for pharmacy applications — hosting, databases, API gateways, and automation — configured with healthcare-grade security controls, role-based access, audit logging, and Azure Key Vault for secrets management.",
       includes:["Azure App Service & Container hosting","Azure SQL / PostgreSQL databases","API Management for integration layers","Azure Active Directory configuration","Key Vault for secure credential storage","Azure Monitor & Application Insights"] },
-    { icon:"📊", color:"#742774", tag:"Analytics", title:"Power BI for LTC Pharmacy Operations",
+    { icon:<BarChart3 size={20} />, color:"#742774", tag:"Analytics", title:"Power BI for LTC Pharmacy Operations",
       desc:"Power BI workspace setup, data pipeline configuration, and dashboard development — connected to your pharmacy system, PCC data, and operational sources — with scheduled refresh, role-based access, and automated report delivery.",
       includes:["Power BI workspace and capacity setup","Data gateway configuration","PMS and EHR data connectors","LTC-specific dashboard development","Scheduled refresh & automated delivery","Row-level security by facility or role"] },
-    { icon:"⚡", color:C.violet, tag:"Automation", title:"Power Automate & Power Apps",
+    { icon:<Zap size={20} />, color:C.violet, tag:"Automation", title:"Power Automate & Power Apps",
       desc:"Low-code automation and internal app development using Microsoft's Power Platform — workflow automation, approval processes, data collection forms, and internal tools built without full custom development.",
       includes:["Pharmacy workflow automations","Approval and notification flows","Internal data collection apps","SharePoint-integrated tools","Teams-embedded applications","Automated report and alert delivery"] },
-    { icon:"🔒", color:C.green, tag:"Compliance", title:"HIPAA Compliance Configuration",
+    { icon:<Lock size={20} />, color:C.green, tag:"Compliance", title:"HIPAA Compliance Configuration",
       desc:"A full HIPAA technical safeguard configuration across your Microsoft environment — audit logging, access controls, encryption verification, BAA management, and an ongoing compliance monitoring posture.",
       includes:["Microsoft HIPAA BAA signing","Audit log configuration and retention","Encryption verification (at rest & transit)","Access review and privilege audit","DLP policy testing and validation","Quarterly compliance review"] },
   ];
@@ -322,16 +324,16 @@ function Process() {
 
 function UseCases() {
   const cases = [
-    { icon:"🔒", title:"HIPAA Compliance Remediation",
+    { icon:<Lock size={18} />, title:"HIPAA Compliance Remediation",
       who:"LTC pharmacy using Microsoft 365 with no HIPAA controls configured",
       outcome:"Full HIPAA baseline applied — BAA signed, DLP policies enforced, audit logging enabled, conditional access deployed. Compliance posture transformed from exposed to defensible in 3 weeks." },
-    { icon:"📊", title:"Power BI Analytics Deployment",
+    { icon:<BarChart3 size={18} />, title:"Power BI Analytics Deployment",
       who:"LTC pharmacy with pharmacy data in their PMS but no analytics capability",
       outcome:"Power BI connected to PMS data via Azure data gateway. Dispensing, facility, and error dashboards live within 6 weeks. Leadership now receives automated weekly operational summaries." },
-    { icon:"🏥", title:"Teams + Pharmacy Workflow Integration",
+    { icon:<Hospital size={18} />, title:"Teams + Pharmacy Workflow Integration",
       who:"LTC pharmacy with facility staff using Teams but pharmacy using separate systems",
       outcome:"Teams channels configured per facility with automated order status notifications and pharmacy alerts. Inbound facility phone calls reduced 60% in the first month post-deployment." },
-    { icon:"⚡", title:"Power Automate Pharmacy Workflows",
+    { icon:<Zap size={18} />, title:"Power Automate Pharmacy Workflows",
       who:"LTC pharmacy with manual approval processes for exception handling",
       outcome:"Power Automate flows built for CS exception approvals, prior auth escalations, and compliance document routing. 4 hours per day of manual email coordination eliminated." },
   ];
@@ -411,9 +413,9 @@ function FAQ() {
 
 function Related() {
   const items = [
-    { icon:"💻", color:C.p, tag:"Service", title:"Custom Development", href:"/services/custom-development", desc:"Full-stack LTC pharmacy applications built on Azure and modern web technologies." },
-    { icon:"📊", color:C.violet, tag:"Service", title:"Data Analytics & Power BI", href:"/services/data-analytics", desc:"Custom Power BI dashboards and automated reporting pipelines for LTC pharmacy." },
-    { icon:"⚙️", color:C.accent, tag:"Service", title:"AI Automation", href:"/services/ai-automation", desc:"Intelligent workflow automation — integratable with Power Automate and Azure." },
+    { icon:<Laptop size={20} />, color:C.p, tag:"Service", title:"Custom Development", href:"/services/custom-development", desc:"Full-stack LTC pharmacy applications built on Azure and modern web technologies." },
+    { icon:<BarChart3 size={20} />, color:C.violet, tag:"Service", title:"Data Analytics & Power BI", href:"/services/data-analytics", desc:"Custom Power BI dashboards and automated reporting pipelines for LTC pharmacy." },
+    { icon:<Settings size={20} />, color:C.accent, tag:"Service", title:"AI Automation", href:"/services/ai-automation", desc:"Intelligent workflow automation — integratable with Power Automate and Azure." },
   ];
   return (
     <section style={{ padding:"72px 5vw", background:C.alt }}>
@@ -453,12 +455,12 @@ function CTA() {
         </P>
         <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
           <PBtn light href="/schedule-demo">Book a Free Cloud Assessment →</PBtn>
-          <a href="tel:+17207246828" style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
+          <a href={`tel:${CONTACT_PHONE}`} style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
             borderRadius:10, background:"transparent", color:"rgba(255,255,255,0.78)", fontWeight:600, fontSize:14,
             textDecoration:"none", border:"1.5px solid rgba(255,255,255,0.22)", fontFamily:"inherit" }}
             onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.55)"}
             onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.22)"}>
-            📞 (720) 724-6828
+            📞 {CONTACT_PHONE_DISPLAY}
           </a>
         </div>
       </div>

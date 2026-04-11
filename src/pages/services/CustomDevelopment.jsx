@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
+import { ShieldCheck, Smartphone, Link as LinkIcon, Settings, BarChart3, Hospital, Cloud, Wrench } from 'lucide-react'
+import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../config/constants.js'
 
 const Badge = ({ c=C.p, children }) => (
   <span style={{ display:"inline-flex", alignItems:"center", gap:5, padding:"4px 13px",
@@ -83,12 +85,14 @@ function TechStack() {
 function Hero() {
   return (
     <section style={{ minHeight:"88vh", display:"flex", alignItems:"center",
-      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.bg }}>
+      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.dark }}>
       <div style={{ position:"absolute", inset:0,
-        backgroundImage:`linear-gradient(${C.p}06 1px,transparent 1px),linear-gradient(90deg,${C.p}06 1px,transparent 1px)`,
+        backgroundImage:`linear-gradient(${C.p}08 1px,transparent 1px),linear-gradient(90deg,${C.p}08 1px,transparent 1px)`,
         backgroundSize:"52px 52px", pointerEvents:"none" }} />
       <div style={{ position:"absolute", top:-180, right:-80, width:700, height:700, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.p}14 0%,transparent 68%)`, pointerEvents:"none" }} />
+        background:`radial-gradient(circle,${C.p}22 0%,transparent 68%)`, pointerEvents:"none" }} />
+      <div style={{ position:"absolute", bottom:-80, left:-60, width:500, height:500, borderRadius:"50%",
+        background:`radial-gradient(circle,${C.violet}24 0%,transparent 68%)`, pointerEvents:"none" }} />
 
       <div style={{ maxWidth:1100, margin:"0 auto", width:"100%", position:"relative", zIndex:1 }}>
         <div style={{ display:"grid", gridTemplateColumns:"1.05fr 1fr", gap:64, alignItems:"center" }}>
@@ -97,34 +101,34 @@ function Hero() {
               <Badge c={C.p}>💻 Service</Badge>
               <Badge c={C.muted}>Custom Development</Badge>
             </div>
-            <H size="hero" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
+            <H size="hero" color="#fff" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
               Software Built Around{" "}
               <span style={{ background:`linear-gradient(90deg,${C.p},${C.violet})`,
                 WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
                 Your LTC Workflows
               </span>
             </H>
-            <P style={{ maxWidth:520, marginBottom:32, fontSize:"1.08rem", animation:"fadeUp 0.6s 0.18s ease both" }}>
+            <P style={{ maxWidth:520, color:"rgba(255,255,255,0.7)", marginBottom:32, fontSize:"1.08rem", animation:"fadeUp 0.6s 0.18s ease both" }}>
               Off-the-shelf software wasn't designed for LTC pharmacy. We build the custom applications, internal tools, and system integrations that match exactly how your pharmacy actually operates — with LTC domain knowledge built in from day one.
             </P>
             <div style={{ display:"flex", gap:12, flexWrap:"wrap", animation:"fadeUp 0.6s 0.25s ease both" }}>
               <PBtn href="/schedule-demo">Discuss Your Project →</PBtn>
               <a href="#whatwebuild" style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
-                borderRadius:10, background:"transparent", color:C.head, fontWeight:600, fontSize:14.5,
-                border:`1.5px solid ${C.border}`, textDecoration:"none", transition:"all 0.15s" }}
-                onMouseEnter={e=>{ e.currentTarget.style.borderColor=C.p; e.currentTarget.style.background=`${C.p}08`; }}
-                onMouseLeave={e=>{ e.currentTarget.style.borderColor=C.border; e.currentTarget.style.background="transparent"; }}>
+                borderRadius:10, background:"transparent", color:"rgba(255,255,255,0.8)", fontWeight:600, fontSize:14.5,
+                border:"1.5px solid rgba(255,255,255,0.2)", textDecoration:"none", transition:"border-color 0.15s" }}
+                onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.5)"}
+                onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.2)"}>
                 See What We Build ↓
               </a>
             </div>
-            <div style={{ display:"flex", gap:0, marginTop:52, borderTop:`1px solid ${C.border}`, paddingTop:30,
+            <div style={{ display:"flex", gap:0, marginTop:52, borderTop:"1px solid rgba(255,255,255,0.1)", paddingTop:30,
               animation:"fadeUp 0.6s 0.4s ease both" }}>
               {[["LTC","Domain expertise"],["Full-stack","React · Node · Azure"],["HIPAA","Compliant builds"],["50+","Projects delivered"]].map(([v,l],i,a) => (
                 <div key={i} style={{ flex:1, paddingRight:16,
-                  borderRight:i<a.length-1?`1px solid ${C.border}`:"none", marginRight:i<a.length-1?16:0 }}>
+                  borderRight:i<a.length-1?"1px solid rgba(255,255,255,0.1)":"none", marginRight:i<a.length-1?16:0 }}>
                   <div style={{ fontSize:"clamp(1rem,1.5vw,1.3rem)", fontWeight:900, color:C.p,
                     letterSpacing:"-0.02em", fontFamily:"'DM Sans',sans-serif" }}>{v}</div>
-                  <div style={{ color:C.muted, fontSize:11.5, marginTop:2, fontWeight:500 }}>{l}</div>
+                  <div style={{ color:"rgba(255,255,255,0.4)", fontSize:11.5, marginTop:2, fontWeight:500 }}>{l}</div>
                 </div>
               ))}
             </div>
@@ -141,19 +145,19 @@ function Hero() {
 function WhatWeBuild() {
   const [active, setActive] = useState(0);
   const builds = [
-    { icon:"📱", color:C.p, tag:"Web & Mobile", title:"Telepharmacy & Patient-Facing Applications",
+    { icon:<Smartphone size={20} />, color:C.p, tag:"Web & Mobile", title:"Telepharmacy & Patient-Facing Applications",
       desc:"Web and mobile applications for telepharmacy delivery, patient medication management, RPh remote review, and facility portal access. Built with HIPAA-compliant architecture and LTC-specific workflow logic.",
       examples:["RPh remote review interface","Patient medication history portal","Facility staff order status portal","Mobile dispensing confirmation app","Telepharmacy video consultation platform"] },
-    { icon:"🔗", color:C.accent, tag:"Integration", title:"System Integration & Data Pipelines",
+    { icon:<LinkIcon size={20} />, color:C.accent, tag:"Integration", title:"System Integration & Data Pipelines",
       desc:"Custom data bridges between your pharmacy system, EHR platforms, billing systems, and external databases. We handle field mapping, transformation, error handling, and monitoring.",
       examples:["PMS-to-EHR bidirectional feeds","Billing system reconciliation","Insurance verification APIs","DEA database integration","Census-to-order automation pipelines"] },
-    { icon:"⚙️", color:C.violet, tag:"Internal Tools", title:"Internal Operations Tools",
+    { icon:<Settings size={20} />, color:C.violet, tag:"Internal Tools", title:"Internal Operations Tools",
       desc:"Custom internal applications that replace spreadsheets and manual processes — workflow management, exception queuing, compliance tracking, staff assignment, and operational reporting.",
       examples:["Compliance exception management system","Staff workflow assignment tool","Order priority queue manager","Facility communication platform","Audit documentation system"] },
-    { icon:"📊", color:C.green, tag:"Reporting", title:"Custom Reporting & Automation",
+    { icon:<BarChart3 size={20} />, color:C.green, tag:"Reporting", title:"Custom Reporting & Automation",
       desc:"Automated reporting systems that pull data from multiple sources, format it correctly, and deliver it on schedule — eliminating manual report compilation entirely.",
       examples:["Automated DEA compliance reports","Facility performance report delivery","Executive summary automation","Survey-ready documentation packages","Billing reconciliation reports"] },
-    { icon:"🛡️", color:C.amber, tag:"Compliance", title:"Regulatory & Compliance Infrastructure",
+    { icon:<ShieldCheck size={20} />, color:C.amber, tag:"Compliance", title:"Regulatory & Compliance Infrastructure",
       desc:"Purpose-built compliance tools: DEA verification, CS audit trails, ARCOS reporting systems, prior authorization platforms, and document management with full audit history.",
       examples:["DEA registration verification system","CS inventory audit trail","Prior auth workflow platform","Document generation & e-signature","State board reporting tools"] },
   ];
@@ -260,16 +264,16 @@ function Process() {
 
 function UseCases() {
   const cases = [
-    { icon:"📱", title:"Telepharmacy Platform Build",
+    { icon:<Smartphone size={18} />, title:"Telepharmacy Platform Build",
       who:"Independent LTC pharmacy expanding into remote RPh review",
       outcome:"Full telepharmacy application with RPh review interface, facility portal, PMS integration, and HIPAA-compliant architecture built in 12 weeks. Now serving 8 LTC facilities remotely." },
-    { icon:"⚙️", title:"Internal Compliance Management Tool",
+    { icon:<Settings size={18} />, title:"Internal Compliance Management Tool",
       who:"LTC pharmacy with no centralized compliance exception tracking",
       outcome:"Custom web app built to manage DEA exceptions, CS discrepancies, and prior auth follow-ups. Compliance team went from spreadsheets to a structured system with full audit trail in 6 weeks." },
-    { icon:"🔗", title:"Multi-System Integration Layer",
+    { icon:<LinkIcon size={18} />, title:"Multi-System Integration Layer",
       who:"Regional LTC pharmacy chain needing pharmacy, billing, and EHR connected",
       outcome:"Custom integration layer connecting PMS, PointClickCare, and billing system. Eliminated 4 hours per day of manual data bridging across 3 systems." },
-    { icon:"📊", title:"Facility Reporting Portal",
+    { icon:<BarChart3 size={18} />, title:"Facility Reporting Portal",
       who:"LTC pharmacy whose facility clients were calling for order status updates",
       outcome:"Self-service facility portal built with real-time order status, dispense history, and reconciliation reports. Inbound status calls dropped 80% in the first month post-launch." },
   ];
@@ -349,9 +353,9 @@ function FAQ() {
 
 function Related() {
   const items = [
-    { icon:"🏥", color:C.p, tag:"Service", title:"LTC Pharmacy IT", href:"/services/ltc-pharmacy-it", desc:"Telepharmacy platforms, system migrations, and compliance tooling for LTC pharmacies." },
-    { icon:"⚙️", color:C.accent, tag:"Service", title:"AI Automation", href:"/services/ai-automation", desc:"Intelligent workflow automation replacing manual bottlenecks in your pharmacy." },
-    { icon:"☁️", color:C.violet, tag:"Service", title:"Microsoft Cloud", href:"/services/microsoft-cloud", desc:"Azure, Microsoft 365, and Power Platform configured for healthcare compliance." },
+    { icon:<Hospital size={20} />, color:C.p, tag:"Service", title:"LTC Pharmacy IT", href:"/services/ltc-pharmacy-it", desc:"Telepharmacy platforms, system migrations, and compliance tooling for LTC pharmacies." },
+    { icon:<Settings size={20} />, color:C.accent, tag:"Service", title:"AI Automation", href:"/services/ai-automation", desc:"Intelligent workflow automation replacing manual bottlenecks in your pharmacy." },
+    { icon:<Cloud size={20} />, color:C.violet, tag:"Service", title:"Microsoft Cloud", href:"/services/microsoft-cloud", desc:"Azure, Microsoft 365, and Power Platform configured for healthcare compliance." },
   ];
   return (
     <section style={{ padding:"72px 5vw", background:C.alt }}>
@@ -389,12 +393,12 @@ function CTA() {
         </P>
         <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
           <PBtn light href="/schedule-demo">Discuss Your Project →</PBtn>
-          <a href="tel:+17207246828" style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
+          <a href={`tel:${CONTACT_PHONE}`} style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
             borderRadius:10, background:"transparent", color:"rgba(255,255,255,0.78)", fontWeight:600, fontSize:14,
             textDecoration:"none", border:"1.5px solid rgba(255,255,255,0.22)", fontFamily:"inherit" }}
             onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.55)"}
             onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.22)"}>
-            📞 (720) 724-6828
+            📞 {CONTACT_PHONE_DISPLAY}
           </a>
         </div>
       </div>

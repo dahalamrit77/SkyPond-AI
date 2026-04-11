@@ -3,6 +3,7 @@ import C from '../tokens.js'
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
 import { Link } from 'react-router-dom'
+import { TrendingUp, Users, Lightbulb, Star, Target, Link as LinkIcon } from 'lucide-react'
 
 function Hero() {
   return (
@@ -132,8 +133,7 @@ function AboutSection() {
                   'To be a beacon of innovation, transforming the way organizations operate by harnessing the power of technology. We envision a future where our solutions not only make businesses more efficient and successful but also inspire positive change and growth in the communities we serve.',
               },
               {
-                icon: '📈',
-                iconStyle: { color: C.p2, fontSize: 16 },
+                icon: <TrendingUp size={16} color={C.p2} />,
                 title: 'Future Growth',
                 body:
                   "We aim to expand our technological capabilities by integrating artificial intelligence and machine learning into our solutions, enhancing our clients' ability to make data-driven decisions. Additionally, we plan to broaden our market reach by forming strategic partnerships and entering new industries, ensuring we remain at the forefront of innovation and continue to deliver exceptional value.",
@@ -160,7 +160,7 @@ function AboutSection() {
                       justifyContent: 'center',
                     }}
                   >
-                    <span style={c.iconStyle}>{c.icon}</span>
+                    {c.iconStyle ? <span style={c.iconStyle}>{c.icon}</span> : c.icon}
                   </div>
                   <div style={{ fontSize: '1.05rem', fontWeight: 700, color: C.head, fontFamily: "'DM Sans',system-ui,sans-serif" }}>
                     {c.title}
@@ -261,12 +261,12 @@ function ValuesGrid() {
   const [hoveredIndex, setHoveredIndex] = useState(null)
 
   const values = [
-    { name: 'Innovation', desc: 'We embrace new ideas and technologies to provide the best solutions for our clients.', icon: '💡', bg: `${C.p2}18`, c: C.p2 },
-    { name: 'Integrity', desc: 'We believe in being honest and transparent in all our interactions.', icon: '🤝', bg: `${C.accent}18`, c: C.accent },
-    { name: 'Excellence', desc: 'We strive to do our best in everything we do, from our services to our support.', icon: '⭐', bg: `${C.violet}30`, c: C.violet },
-    { name: 'Human Centered Tech', desc: 'Every solution we create is built to empower users, simplify experiences, and enhance human potential.', icon: '👤', bg: `${C.green}18`, c: C.green },
-    { name: 'Customer Focus', desc: "We listen to our clients' needs and work hard to exceed their expectations.", icon: '🎯', bg: `${C.amber}18`, c: C.amber },
-    { name: 'Collaboration', desc: 'We value teamwork and believe that working together leads to the best results.', icon: '🔗', bg: `${C.red}18`, c: C.red },
+    { name: 'Innovation', desc: 'We embrace new ideas and technologies to provide the best solutions for our clients.', icon: <Lightbulb size={20} color={C.p2} />, bg: `${C.p2}18` },
+    { name: 'Integrity', desc: 'We believe in being honest and transparent in all our interactions.', icon: <Users size={20} color={C.accent} />, bg: `${C.accent}18` },
+    { name: 'Excellence', desc: 'We strive to do our best in everything we do, from our services to our support.', icon: <Star size={20} color={C.violet} />, bg: `${C.violet}30` },
+    { name: 'Human Centered Tech', desc: 'Every solution we create is built to empower users, simplify experiences, and enhance human potential.', icon: <Users size={20} color={C.green} />, bg: `${C.green}18` },
+    { name: 'Customer Focus', desc: "We listen to our clients' needs and work hard to exceed their expectations.", icon: <Target size={20} color={C.amber} />, bg: `${C.amber}18` },
+    { name: 'Collaboration', desc: 'We value teamwork and believe that working together leads to the best results.', icon: <LinkIcon size={20} color={C.red} />, bg: `${C.red}18` },
   ]
 
   return (
@@ -322,7 +322,7 @@ function ValuesGrid() {
                     justifyContent: 'center',
                   }}
                 >
-                  <span style={{ fontSize: 20, color: v.c }}>{v.icon}</span>
+                  {v.icon}
                 </div>
                 <h3 style={{ fontSize: '1rem', fontWeight: 700, color: C.head, marginBottom: 8, fontFamily: "'DM Sans',system-ui,sans-serif" }}>
                   {v.name}

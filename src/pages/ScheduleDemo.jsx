@@ -2,6 +2,8 @@ import C from '../tokens.js'
 import { useState, useEffect, useRef } from "react";
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
+import { MessageSquare, Search, Map, Mail, Phone } from 'lucide-react'
+import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_DISPLAY, HUBSPOT_MEETINGS_URL, HUBSPOT_SCRIPT_URL } from '../config/constants.js'
 
 /* HubSpot embed — uses dangerouslySetInnerHTML so the script tag
    executes exactly as HubSpot expects it, after the container div exists */
@@ -17,7 +19,7 @@ function HubSpotEmbed() {
 
     const s = document.createElement("script");
     s.id = "hs-meetings-script";
-    s.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
+    s.src = HUBSPOT_SCRIPT_URL;
     s.type = "text/javascript";
     s.async = true;
     // Append AFTER the container div is in the DOM
@@ -28,7 +30,7 @@ function HubSpotEmbed() {
     <div ref={wrapperRef} style={{ width:"100%", minHeight:690 }}>
       <div
         className="meetings-iframe-container"
-        data-src="https://meetings-na2.hubspot.com/ramesh-kc?embed=true"
+        data-src={HUBSPOT_MEETINGS_URL}
         style={{ width:"100%", minHeight:690 }}
       />
     </div>
@@ -37,11 +39,11 @@ function HubSpotEmbed() {
 
 function WhatToExpect() {
   const steps = [
-    { icon:"💬", title:"Tell us what you're working with",
+    { icon:<MessageSquare size={15} />, title:"Tell us what you're working with",
       desc:"Your current pharmacy system, which facilities you serve, and what's not working today." },
-    { icon:"🔍", title:"We identify the actual gap",
+    { icon:<Search size={15} />, title:"We identify the actual gap",
       desc:"Whether it's an HL7 data issue, a manual workflow bottleneck, or a reporting blind spot — we name it specifically." },
-    { icon:"🗺️", title:"You get a clear path forward",
+    { icon:<Map size={15} />, title:"You get a clear path forward",
       desc:"What a solution looks like, realistic timelines, and what it takes to start. No vague proposals." },
   ];
   return (
@@ -158,8 +160,8 @@ export default function ScheduleDemo() {
               </div>
               <div style={{ display:"flex", flexDirection:"column", gap:9 }}>
                 {[
-                  { icon:"📧", title:"Email us", sub:"info@skypondtech.com", href:"mailto:info@skypondtech.com" },
-                  { icon:"📞", title:"Call directly", sub:"(720) 724-6828", href:"tel:+17207246828" },
+                  { icon:<Mail size={15} />, title:"Email us", sub:CONTACT_EMAIL, href:`mailto:${CONTACT_EMAIL}` },
+                  { icon:<Phone size={15} />, title:"Call directly", sub:CONTACT_PHONE_DISPLAY, href:`tel:${CONTACT_PHONE}` },
                 ].map((item, i) => (
                   <a key={i} href={item.href} style={{ display:"flex", alignItems:"center", gap:10,
                     padding:"10px 13px", borderRadius:9, background:C.surface,

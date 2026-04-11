@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
+import { Printer, ClipboardList, Search, Pill, FolderArchive, Hourglass, BarChart3, Hospital, FileText } from 'lucide-react'
+import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../config/constants.js'
 
 const Badge = ({ c=C.p, children }) => (
   <span style={{ display:"inline-flex", alignItems:"center", gap:5, padding:"4px 13px",
@@ -45,11 +47,11 @@ function Card({ children, style={}, ac=C.accent, hover=true }) {
 /* ── Live automation widget ── */
 function AutoWidget() {
   const workflows = [
-    { name:"Prior Authorization", before:45, after:8, unit:"min", icon:"📋", color:C.accent },
-    { name:"DEA Compliance Report", before:180, after:5, unit:"min", icon:"🔍", color:C.p },
-    { name:"Order Entry & Triage", before:6, after:0.5, unit:"min/order", icon:"💊", color:C.violet },
-    { name:"Fax Processing", before:12, after:1.5, unit:"min/fax", icon:"📠", color:C.green },
-    { name:"Document Filing & Archival", before:60, after:3, unit:"min", icon:"📁", color:C.amber },
+    { name:"Prior Authorization", before:45, after:8, unit:"min", icon:<ClipboardList size={14} />, color:C.accent },
+    { name:"DEA Compliance Report", before:180, after:5, unit:"min", icon:<Search size={14} />, color:C.p },
+    { name:"Order Entry & Triage", before:6, after:0.5, unit:"min/order", icon:<Pill size={14} />, color:C.violet },
+    { name:"Fax Processing", before:12, after:1.5, unit:"min/fax", icon:<Printer size={14} />, color:C.green },
+    { name:"Document Filing & Archival", before:60, after:3, unit:"min", icon:<FolderArchive size={14} />, color:C.amber },
   ];
   const [on, setOn] = useState(false);
   const ref = useRef(null);
@@ -190,10 +192,10 @@ function Hero() {
 
 function Problem() {
   const pains = [
-    { icon:"⏳", title:"Staff time consumed by repetitive data entry", desc:"Your technicians are entering the same prescription data multiple times across systems. Every manual step is a bottleneck that slows dispensing and burns out your team." },
-    { icon:"📠", title:"Fax queues that grow faster than you can process them", desc:"LTC pharmacies receive hundreds of faxes daily. Manual sorting, extraction, and routing is one of the highest-cost, lowest-value activities in pharmacy operations." },
-    { icon:"📋", title:"Prior auth backlogs that delay patient care", desc:"Prior authorization requests require structured documentation, follow-up, and status tracking. Handled manually, it's a process that takes 45+ minutes per case and creates denial risks." },
-    { icon:"📊", title:"Compliance reports built manually every reporting cycle", desc:"DEA and regulatory reports that should take 5 minutes take hours because the data lives in multiple systems and has to be manually compiled, formatted, and filed." },
+    { icon:<Hourglass size={18} />, title:"Staff time consumed by repetitive data entry", desc:"Your technicians are entering the same prescription data multiple times across systems. Every manual step is a bottleneck that slows dispensing and burns out your team." },
+    { icon:<Printer size={18} />, title:"Fax queues that grow faster than you can process them", desc:"LTC pharmacies receive hundreds of faxes daily. Manual sorting, extraction, and routing is one of the highest-cost, lowest-value activities in pharmacy operations." },
+    { icon:<ClipboardList size={18} />, title:"Prior auth backlogs that delay patient care", desc:"Prior authorization requests require structured documentation, follow-up, and status tracking. Handled manually, it's a process that takes 45+ minutes per case and creates denial risks." },
+    { icon:<BarChart3 size={18} />, title:"Compliance reports built manually every reporting cycle", desc:"DEA and regulatory reports that should take 5 minutes take hours because the data lives in multiple systems and has to be manually compiled, formatted, and filed." },
   ];
   return (
     <section style={{ padding:"88px 5vw", background:C.surface }}>
@@ -234,35 +236,35 @@ function Automations() {
   const [active, setActive] = useState(0);
   const autos = [
     {
-      icon:"📋", title:"Prior Authorization Automation", tag:"High Impact",
+      icon:<ClipboardList size={20} />, title:"Prior Authorization Automation", tag:"High Impact",
       before:"45 min / case", after:"8 min / case", saving:"83%",
       desc:"We automate the entire prior auth workflow — from identifying authorization requirements to generating structured documentation, submitting requests, tracking status, and flagging denials for follow-up. Built to work with your existing payer integrations.",
       steps:["Prescription triggers PA requirement check","Required documentation auto-compiled from patient record","Structured PA request generated and submitted","Status tracked with automatic follow-up reminders","Denials flagged to clinical team with appeal documentation ready"],
       color:C.accent,
     },
     {
-      icon:"📠", title:"Fax Processing & Triage", tag:"Volume Reduction",
+      icon:<Printer size={20} />, title:"Fax Processing & Triage", tag:"Volume Reduction",
       before:"12 min / fax", after:"1.5 min / fax", saving:"88%",
       desc:"Incoming faxes are automatically received, classified (new Rx, renewal, PA response, clinical note), key data extracted, and routed to the correct workflow queue. Exceptions and ambiguous faxes are flagged for human review.",
       steps:["Fax received and classified by document type","Structured data extracted (patient, drug, prescriber, directions)","Routed to correct queue (new order, renewal, PA, etc.)","Prescriber DEA verification triggered automatically","Exceptions flagged with confidence score for human review"],
       color:C.p,
     },
     {
-      icon:"💊", title:"Order Entry & Triage", tag:"Speed & Accuracy",
+      icon:<Pill size={20} />, title:"Order Entry & Triage", tag:"Speed & Accuracy",
       before:"6 min / order", after:"0.5 min / order", saving:"92%",
       desc:"Prescription data is extracted, validated against your formulary and dispensing rules, DEA status verified, CS scheduling confirmed, and the order queued for RPh review — with a complete structured record and zero manual re-entry.",
       steps:["eRx or fax data extracted and structured","Patient and prescriber records matched","DEA verification and CS schedule confirmed","Dispensing rules applied (DAW, auto-refill, batch)","Packaged for RPh review with full audit trail"],
       color:C.violet,
     },
     {
-      icon:"📊", title:"DEA Compliance Reporting", tag:"Regulatory",
+      icon:<BarChart3 size={20} />, title:"DEA Compliance Reporting", tag:"Regulatory",
       before:"3 hrs / report", after:"8 min / report", saving:"96%",
       desc:"DEA regulatory reports are assembled automatically from your pharmacy data — ARCOS submissions, DEA Form 222 tracking, CS inventory reconciliation — formatted correctly and filed on schedule. Audit trails maintained automatically.",
       steps:["CS transaction data aggregated across systems","ARCOS report formatted and validated","DEA Form 222 records reconciled","Discrepancies flagged before submission","Report filed and confirmation archived"],
       color:C.green,
     },
     {
-      icon:"📁", title:"Document Generation & Archival", tag:"Compliance",
+      icon:<FolderArchive size={20} />, title:"Document Generation & Archival", tag:"Compliance",
       before:"60 min / day", after:"3 min / day", saving:"95%",
       desc:"Compliance documents, patient correspondence, facility reports, and regulatory submissions are generated from templates with live data, routed for e-signature where required, and archived with full search and retrieval capability.",
       steps:["Document type and recipient identified","Template populated with live patient/pharmacy data","Routed for e-signature if required","Filed with structured metadata for retrieval","Audit trail linked to source transaction"],
@@ -391,16 +393,16 @@ function HowItWorks() {
 
 function UseCases() {
   const cases = [
-    { icon:"🏥", title:"Prior Auth Backlog Elimination",
+    { icon:<Hospital size={18} />, title:"Prior Auth Backlog Elimination",
       who:"LTC pharmacy with 3-day PA backlog causing patient care delays",
       outcome:"Prior auth automation reduced average processing time from 45 to 8 minutes. Backlog cleared in 2 weeks, denial rate dropped 22% due to more complete initial submissions." },
-    { icon:"📠", title:"Fax Processing at Scale",
+    { icon:<Printer size={18} />, title:"Fax Processing at Scale",
       who:"Regional LTC pharmacy processing 400+ faxes daily with 4 staff",
       outcome:"Automated fax triage and data extraction reduced manual fax handling by 88%. Staff redirected to clinical review and exception management." },
-    { icon:"📊", title:"DEA Reporting Automation",
+    { icon:<BarChart3 size={18} />, title:"DEA Reporting Automation",
       who:"Multi-facility LTC pharmacy spending 3 hours per DEA report cycle",
       outcome:"ARCOS report generation automated end-to-end. Reporting cycle reduced from 3 hours to 8 minutes. Zero missed submissions in 12 months post-deployment." },
-    { icon:"💊", title:"Order Entry Throughput",
+    { icon:<Pill size={18} />, title:"Order Entry Throughput",
       who:"LTC pharmacy with order entry backlog during peak census periods",
       outcome:"AI order triage automated 70% of routine orders, reducing average entry time from 6 minutes to under 1 minute. RPh review volume unaffected — clinical oversight maintained throughout." },
   ];
@@ -481,11 +483,11 @@ function FAQ() {
 
 function Related() {
   const items = [
-    { icon:"🏥", color:C.p, tag:"Service", title:"LTC Pharmacy IT", href:"/services/ltc-pharmacy-it",
+    { icon:<Hospital size={20} />, color:C.p, tag:"Service", title:"LTC Pharmacy IT", href:"/services/ltc-pharmacy-it",
       desc:"Custom LTC pharmacy applications, telepharmacy platforms, and full-stack system integrations." },
-    { icon:"📊", color:C.violet, tag:"Service", title:"Data Analytics & Power BI", href:"/services/data-analytics",
+    { icon:<BarChart3 size={20} />, color:C.violet, tag:"Service", title:"Data Analytics & Power BI", href:"/services/data-analytics",
       desc:"Custom dashboards and analytics pipelines that make your pharmacy data genuinely actionable." },
-    { icon:"📄", color:C.accent, tag:"Product", title:"Document Automation", href:"/products/document-automation",
+    { icon:<FileText size={20} />, color:C.accent, tag:"Product", title:"Document Automation", href:"/products/document-automation",
       desc:"AI-powered prior auth generation, compliance templating, and audit-ready archival." },
   ];
   return (
@@ -528,13 +530,13 @@ function CTA() {
         </P>
         <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
           <PBtn light href="/schedule-demo">Book a Discovery Session →</PBtn>
-          <a href="tel:+17207246828" style={{ display:"inline-flex", alignItems:"center", gap:8,
+          <a href={`tel:${CONTACT_PHONE}`} style={{ display:"inline-flex", alignItems:"center", gap:8,
             padding:"12px 24px", borderRadius:10, background:"transparent",
             color:"rgba(255,255,255,0.78)", fontWeight:600, fontSize:14, textDecoration:"none",
             border:"1.5px solid rgba(255,255,255,0.22)", fontFamily:"inherit" }}
             onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.55)"}
             onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.22)"}>
-            📞 (720) 724-6828
+            📞 {CONTACT_PHONE_DISPLAY}
           </a>
         </div>
       </div>

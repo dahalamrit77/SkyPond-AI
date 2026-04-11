@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
+import { Radio, Bell, Zap, DollarSign, RefreshCw, ShieldOff, Box, BarChart3, Pill, ClipboardList, Phone, Hospital, Settings, Link as LinkIcon } from 'lucide-react'
+import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../config/constants.js'
 
 const Badge = ({ c=C.p, children }) => (
   <span style={{ display:"inline-flex", alignItems:"center", gap:5, padding:"4px 13px",
@@ -218,7 +220,7 @@ function TheGap() {
           <div style={{ borderRadius:16, border:`2px solid ${C.amber}40`, background:`${C.amber}05`, padding:"28px 26px" }}>
             <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:20 }}>
               <div style={{ width:44, height:44, borderRadius:11, background:`${C.amber}18`,
-                border:`1px solid ${C.amber}40`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22 }}>📡</div>
+                border:`1px solid ${C.amber}40`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22 }}><Radio size={22} color={C.amber} /></div>
               <div>
                 <div style={{ fontSize:10.5, fontWeight:700, color:C.amber, textTransform:"uppercase", letterSpacing:"0.07em" }}>HL7 Integration Alone</div>
                 <div style={{ color:C.head, fontWeight:700, fontSize:17, fontFamily:"'DM Sans',sans-serif", marginTop:3 }}>Incomplete Picture</div>
@@ -296,15 +298,15 @@ function TheGap() {
 
 function HowItWorks() {
   const steps = [
-    { icon:"📡", color:C.amber, label:"Step 1", title:"HL7 Delivers the Trigger",
+    { icon:<Radio size={20} />, color:C.amber, label:"Step 1", title:"HL7 Delivers the Trigger",
       desc:"An ADT event fires in PointClickCare — admission, discharge, or transfer. The HL7 message arrives at your pharmacy. You know something happened. You don't yet have everything you need to act on it." },
-    { icon:"🔔", color:C.accent, label:"Step 2", title:"Webhook Confirms in Real Time",
+    { icon:<Bell size={20} />, color:C.accent, label:"Step 2", title:"Webhook Confirms in Real Time",
       desc:"Simultaneously, our PCC Marketplace webhook subscription receives a real-time notification. This immediately triggers an API call — no polling delay, no manual check, no waiting for facility staff." },
-    { icon:"📦", color:C.p, label:"Step 3", title:"API Pulls the Complete Record",
+    { icon:<Box size={20} />, color:C.p, label:"Step 3", title:"API Pulls the Complete Record",
       desc:"Using the PCC RESTful API, we retrieve the full structured resident record — demographics, payer, effective dates, room/bed, discharge reason, transfer destination, and active Rx list. Everything, automatically." },
-    { icon:"⚡", color:C.green, label:"Step 4", title:"Pharmacy System Updated",
+    { icon:<Zap size={20} />, color:C.green, label:"Step 4", title:"Pharmacy System Updated",
       desc:"Complete data is written directly to your pharmacy management system. Patient setup, payer information, billing dates, and order actions are triggered and updated without your staff touching a keyboard." },
-    { icon:"📊", color:C.violet, label:"Step 5", title:"Census Dashboard Stays Current",
+    { icon:<BarChart3 size={20} />, color:C.violet, label:"Step 5", title:"Census Dashboard Stays Current",
       desc:"Your pharmacy census dashboard reflects every facility in real time — active residents, recent ADT events, reconciliation status, and any data exceptions that need human review. One screen, full picture." },
   ];
   return (
@@ -349,17 +351,17 @@ function HowItWorks() {
 
 function WhatYouGet() {
   const benefits = [
-    { icon:"🚫", color:C.accent, title:"No Facility Portal Access Required",
+    { icon:<ShieldOff size={20} />, color:C.accent, title:"No Facility Portal Access Required",
       desc:"Your team gets complete, structured ADT data from the PCC API directly — no PCC user accounts, no facility admin involvement, no portal login from your staff for each facility they serve." },
-    { icon:"💊", color:C.red, title:"Stop Fills for Discharged Patients",
+    { icon:<Pill size={20} />, color:C.red, title:"Stop Fills for Discharged Patients",
       desc:"Real-time discharge notification with effective date means auto-refills stop the moment a patient leaves — preventing medication waste and the billing disputes and credit cycles that follow." },
-    { icon:"💰", color:C.green, title:"Billing Dates Correct from Day One",
+    { icon:<DollarSign size={20} />, color:C.green, title:"Billing Dates Correct from Day One",
       desc:"Admission and discharge effective dates from the API mean billing dates are accurate from the first fill. No retroactive credits, no dispute cycles, no staff manually correcting dates after the fact." },
-    { icon:"📋", color:C.p, title:"Prior Auth Triggered at Admission",
+    { icon:<ClipboardList size={20} />, color:C.p, title:"Prior Auth Triggered at Admission",
       desc:"Full payer data at admission means prior authorization requests are initiated immediately — not after a call to the facility to confirm what insurance the patient has." },
-    { icon:"🔄", color:C.violet, title:"Automated Daily Census Reconciliation",
+    { icon:<RefreshCw size={20} />, color:C.violet, title:"Automated Daily Census Reconciliation",
       desc:"Daily census pulled programmatically via the API creates an automatic differential report — surfacing discrepancies between your records and the facility's actual resident list without manual comparison." },
-    { icon:"📞", color:C.amber, title:"Fewer Calls in Both Directions",
+    { icon:<Phone size={20} />, color:C.amber, title:"Fewer Calls in Both Directions",
       desc:"Facility staff stop calling for order status. Your staff stop calling for patient data. The API handles the exchange so neither side needs to pick up the phone." },
   ];
   return (
@@ -439,16 +441,16 @@ function DataShared() {
 
 function UseCases() {
   const cases = [
-    { icon:"💊", title:"Discharge Fill Prevention",
+    { icon:<Pill size={18} />, title:"Discharge Fill Prevention",
       who:"Multi-facility LTC pharmacy filling medications for patients already discharged",
       outcome:"Real-time discharge notifications with effective dates eliminated fills for discharged patients. Medication waste cost dropped significantly in the first quarter. Zero discharge-date billing disputes since go-live." },
-    { icon:"💰", title:"Prior Auth Triggered at Admission",
+    { icon:<DollarSign size={18} />, title:"Prior Auth Triggered at Admission",
       who:"LTC pharmacy with a consistent 2–3 day delay in initiating prior authorizations",
       outcome:"Full payer data at admission triggered automated PA initiation. Delay reduced from 2–3 days to under 4 hours. Denial rate from late PA submissions dropped to zero." },
-    { icon:"📋", title:"Daily Census Reconciliation Automated",
+    { icon:<ClipboardList size={18} />, title:"Daily Census Reconciliation Automated",
       who:"Regional LTC pharmacy spending 3 hours daily reconciling census across 14 facilities",
       outcome:"Automated daily differential report built from API data replaced manual reconciliation entirely. Discrepancies surfaced and resolved same-day rather than accumulating into month-end billing corrections." },
-    { icon:"📞", title:"Eliminating Inbound Facility Calls",
+    { icon:<Phone size={18} />, title:"Eliminating Inbound Facility Calls",
       who:"LTC pharmacy receiving 40+ facility calls per day for order status and patient information",
       outcome:"API integration gave facility staff direct data access. Inbound calls reduced 75%. Pharmacy team time redirected to clinical review and dispensing." },
   ];
@@ -528,11 +530,11 @@ function FAQ() {
 
 function Related() {
   const items = [
-    { icon:"🏥", color:C.p, tag:"Service", title:"LTC Pharmacy IT", href:"/services/ltc-pharmacy-it",
+    { icon:<Hospital size={20} />, color:C.p, tag:"Service", title:"LTC Pharmacy IT", href:"/services/ltc-pharmacy-it",
       desc:"Custom LTC pharmacy applications, telepharmacy platforms, and full-stack system integrations." },
-    { icon:"⚙️", color:C.accent, tag:"Service", title:"AI Automation", href:"/services/ai-automation",
+    { icon:<Settings size={20} />, color:C.accent, tag:"Service", title:"AI Automation", href:"/services/ai-automation",
       desc:"Workflow automation including census-triggered order management and prior auth initiation." },
-    { icon:"🔗", color:C.violet, tag:"Product", title:"PointClickCare Data Feed", href:"/products/pointclickcare-feed",
+    { icon:<LinkIcon size={20} />, color:C.violet, tag:"Product", title:"PointClickCare Data Feed", href:"/products/pointclickcare-feed",
       desc:"Our pre-built PCC data feed product — faster deployment for standard integration needs." },
   ];
   return (
@@ -575,13 +577,13 @@ function CTA() {
         </P>
         <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
           <PBtn light href="/schedule-demo">Book a Technical Walkthrough →</PBtn>
-          <a href="tel:+17207246828" style={{ display:"inline-flex", alignItems:"center", gap:8,
+          <a href={`tel:${CONTACT_PHONE}`} style={{ display:"inline-flex", alignItems:"center", gap:8,
             padding:"12px 24px", borderRadius:10, background:"transparent",
             color:"rgba(255,255,255,0.78)", fontWeight:600, fontSize:14, textDecoration:"none",
             border:"1.5px solid rgba(255,255,255,0.22)", fontFamily:"inherit" }}
             onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.55)"}
             onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.22)"}>
-            📞 (720) 724-6828
+            📞 {CONTACT_PHONE_DISPLAY}
           </a>
         </div>
       </div>
