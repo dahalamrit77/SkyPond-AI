@@ -1,45 +1,35 @@
 import C from '../../tokens.js'
 import { useState, useEffect, useRef } from "react";
+import { Button } from '../../components/ui/Button.jsx'
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
 import { Radio, Bell, Zap, DollarSign, RefreshCw, ShieldOff, Box, BarChart3, Pill, ClipboardList, Phone, Hospital, Settings, Link as LinkIcon } from 'lucide-react'
 import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../config/constants.js'
 
-const Badge = ({ c=C.p, children }) => (
+const Badge = ({ c=C.p2, children }) => (
   <span style={{ display:"inline-flex", alignItems:"center", gap:5, padding:"4px 13px",
-    borderRadius:99, border:`1px solid ${c}28`, background:`${c}0B`, color:c,
-    fontSize:11.5, letterSpacing:"0.07em", textTransform:"uppercase", fontWeight:700 }}>
+    borderRadius:99, border:`1px solid ${c}28`, background:`${c}18`, color:c,
+    fontSize:11.5, letterSpacing:"0.07em", textTransform:"uppercase", fontWeight:500,
+    fontFamily:"'Akshar', sans-serif" }}>
     {children}
   </span>
 );
 const H = ({ size="h2", style={}, color, children }) => {
   const s = { hero:"clamp(2.4rem,5vw,4rem)", h2:"clamp(1.8rem,2.7vw,2.5rem)", h3:"1.2rem" };
-  return <h2 style={{ fontSize:s[size], fontWeight:800, color:color||C.head,
+  const fw = size === "h3" ? 500 : 700;
+  return <h2 style={{ fontSize:s[size], fontWeight:fw, color:color||C.head,
     letterSpacing:"-0.026em", lineHeight:1.1,
-    fontFamily:"'DM Sans',system-ui,sans-serif", ...style }}>{children}</h2>;
+    fontFamily:"'Akshar', sans-serif", ...style }}>{children}</h2>;
 };
 const P = ({ style={}, children }) => (
-  <p style={{ fontSize:"clamp(0.96rem,1.1vw,1.04rem)", color:C.body, lineHeight:1.76, ...style }}>{children}</p>
+  <p style={{ fontSize:"clamp(0.96rem,1.1vw,1.04rem)", color:C.body, lineHeight:1.76,
+    fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400, ...style }}>{children}</p>
 );
-function PBtn({ children, onClick, href, light }) {
-  const Tag = href ? "a" : "button";
-  const base = { display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
-    borderRadius:10, fontWeight:700, fontSize:14.5, border:"none", cursor:"pointer",
-    textDecoration:"none", fontFamily:"inherit", transition:"all 0.15s" };
-  const v = light
-    ? {...base, background:"#fff", color:C.accent, boxShadow:"0 2px 14px rgba(0,0,0,0.13)"}
-    : {...base, background:`linear-gradient(135deg,${C.accent},#0670A0)`, color:"#fff", boxShadow:`0 4px 20px ${C.accent}45`};
-  return <Tag href={href} onClick={onClick} style={v}
-    onMouseEnter={e=>{ e.currentTarget.style.transform="translateY(-2px)"; e.currentTarget.style.boxShadow=light?"0 8px 24px rgba(0,0,0,0.18)":`0 8px 28px ${C.accent}60`; }}
-    onMouseLeave={e=>{ e.currentTarget.style.transform="none"; e.currentTarget.style.boxShadow=light?"0 2px 14px rgba(0,0,0,0.13)":`0 4px 20px ${C.accent}45`; }}>
-    {children}
-  </Tag>;
-}
 function Card({ children, style={}, ac=C.accent, hover=true }) {
   const [h, setH] = useState(false);
   return <div onMouseEnter={()=>hover&&setH(true)} onMouseLeave={()=>hover&&setH(false)}
-    style={{ background:C.surface, border:`1.5px solid ${h?ac+"44":C.border}`, borderRadius:16,
+    style={{ background:C.surface, border:`1.5px solid ${h ? C.p2 : C.border}`, borderRadius:16,
       transition:"all 0.2s", transform:h&&hover?"translateY(-4px)":"none",
       boxShadow:h&&hover?`0 16px 40px ${ac}1A`:"0 2px 8px rgba(0,0,0,0.04)", ...style }}>{children}</div>;
 }
@@ -127,7 +117,7 @@ function APIWidget() {
           <div key={l} style={{ padding:"10px", borderRadius:8, textAlign:"center",
             background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.07)" }}>
             <div style={{ fontSize:13, fontWeight:900, color:C.accent,
-              fontFamily:"'DM Sans',sans-serif" }}>{v}</div>
+              fontFamily:"'Akshar', sans-serif" }}>{v}</div>
             <div style={{ fontSize:10, color:"rgba(255,255,255,0.3)", marginTop:3 }}>{l}</div>
           </div>
         ))}
@@ -138,58 +128,47 @@ function APIWidget() {
 
 function Hero() {
   return (
-    <section style={{ minHeight:"92vh", display:"flex", alignItems:"center",
-      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.dark }}>
-      <div style={{ position:"absolute", inset:0,
-        backgroundImage:`linear-gradient(${C.accent}07 1px,transparent 1px),linear-gradient(90deg,${C.accent}07 1px,transparent 1px)`,
-        backgroundSize:"52px 52px", pointerEvents:"none" }} />
-      <div style={{ position:"absolute", top:-180, right:-80, width:700, height:700, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.accent}20 0%,transparent 68%)`, pointerEvents:"none" }} />
-      <div style={{ position:"absolute", bottom:-80, left:-60, width:480, height:480, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.p}28 0%,transparent 68%)`, pointerEvents:"none" }} />
+    <section style={{ minHeight:"100svh", display:"flex", alignItems:"center",
+      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.bg,
+      boxSizing:"border-box" }}>
 
       <div style={{ maxWidth:1100, margin:"0 auto", width:"100%", position:"relative", zIndex:1 }}>
         <div style={{ display:"grid", gridTemplateColumns:"1.05fr 1fr", gap:64, alignItems:"center" }}>
           <div>
             <div style={{ display:"flex", gap:10, marginBottom:20, animation:"fadeUp 0.6s ease both" }}>
-              <Badge c={C.accent}>🔗 Service</Badge>
-              <Badge c={C.muted}>PointClickCare Integration</Badge>
+              <Badge c={C.p}>🔗 Service</Badge>
+              <Badge c={C.p}>PointClickCare Integration</Badge>
             </div>
-            <H size="hero" color="#fff" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
+            <H size="hero" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
               HL7 Tells You Something Happened.{" "}
-              <span style={{ background:`linear-gradient(90deg,${C.accent},${C.p2})`,
-                WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
+              <span style={{ color:C.p }}>
                 The API Tells You Everything Else.
               </span>
             </H>
-            <P style={{ maxWidth:530, color:"rgba(255,255,255,0.72)", marginBottom:18,
+            <P style={{ maxWidth:530, marginBottom:18,
               fontSize:"1.06rem", animation:"fadeUp 0.6s 0.18s ease both" }}>
               Most LTC pharmacies rely on HL7 for ADT notifications — but HL7 only delivers a fraction of the census data your pharmacy needs. Demographics, payer information, effective dates, discharge reason, and transfer details are routinely absent.
             </P>
-            <P style={{ maxWidth:530, color:"rgba(255,255,255,0.5)",
+            <P style={{ maxWidth:530, color:C.p,
               fontSize:"0.97rem", marginBottom:32, animation:"fadeUp 0.6s 0.22s ease both" }}>
               We close that gap using the PointClickCare Marketplace API — pulling the complete, structured resident record directly from PCC, without requiring facility staff to give your pharmacy portal access or send anything manually.
             </P>
             <div style={{ display:"flex", gap:12, flexWrap:"wrap", animation:"fadeUp 0.6s 0.28s ease both" }}>
-              <PBtn href="/schedule-demo">See a Technical Demo →</PBtn>
-              <a href="#the-gap" style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
-                borderRadius:10, background:"transparent", color:"rgba(255,255,255,0.72)", fontWeight:600,
-                fontSize:14.5, border:"1.5px solid rgba(255,255,255,0.2)", textDecoration:"none" }}
-                onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.5)"}
-                onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.2)"}>
+              <Button variant="primary" size="lg" to="/schedule-demo">See a Technical Demo →</Button>
+              <Button variant="secondary" size="lg" onClick={() => document.getElementById("the-gap")?.scrollIntoView({ behavior:"smooth" })}>
                 See the Gap ↓
-              </a>
+              </Button>
             </div>
-            <div style={{ display:"flex", gap:0, marginTop:50,
-              borderTop:"1px solid rgba(255,255,255,0.1)", paddingTop:28,
+            <div style={{ display:"flex", gap:0, marginTop:52,
+              borderTop:`1px solid ${C.border}`, paddingTop:32,
               animation:"fadeUp 0.6s 0.4s ease both" }}>
               {[["PCC API","Direct data pull"],["No portal","Access required"],["Complete","ADT records"],["Real-time","Webhook + polling"]].map(([v,l],i,a) => (
                 <div key={i} style={{ flex:1, paddingRight:16,
-                  borderRight:i<a.length-1?"1px solid rgba(255,255,255,0.1)":"none",
+                  borderRight:i<a.length-1?`1px solid ${C.border}`:"none",
                   marginRight:i<a.length-1?16:0 }}>
-                  <div style={{ fontSize:"clamp(0.9rem,1.3vw,1.1rem)", fontWeight:900, color:C.accent,
-                    letterSpacing:"-0.01em", fontFamily:"'DM Sans',sans-serif" }}>{v}</div>
-                  <div style={{ color:"rgba(255,255,255,0.35)", fontSize:11.5, marginTop:2, fontWeight:500 }}>{l}</div>
+                  <div style={{ fontSize:"clamp(1.15rem,1.9vw,1.45rem)", fontWeight:900, color:C.head,
+                    letterSpacing:"-0.02em", fontFamily:"'Akshar', sans-serif" }}>{v}</div>
+                  <div style={{ color:C.body, fontSize:12.5, marginTop:6, fontWeight:600, lineHeight:1.35 }}>{l}</div>
                 </div>
               ))}
             </div>
@@ -223,7 +202,7 @@ function TheGap() {
                 border:`1px solid ${C.amber}40`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22 }}><Radio size={22} color={C.amber} /></div>
               <div>
                 <div style={{ fontSize:10.5, fontWeight:700, color:C.amber, textTransform:"uppercase", letterSpacing:"0.07em" }}>HL7 Integration Alone</div>
-                <div style={{ color:C.head, fontWeight:700, fontSize:17, fontFamily:"'DM Sans',sans-serif", marginTop:3 }}>Incomplete Picture</div>
+                <div style={{ color:C.head, fontWeight:700, fontSize:17, fontFamily:"'Akshar', sans-serif", marginTop:3 }}>Incomplete Picture</div>
               </div>
             </div>
             {[
@@ -254,7 +233,7 @@ function TheGap() {
                 border:`1px solid ${C.accent}40`, display:"flex", alignItems:"center", justifyContent:"center", fontSize:22 }}>🔌</div>
               <div>
                 <div style={{ fontSize:10.5, fontWeight:700, color:C.accent, textTransform:"uppercase", letterSpacing:"0.07em" }}>HL7 + PCC Marketplace API</div>
-                <div style={{ color:C.head, fontWeight:700, fontSize:17, fontFamily:"'DM Sans',sans-serif", marginTop:3 }}>Complete Picture</div>
+                <div style={{ color:C.head, fontWeight:700, fontSize:17, fontFamily:"'Akshar', sans-serif", marginTop:3 }}>Complete Picture</div>
               </div>
             </div>
             {[
@@ -283,7 +262,7 @@ function TheGap() {
           <div style={{ fontSize:28, flexShrink:0 }}>💡</div>
           <div>
             <div style={{ color:C.head, fontWeight:700, fontSize:16, marginBottom:8,
-              fontFamily:"'DM Sans',sans-serif" }}>
+              fontFamily:"'Akshar', sans-serif" }}>
               The real problem: pharmacies shouldn't need the facility to get their own patient data
             </div>
             <P style={{ marginBottom:0, fontSize:"0.95rem" }}>
@@ -298,22 +277,22 @@ function TheGap() {
 
 function HowItWorks() {
   const steps = [
-    { icon:<Radio size={20} />, color:C.amber, label:"Step 1", title:"HL7 Delivers the Trigger",
+    { icon:<Radio size={20} />, color:C.p, label:"Step 1", title:"HL7 Delivers the Trigger",
       desc:"An ADT event fires in PointClickCare — admission, discharge, or transfer. The HL7 message arrives at your pharmacy. You know something happened. You don't yet have everything you need to act on it." },
-    { icon:<Bell size={20} />, color:C.accent, label:"Step 2", title:"Webhook Confirms in Real Time",
+    { icon:<Bell size={20} />, color:C.p, label:"Step 2", title:"Webhook Confirms in Real Time",
       desc:"Simultaneously, our PCC Marketplace webhook subscription receives a real-time notification. This immediately triggers an API call — no polling delay, no manual check, no waiting for facility staff." },
     { icon:<Box size={20} />, color:C.p, label:"Step 3", title:"API Pulls the Complete Record",
       desc:"Using the PCC RESTful API, we retrieve the full structured resident record — demographics, payer, effective dates, room/bed, discharge reason, transfer destination, and active Rx list. Everything, automatically." },
-    { icon:<Zap size={20} />, color:C.green, label:"Step 4", title:"Pharmacy System Updated",
+    { icon:<Zap size={20} />, color:C.p, label:"Step 4", title:"Pharmacy System Updated",
       desc:"Complete data is written directly to your pharmacy management system. Patient setup, payer information, billing dates, and order actions are triggered and updated without your staff touching a keyboard." },
-    { icon:<BarChart3 size={20} />, color:C.violet, label:"Step 5", title:"Census Dashboard Stays Current",
+    { icon:<BarChart3 size={20} />, color:C.p, label:"Step 5", title:"Census Dashboard Stays Current",
       desc:"Your pharmacy census dashboard reflects every facility in real time — active residents, recent ADT events, reconciliation status, and any data exceptions that need human review. One screen, full picture." },
   ];
   return (
     <section style={{ padding:"88px 5vw", background:C.alt }}>
       <div style={{ maxWidth:900, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:52 }}>
-          <div style={{ marginBottom:14 }}><Badge c={C.accent}>⚡ How It Works</Badge></div>
+          <div style={{ marginBottom:14 }}><Badge c={C.p}>⚡ How It Works</Badge></div>
           <H size="h2" style={{ marginBottom:14 }}>From ADT Event to Complete Record — Automatically</H>
           <P style={{ maxWidth:460, margin:"0 auto" }}>How HL7, webhooks, and the PCC API work together to give your pharmacy the full census picture in real time.</P>
         </div>
@@ -336,7 +315,7 @@ function HowItWorks() {
                     <span style={{ fontSize:10.5, fontWeight:700, color:s.color,
                       textTransform:"uppercase", letterSpacing:"0.07em" }}>{s.label}</span>
                     <div style={{ color:C.head, fontWeight:700, fontSize:16,
-                      fontFamily:"'DM Sans',sans-serif" }}>{s.title}</div>
+                      fontFamily:"'Akshar', sans-serif" }}>{s.title}</div>
                   </div>
                   <div style={{ color:C.body, fontSize:14.5, lineHeight:1.68 }}>{s.desc}</div>
                 </div>
@@ -392,16 +371,16 @@ function WhatYouGet() {
 
 function DataShared() {
   const categories = [
-    { label:"ADT Events",           color:C.accent, fields:["Admission","Discharge","Transfer","Leave of absence","Room / bed change"] },
+    { label:"ADT Events",           color:C.p, fields:["Admission","Discharge","Transfer","Leave of absence","Room / bed change"] },
     { label:"Resident Demographics",color:C.p,      fields:["Full name & DOB","Gender","Contact information","Emergency contacts","Insurance IDs"] },
-    { label:"Payer & Billing",      color:C.green,  fields:["Primary insurance","Secondary insurance","Admission effective date","Discharge date & reason","Prior auth information"] },
-    { label:"Location & Census",    color:C.violet, fields:["Current facility","Unit & room / bed","Transfer destination","Census date & time","Admission source"] },
+    { label:"Payer & Billing",      color:C.p,  fields:["Primary insurance","Secondary insurance","Admission effective date","Discharge date & reason","Prior auth information"] },
+    { label:"Location & Census",    color:C.p, fields:["Current facility","Unit & room / bed","Transfer destination","Census date & time","Admission source"] },
   ];
   return (
     <section style={{ padding:"88px 5vw", background:C.alt }}>
       <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:52 }}>
-          <div style={{ marginBottom:14 }}><Badge c={C.accent}>📦 Data Coverage</Badge></div>
+          <div style={{ marginBottom:14 }}><Badge c={C.p}>📦 Data Coverage</Badge></div>
           <H size="h2" style={{ marginBottom:14 }}>What the PCC API Delivers to Your Pharmacy</H>
           <P style={{ maxWidth:480, margin:"0 auto" }}>
             Complete, structured resident data — delivered securely through the PCC Marketplace API the moment an ADT event occurs.
@@ -428,7 +407,7 @@ function DataShared() {
           <span style={{ fontSize:22, flexShrink:0 }}>🔒</span>
           <div>
             <div style={{ color:C.head, fontWeight:700, fontSize:15, marginBottom:4,
-              fontFamily:"'DM Sans',sans-serif" }}>HIPAA-Compliant Exchange via PCC Marketplace</div>
+              fontFamily:"'Akshar', sans-serif" }}>HIPAA-Compliant Exchange via PCC Marketplace</div>
             <P style={{ fontSize:"0.9rem", marginBottom:0 }}>
               All data flows through the PCC Marketplace API — authenticated via OAuth 2.0, encrypted in transit, with a full audit log of every API call. PHI is never retained outside your defined systems. BAA agreements are in place with both PCC and your pharmacy before any data is exchanged.
             </P>
@@ -458,7 +437,7 @@ function UseCases() {
     <section style={{ padding:"88px 5vw", background:C.surface }}>
       <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:52 }}>
-          <div style={{ marginBottom:14 }}><Badge c={C.violet}>📁 Results</Badge></div>
+          <div style={{ marginBottom:14 }}><Badge c={C.p}>📁 Results</Badge></div>
           <H size="h2" style={{ marginBottom:14 }}>What Happens When the Gap Closes</H>
           <P style={{ maxWidth:440, margin:"0 auto" }}>Outcomes from LTC pharmacies that replaced incomplete HL7 data with full PCC API coverage.</P>
         </div>
@@ -467,14 +446,12 @@ function UseCases() {
             <Card key={i} ac={C.accent} style={{ padding:"26px 24px" }}>
               <div style={{ fontSize:28, marginBottom:14 }}>{c.icon}</div>
               <H size="h3" style={{ marginBottom:8, fontSize:16 }}>{c.title}</H>
-              <div style={{ display:"flex", gap:7, marginBottom:12, alignItems:"flex-start" }}>
+              <div style={{ display:"grid", gridTemplateColumns:"auto 1fr", columnGap:10, rowGap:12, alignItems:"start" }}>
                 <span style={{ fontSize:11, padding:"2px 8px", borderRadius:4, background:`${C.accent}0C`,
-                  color:C.accent, fontWeight:700, flexShrink:0, marginTop:1 }}>WHO</span>
+                  color:C.accent, fontWeight:700, justifySelf:"start", marginTop:1 }}>WHO</span>
                 <span style={{ color:C.muted, fontSize:13, lineHeight:1.5 }}>{c.who}</span>
-              </div>
-              <div style={{ display:"flex", gap:7, alignItems:"flex-start" }}>
                 <span style={{ fontSize:11, padding:"2px 8px", borderRadius:4, background:`${C.green}0C`,
-                  color:C.green, fontWeight:700, flexShrink:0, marginTop:1 }}>RESULT</span>
+                  color:C.green, fontWeight:700, justifySelf:"start", marginTop:1 }}>RESULT</span>
                 <span style={{ color:C.body, fontSize:13, lineHeight:1.55 }}>{c.outcome}</span>
               </div>
             </Card>
@@ -532,9 +509,9 @@ function Related() {
   const items = [
     { icon:<Hospital size={20} />, color:C.p, tag:"Service", title:"LTC Pharmacy IT", href:"/services/ltc-pharmacy-it",
       desc:"Custom LTC pharmacy applications, telepharmacy platforms, and full-stack system integrations." },
-    { icon:<Settings size={20} />, color:C.accent, tag:"Service", title:"AI Automation", href:"/services/ai-automation",
+    { icon:<Settings size={20} />, color:C.p, tag:"Service", title:"AI Automation", href:"/services/ai-automation",
       desc:"Workflow automation including census-triggered order management and prior auth initiation." },
-    { icon:<LinkIcon size={20} />, color:C.violet, tag:"Product", title:"PointClickCare Data Feed", href:"/products/pointclickcare-feed",
+    { icon:<LinkIcon size={20} />, color:C.p, tag:"Product", title:"PointClickCare Data Feed", href:"/products/pointclickcare-feed",
       desc:"Our pre-built PCC data feed product — faster deployment for standard integration needs." },
   ];
   return (
@@ -549,7 +526,7 @@ function Related() {
                 <div style={{ fontSize:10.5, fontWeight:700, textTransform:"uppercase",
                   letterSpacing:"0.07em", color:it.color, marginBottom:6 }}>{it.tag}</div>
                 <div style={{ color:C.head, fontWeight:700, fontSize:16, marginBottom:8,
-                  fontFamily:"'DM Sans',sans-serif" }}>{it.title}</div>
+                  fontFamily:"'Akshar', sans-serif" }}>{it.title}</div>
                 <div style={{ color:C.body, fontSize:13.5, lineHeight:1.6 }}>{it.desc}</div>
                 <div style={{ color:it.color, fontSize:13, fontWeight:700, marginTop:14 }}>Learn more →</div>
               </a>
@@ -563,28 +540,21 @@ function Related() {
 
 function CTA() {
   return (
-    <section style={{ padding:"80px 5vw", background:C.dark, position:"relative", overflow:"hidden" }}>
-      <div style={{ position:"absolute", top:-140, right:-80, width:500, height:500, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.accent}45 0%,transparent 70%)`, pointerEvents:"none" }} />
-      <div style={{ position:"absolute", bottom:-70, left:0, width:360, height:360, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.p}44 0%,transparent 70%)`, pointerEvents:"none" }} />
+    <section style={{ padding:"80px 5vw", background:C.surface, borderTop:`1px solid ${C.border}`,
+      position:"relative" }}>
       <div style={{ maxWidth:680, margin:"0 auto", textAlign:"center", position:"relative", zIndex:1 }}>
-        <H size="h2" style={{ color:"#fff", marginBottom:14 }}>
+        <H size="h2" style={{ color:C.head, marginBottom:14, fontFamily:"'Akshar', sans-serif", fontWeight:700 }}>
           Ready to Get the Full ADT Picture Without Calling the Facility?
         </H>
-        <P style={{ color:"rgba(255,255,255,0.65)", marginBottom:32, fontSize:16 }}>
+        <P style={{ color:C.body, marginBottom:32, fontSize:16,
+          fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400 }}>
           Schedule a technical walkthrough. We'll show you exactly what your current HL7 feed is missing, how the PCC API fills those gaps, and what the integration looks like against your existing pharmacy system.
         </P>
         <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
-          <PBtn light href="/schedule-demo">Book a Technical Walkthrough →</PBtn>
-          <a href={`tel:${CONTACT_PHONE}`} style={{ display:"inline-flex", alignItems:"center", gap:8,
-            padding:"12px 24px", borderRadius:10, background:"transparent",
-            color:"rgba(255,255,255,0.78)", fontWeight:600, fontSize:14, textDecoration:"none",
-            border:"1.5px solid rgba(255,255,255,0.22)", fontFamily:"inherit" }}
-            onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.55)"}
-            onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.22)"}>
+          <Button variant="primary" size="md" to="/schedule-demo">Book a Technical Walkthrough →</Button>
+          <Button variant="secondary" size="md" href={`tel:${CONTACT_PHONE}`} style={{ fontSize:"0.9rem" }}>
             📞 {CONTACT_PHONE_DISPLAY}
-          </a>
+          </Button>
         </div>
       </div>
     </section>

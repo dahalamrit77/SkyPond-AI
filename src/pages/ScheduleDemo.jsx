@@ -1,5 +1,6 @@
 import C from '../tokens.js'
 import { useState, useEffect, useRef } from "react";
+import { Button } from '../components/ui/Button.jsx'
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
 import { MessageSquare, Search, Map, Mail, Phone } from 'lucide-react'
@@ -49,8 +50,8 @@ function WhatToExpect() {
   return (
     <div style={{ padding:"28px 28px 24px", borderRadius:16,
       background:C.surface, border:`1px solid ${C.border}` }}>
-      <div style={{ fontSize:10.5, fontWeight:700, color:C.muted, textTransform:"uppercase",
-        letterSpacing:"0.08em", marginBottom:20 }}>What happens on the call</div>
+      <div style={{ fontSize:10.5, fontWeight:500, color:C.muted, textTransform:"uppercase",
+        letterSpacing:"0.08em", marginBottom:20, fontFamily:"'Akshar', sans-serif" }}>What happens on the call</div>
       <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
         {steps.map((s, i) => (
           <div key={i} style={{ display:"flex", gap:12, alignItems:"flex-start" }}>
@@ -58,9 +59,10 @@ function WhatToExpect() {
               border:`1px solid ${C.border}`, display:"flex", alignItems:"center",
               justifyContent:"center", fontSize:15, flexShrink:0 }}>{s.icon}</div>
             <div>
-              <div style={{ color:C.head, fontWeight:700, fontSize:14, marginBottom:3,
-                fontFamily:"'DM Sans',sans-serif" }}>{s.title}</div>
-              <div style={{ color:C.body, fontSize:13, lineHeight:1.6, fontWeight:500 }}>{s.desc}</div>
+              <div style={{ color:C.head, fontWeight:500, fontSize:14, marginBottom:3,
+                fontFamily:"'Akshar', sans-serif" }}>{s.title}</div>
+              <div style={{ color:C.body, fontSize:13, lineHeight:1.6, fontWeight:400,
+                fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif" }}>{s.desc}</div>
             </div>
           </div>
         ))}
@@ -97,20 +99,21 @@ export default function ScheduleDemo() {
             background:`radial-gradient(circle,${C.accent}18 0%,transparent 68%)`, pointerEvents:"none" }} />
           <div style={{ position:"relative", zIndex:1, animation:"fadeUp 0.6s ease both" }}>
             <div style={{ display:"inline-flex", alignItems:"center", gap:6, padding:"5px 14px",
-              borderRadius:99, border:`1px solid ${C.accent}30`, background:`${C.accent}10`,
-              color:C.accent, fontSize:11, fontWeight:700, letterSpacing:"0.07em",
-              textTransform:"uppercase", marginBottom:16 }}>📅 Free Discovery Call</div>
-            <h1 style={{ fontSize:"clamp(1.9rem,4vw,2.9rem)", fontWeight:900, color:"#fff",
+              borderRadius:99, border:`1px solid ${C.p2}30`, background:`${C.p2}18`,
+              color:C.p2, fontSize:11, fontWeight:500, letterSpacing:"0.07em",
+              textTransform:"uppercase", marginBottom:16, fontFamily:"'Akshar', sans-serif" }}>📅 Free Discovery Call</div>
+            <h1 style={{ fontSize:"clamp(1.9rem,4vw,2.9rem)", fontWeight:700, color:"#fff",
               letterSpacing:"-0.03em", lineHeight:1.12, marginBottom:14,
-              fontFamily:"'DM Sans',sans-serif" }}>
+              fontFamily:"'Akshar', sans-serif" }}>
               Let's talk about your{" "}
               <span style={{ background:`linear-gradient(90deg,${C.accent},${C.p2})`,
                 WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
                 pharmacy's specific situation
               </span>
             </h1>
-            <p style={{ fontSize:"clamp(0.96rem,1.1vw,1.05rem)", color:"rgba(255,255,255,0.58)",
-              maxWidth:500, margin:"0 auto", lineHeight:1.72 }}>
+            <p style={{ fontSize:"clamp(0.96rem,1.1vw,1.05rem)", color:"rgb(255, 255, 255)",
+              maxWidth:500, margin:"0 auto", lineHeight:1.72,
+              fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400 }}>
               30 minutes. No pitch deck. We'll talk through your current setup, identify the gaps, and be straight with you about what we can and can't help with.
             </p>
           </div>
@@ -126,8 +129,11 @@ export default function ScheduleDemo() {
             "⚡ Same-week availability",
           ].map((label, i) => (
             <span key={i} style={{ display:"inline-flex", alignItems:"center", gap:6,
-              padding:"6px 14px", borderRadius:99, background:C.alt,
-              border:`1px solid ${C.border}`, fontSize:12.5, color:C.body, fontWeight:500 }}>
+              padding:"6px 14px", borderRadius:99,
+              background: i === 3 ? `${C.amber}14` : C.alt,
+              border:`1px solid ${i === 3 ? `${C.amber}40` : C.border}`,
+              fontSize:12.5, color:C.body, fontWeight:500,
+              fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif" }}>
               {label}
             </span>
           ))}
@@ -154,8 +160,9 @@ export default function ScheduleDemo() {
             {/* Alternate contact */}
             <div style={{ padding:"20px 22px", borderRadius:14,
               background:C.alt, border:`1px solid ${C.border}` }}>
-              <div style={{ fontSize:10.5, fontWeight:700, color:C.muted,
-                textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:12 }}>
+              <div style={{ fontSize:10.5, fontWeight:500, color:C.muted,
+                textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:12,
+                fontFamily:"'Akshar', sans-serif" }}>
                 Prefer another way?
               </div>
               <div style={{ display:"flex", flexDirection:"column", gap:9 }}>
@@ -163,17 +170,15 @@ export default function ScheduleDemo() {
                   { icon:<Mail size={15} />, title:"Email us", sub:CONTACT_EMAIL, href:`mailto:${CONTACT_EMAIL}` },
                   { icon:<Phone size={15} />, title:"Call directly", sub:CONTACT_PHONE_DISPLAY, href:`tel:${CONTACT_PHONE}` },
                 ].map((item, i) => (
-                  <a key={i} href={item.href} style={{ display:"flex", alignItems:"center", gap:10,
-                    padding:"10px 13px", borderRadius:9, background:C.surface,
-                    border:`1px solid ${C.border}`, textDecoration:"none", transition:"border-color 0.15s" }}
-                    onMouseEnter={e => e.currentTarget.style.borderColor = C.accent + "55"}
-                    onMouseLeave={e => e.currentTarget.style.borderColor = C.border}>
+                  <Button key={i} href={item.href} variant="secondary" size="sm"
+                    style={{ width:"100%", justifyContent:"flex-start", whiteSpace:"normal", textAlign:"left" }}>
                     <span style={{ fontSize:15 }}>{item.icon}</span>
                     <div>
-                      <div style={{ color:C.head, fontWeight:700, fontSize:13 }}>{item.title}</div>
-                      <div style={{ color:C.muted, fontSize:12 }}>{item.sub}</div>
+                      <div style={{ color:C.head, fontWeight:500, fontSize:13, fontFamily:"'Akshar', sans-serif" }}>{item.title}</div>
+                      <div style={{ color:C.muted, fontSize:12,
+                        fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:300 }}>{item.sub}</div>
                     </div>
-                  </a>
+                  </Button>
                 ))}
               </div>
             </div>

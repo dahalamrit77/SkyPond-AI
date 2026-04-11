@@ -1,10 +1,13 @@
 import C from '../tokens.js'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../config/constants.js'
 
 export function Footer() {
+  const [hoveredLink, setHoveredLink] = useState(null)
+
   return (
-    <footer style={{ background:C.surface, borderTop:`1px solid ${C.border}`, padding:"44px 5vw 22px" }}>
+    <footer style={{ background:C.p, borderTop:'1px solid rgba(255,255,255,0.12)', padding:"44px 5vw 22px" }}>
       <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ display:"grid", gridTemplateColumns:"2fr 1fr 1fr 1fr", gap:32, marginBottom:36 }}>
           <div>
@@ -14,16 +17,21 @@ export function Footer() {
                 alt="SkypondTech"
                 style={{ width:30, height:30, objectFit:"contain" }}
               />
-              <span style={{ color:C.head, fontWeight:800, fontSize:16, fontFamily:"'DM Sans',sans-serif" }}>
-                SkypondTech<span style={{ color:C.p }}>.ai</span>
+              <span style={{ color:'#FFFFFF', fontWeight:700, fontSize:16, fontFamily:"'Akshar', sans-serif" }}>
+                SkypondTech<span style={{ color:C.p2 }}>.ai</span>
               </span>
             </div>
-            <p style={{ color:C.body, fontSize:13.5, lineHeight:1.7, maxWidth:240, marginBottom:16 }}>
+            <p style={{ color:'rgba(255,255,255,0.65)', fontSize:13.5, lineHeight:1.7, maxWidth:240, marginBottom:16,
+              fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400 }}>
               The complete LTC pharmacy technology platform. DEA compliance, AI automation, analytics, PointClickCare, and more.
             </p>
-            <span style={{ display:"block", color:C.body, fontSize:12.5, marginBottom:4 }}>📍 Lafayette, CO</span>
-            {[["✉ " + CONTACT_EMAIL,`mailto:${CONTACT_EMAIL}`],["☎ " + CONTACT_PHONE_DISPLAY,`tel:${CONTACT_PHONE}`]].map(([t,h]) => (
-              <a key={t} href={h} style={{ display:"block", color:C.body, fontSize:12.5, textDecoration:"none", marginBottom:4 }}>{t}</a>
+            <span style={{ display:"block", color:'rgba(255,255,255,0.55)', fontSize:12.5, marginBottom:4,
+              fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:300 }}>📍 Lafayette, CO</span>
+            {[["✉ " + CONTACT_EMAIL,`mailto:${CONTACT_EMAIL}`,'email'],["☎ " + CONTACT_PHONE_DISPLAY,`tel:${CONTACT_PHONE}`,'phone']].map(([t,h,id]) => (
+              <a key={id} href={h} style={{ display:"block", color: hoveredLink === id ? C.p2 : 'rgba(255,255,255,0.65)', fontSize:12.5, textDecoration:"none", marginBottom:4,
+                fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:300, transition:"color 0.15s" }}
+                onMouseEnter={() => setHoveredLink(id)}
+                onMouseLeave={() => setHoveredLink(null)}>{t}</a>
             ))}
           </div>
           {[
@@ -53,38 +61,43 @@ export function Footer() {
             ]]
           ].map(([title, links]) => (
             <div key={title}>
-              <div style={{ color:C.head, fontWeight:800, fontSize:11.5, letterSpacing:"0.06em",
-                textTransform:"uppercase", marginBottom:13 }}>{title}</div>
+              <div style={{ color:'#FFFFFF', fontWeight:600, fontSize:11.5, letterSpacing:"0.06em",
+                textTransform:"uppercase", marginBottom:13, fontFamily:"'Akshar', sans-serif" }}>{title}</div>
               {links.map(([lbl, href]) => {
                 const isInternal = href.startsWith("/");
-                const commonStyle = { display:"block", color:C.body, fontSize:13.5,
-                  textDecoration:"none", marginBottom:8, transition:"color 0.15s" };
+                const linkId = `${title}-${lbl}`;
+                const linkColor = hoveredLink === linkId ? C.p2 : 'rgba(255,255,255,0.72)';
+                const commonStyle = { display:"block", color:linkColor, fontSize:13.5,
+                  textDecoration:"none", marginBottom:8, transition:"color 0.15s",
+                  fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400 };
 
                 if (isInternal) {
                   return (
                     <Link key={lbl} to={href} style={commonStyle}
-                      onMouseEnter={e => e.currentTarget.style.color=C.p}
-                      onMouseLeave={e => e.currentTarget.style.color=C.body}>{lbl}</Link>
+                      onMouseEnter={() => setHoveredLink(linkId)}
+                      onMouseLeave={() => setHoveredLink(null)}>{lbl}</Link>
                   );
                 }
 
                 return (
                   <a key={lbl} href={href} target="_blank" rel="noopener noreferrer" style={commonStyle}
-                    onMouseEnter={e => e.currentTarget.style.color=C.p}
-                    onMouseLeave={e => e.currentTarget.style.color=C.body}>{lbl}</a>
+                    onMouseEnter={() => setHoveredLink(linkId)}
+                    onMouseLeave={() => setHoveredLink(null)}>{lbl}</a>
                 );
               })}
             </div>
           ))}
         </div>
-        <div style={{ borderTop:`1px solid ${C.border}`, paddingTop:18, display:"flex",
+        <div style={{ borderTop:'1px solid rgba(255,255,255,0.12)', paddingTop:18, display:"flex",
           justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:10 }}>
-          <span style={{ color:C.body, fontSize:12.5 }}>© {new Date().getFullYear()} Skypond Tech Pvt. Ltd. · All Rights Reserved</span>
+          <span style={{ color:'rgba(255,255,255,0.45)', fontSize:'0.8rem',
+            fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:300 }}>© {new Date().getFullYear()} Skypond Tech Pvt. Ltd. · All Rights Reserved</span>
           <div style={{ display:"flex", gap:18 }}>
-            {[["LinkedIn","https://www.linkedin.com/company/skypond-tech-llc/"],["Instagram","https://www.instagram.com/skypondtech/"]].map(([l,h]) => (
-              <a key={l} href={h} target="_blank" rel="noopener noreferrer" style={{ color:C.body, fontSize:12.5, textDecoration:"none" }}
-                onMouseEnter={e => e.currentTarget.style.color=C.p}
-                onMouseLeave={e => e.currentTarget.style.color=C.body}>{l}</a>
+            {[["LinkedIn","https://www.linkedin.com/company/skypond-tech-llc/","li"],["Instagram","https://www.instagram.com/skypondtech/","ig"]].map(([l,h,id]) => (
+              <a key={l} href={h} target="_blank" rel="noopener noreferrer" style={{ color: hoveredLink === id ? C.p2 : 'rgba(255,255,255,0.65)', fontSize:12.5, textDecoration:"none",
+                fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:300, transition:"color 0.15s" }}
+                onMouseEnter={() => setHoveredLink(id)}
+                onMouseLeave={() => setHoveredLink(null)}>{l}</a>
             ))}
           </div>
         </div>

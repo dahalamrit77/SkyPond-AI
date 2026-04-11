@@ -1,6 +1,7 @@
 import C from '../tokens.js'
 import { useState, useEffect, useRef } from 'react'
 import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom'
+import { Button } from './ui/Button.jsx'
 import { ChevronDown, X, Menu, Hospital, Settings, BarChart3, Link, Laptop, Cloud, Search, ClipboardList, Pill, TrendingUp, FileText } from 'lucide-react'
 
 const SERVICES_NAV = [
@@ -21,39 +22,7 @@ const PRODUCTS_NAV = [
   { icon:<FileText size={18} />, label:"Document Automation",          slug:"/products/document-automation",     desc:"Prior auth, templates & archival" },
 ];
 
-function PBtn({ children, onClick, href, light, to, style: styleProp }) {
-  const base = { display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
-    borderRadius:10, fontWeight:700, fontSize:14.5, border:"none", cursor:"pointer",
-    textDecoration:"none", fontFamily:"inherit", transition:"all 0.15s" };
-  const v = {
-    ...(light
-      ? {...base, background:"#fff", color:C.p, boxShadow:"0 2px 14px rgba(0,0,0,0.13)"}
-      : {...base, background:`linear-gradient(135deg,${C.p},${C.pd})`, color:"#fff", boxShadow:`0 4px 20px ${C.p}45`}),
-    ...(styleProp || {}),
-  };
-
-  const onMouseEnter = e=>{ e.currentTarget.style.transform="translateY(-2px)";
-    e.currentTarget.style.boxShadow = light ? "0 8px 24px rgba(0,0,0,0.18)" : `0 8px 28px ${C.p}60`; }
-  const onMouseLeave = e=>{ e.currentTarget.style.transform="none";
-    e.currentTarget.style.boxShadow = light ? "0 2px 14px rgba(0,0,0,0.13)" : `0 4px 20px ${C.p}45`; }
-
-  if (to) {
-    return (
-      <RouterLink to={to} onClick={onClick} style={v} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-        {children}
-      </RouterLink>
-    );
-  }
-
-  const Tag = href ? "a" : "button";
-  return (
-    <Tag href={href} onClick={onClick} style={v} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-      {children}
-    </Tag>
-  );
-}
-
-function NavDropdown({ label, items, onAnchor, active }) {
+function NavDropdown({ label, items, onAnchor, active, navDark }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -63,20 +32,24 @@ function NavDropdown({ label, items, onAnchor, active }) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const isActive = open || active;
-  const btnColor = isActive ? C.p : C.body;
-  const btnWeight = isActive ? 700 : 600;
+  const btnColor = active ? (navDark ? '#FFFFFF' : C.p) : (navDark ? 'rgba(255,255,255,0.78)' : C.body);
+  const btnWeight = active ? 600 : 500;
+  const chevronColor = navDark ? 'rgba(255,255,255,0.7)' : C.muted;
 
   return (
     <div ref={ref} style={{ position:"relative" }}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}>
       <button
-        style={{ display:"flex", alignItems:"center", gap:5, background:"none", border:"none",
+        type="button"
+        style={{ display:"flex", alignItems:"center", gap:5, background:"none",
+          borderLeft:"none", borderRight:"none", borderTop:"none",
+          borderBottom: active ? `2px solid ${C.p2}` : '2px solid transparent',
+          paddingBottom:4, boxSizing:"border-box",
           color:btnColor, fontSize:13.5, fontWeight:btnWeight, cursor:"pointer",
-          fontFamily:"inherit", transition:"color 0.15s", padding:"4px 0" }}>
+          fontFamily:"'Akshar', sans-serif", transition:"color 0.15s, border-color 0.15s" }}>
         {label}
-        <ChevronDown size={12} style={{ transition:"transform 0.2s", transform: open ? "rotate(180deg)" : "none" }} />
+        <ChevronDown size={12} color={chevronColor} style={{ transition:"transform 0.2s", transform: open ? "rotate(180deg)" : "none" }} />
       </button>
 
       {open && (
@@ -86,7 +59,6 @@ function NavDropdown({ label, items, onAnchor, active }) {
           boxShadow:`0 20px 60px rgba(59,63,176,0.14)`,
           padding:"10px 10px", zIndex:200,
           animation:"dropIn 0.18s ease both" }}>
-          {/* Arrow */}
           <div style={{ position:"absolute", top:-7, left:"50%", transform:"translateX(-50%)",
             width:13, height:13, background:C.surface, border:`1.5px solid ${C.border}`,
             borderRight:"none", borderBottom:"none", rotate:"45deg" }} />
@@ -103,9 +75,10 @@ function NavDropdown({ label, items, onAnchor, active }) {
                   background:C.alt, display:"flex", alignItems:"center",
                   justifyContent:"center" }}>{item.icon}</span>
                 <div>
-                  <div style={{ color:C.head, fontWeight:700, fontSize:13.5,
-                    fontFamily:"'DM Sans',sans-serif" }}>{item.label}</div>
-                  <div style={{ color:C.body, fontSize:11.5, marginTop:2 }}>{item.desc}</div>
+                  <div style={{ color:C.head, fontWeight:500, fontSize:13.5,
+                    fontFamily:"'Akshar', sans-serif" }}>{item.label}</div>
+                  <div style={{ color:C.body, fontSize:11.5, marginTop:2,
+                    fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:300 }}>{item.desc}</div>
                 </div>
               </RouterLink>
             ))}
@@ -113,7 +86,8 @@ function NavDropdown({ label, items, onAnchor, active }) {
           <div style={{ borderTop:`1px solid ${C.border}`, marginTop:8, paddingTop:8,
             padding:"10px 12px 6px" }}>
             <RouterLink to={label === "Services" ? "/services" : "/products"}
-              style={{ fontSize:12.5, fontWeight:700, color:C.p, textDecoration:"none",
+              style={{ fontSize:12.5, fontWeight:500, color:C.p, textDecoration:"none",
+                fontFamily:"'Akshar', sans-serif",
                 display:"flex", alignItems:"center", gap:5 }}
               onMouseEnter={e => e.currentTarget.style.opacity="0.75"}
               onMouseLeave={e => e.currentTarget.style.opacity="1"}
@@ -127,11 +101,12 @@ function NavDropdown({ label, items, onAnchor, active }) {
   );
 }
 
-function HamburgerIcon({ open }) {
+function HamburgerIcon({ open, navDark }) {
+  const stroke = navDark ? '#FFFFFF' : C.p;
   if (open) {
-    return <X size={20} color={C.head} aria-hidden />;
+    return <X size={20} color={stroke} aria-hidden />;
   }
-  return <Menu size={22} color={C.head} aria-hidden />;
+  return <Menu size={22} color={stroke} aria-hidden />;
 }
 
 export function Navbar() {
@@ -143,19 +118,11 @@ export function Navbar() {
   const { pathname } = useLocation();
 
   const handleAbout = () => {
-    if (pathname === "/") {
-      document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
-    } else {
-      navigate("/about");
-    }
+    navigate("/about");
   };
 
   const handleContact = () => {
-    if (pathname === "/") {
-      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-    } else {
-      navigate("/schedule-demo");
-    }
+    navigate("/schedule-demo");
   };
 
   useEffect(() => {
@@ -188,16 +155,19 @@ export function Navbar() {
   }, [isMobile]);
 
   const closeMobile = () => setMobileOpen(false);
-  const useSolidNav = sc || pathname !== "/" || mobileOpen;
+  const navDark = sc || pathname !== "/";
 
-  // screen blend reads well on dark hero (home, transparent nav); it washes out on light nav backgrounds
-  const logoImgStyle = {
-    width: 36,
-    height: 36,
+  const logoWordmarkStyle = {
+    height: 34,
+    width: "auto",
+    maxWidth: 220,
     objectFit: "contain",
-    ...(useSolidNav
-      ? { mixBlendMode: "normal", filter: "none" }
-      : { mixBlendMode: "screen", filter: "brightness(1.1)" }),
+    objectPosition: "left center",
+    display: "block",
+    backgroundColor: "transparent",
+    border: "none",
+    verticalAlign: "middle",
+    ...(navDark ? { mixBlendMode: "multiply" } : { mixBlendMode: "normal" }),
   };
 
   const activeServices = pathname.startsWith("/services");
@@ -206,15 +176,22 @@ export function Navbar() {
   const activeAbout = pathname === "/about";
   const activeContact = pathname === "/schedule-demo";
 
-  const mobileLinkStyle = {
-    display:"block", padding:"14px 5vw", color:C.head, fontSize:15, fontWeight:600,
-    textDecoration:"none", borderBottom:`1px solid ${C.border}`, fontFamily:"'DM Sans',sans-serif",
-  };
-
-  const mobileSubLinkStyle = {
-    display:"flex", alignItems:"flex-start", gap:12, padding:"12px 5vw 12px calc(5vw + 12px)",
-    textDecoration:"none", borderBottom:`1px solid ${C.alt}`,
-  };
+  const deskLinkBase = (isActive) => ({
+    fontSize:13.5,
+    fontFamily:"'Akshar', sans-serif",
+    textDecoration:"none",
+    transition:"color 0.15s, border-color 0.15s",
+    borderBottom: isActive ? `2px solid ${C.p2}` : '2px solid transparent',
+    paddingBottom:4,
+    boxSizing:"border-box",
+    color: isActive ? (navDark ? '#FFFFFF' : C.p) : (navDark ? 'rgba(255,255,255,0.78)' : C.body),
+    fontWeight: isActive ? 600 : 400,
+    cursor: "pointer",
+    background: "none",
+    borderLeft: "none",
+    borderRight: "none",
+    borderTop: "none",
+  });
 
   return (
     <>
@@ -226,45 +203,36 @@ export function Navbar() {
       `}</style>
       <nav style={{ position:"fixed", top:0, left:0, right:0, zIndex:100, height:64, padding:"0 5vw",
         display:"flex", alignItems:"center", justifyContent:"space-between",
-        background: useSolidNav ? "rgba(246,247,253,0.95)" : "transparent",
-        backdropFilter: useSolidNav ? "blur(18px)" : "none",
-        borderBottom: useSolidNav ? `1px solid ${C.border}` : "none", transition:"all 0.3s" }}>
-        <RouterLink to="/" style={{ display:"flex", alignItems:"center", gap:10, textDecoration:"none" }}>
-          <img src="/logosymbol.png" alt="SkypondTech" style={logoImgStyle} />
-          <span style={{ color:C.head, fontWeight:800, fontSize:17, letterSpacing:"-0.02em",
-            fontFamily:"'DM Sans',sans-serif" }}>
-            SkypondTech<span style={{ color:C.p }}>.ai</span>
-          </span>
+        background: navDark ? C.p : 'transparent',
+        backdropFilter: 'none',
+        borderBottom: navDark ? '1px solid rgba(255,255,255,0.12)' : '1px solid transparent',
+        transition:"all 0.3s" }}>
+        <RouterLink to="/" style={{ display:"flex", alignItems:"center", textDecoration:"none",
+          background:"transparent", lineHeight:0 }}
+          aria-label="SkypondTech home">
+          <img src="/navbar-skypond-tech-logo.png" alt="Skypond Tech" style={logoWordmarkStyle} />
         </RouterLink>
 
         {!isMobile && (
           <div style={{ display:"flex", alignItems:"center", gap:26 }}>
-            <NavDropdown label="Services" items={SERVICES_NAV} active={activeServices} />
-            <NavDropdown label="Products" items={PRODUCTS_NAV} active={activeProducts} />
-            <RouterLink to="/industries" style={{
-              color: activeIndustries ? C.p : C.body,
-              fontSize:13.5,
-              fontWeight: activeIndustries ? 700 : 600,
-              textDecoration:"none", transition:"color 0.15s" }}
-              onMouseEnter={e => { if (!activeIndustries) e.currentTarget.style.color=C.p; }}
-              onMouseLeave={e => { if (!activeIndustries) e.currentTarget.style.color=C.body; }}>Industries</RouterLink>
+            <NavDropdown label="Services" items={SERVICES_NAV} active={activeServices} navDark={navDark} />
+            <NavDropdown label="Products" items={PRODUCTS_NAV} active={activeProducts} navDark={navDark} />
+            <RouterLink to="/industries" style={deskLinkBase(activeIndustries)}
+              onMouseEnter={e => { if (!activeIndustries) e.currentTarget.style.color = navDark ? 'rgba(255,255,255,0.95)' : C.p; }}
+              onMouseLeave={e => { if (!activeIndustries) e.currentTarget.style.color = navDark ? 'rgba(255,255,255,0.78)' : C.body; }}>Industries</RouterLink>
             <button type="button" onClick={handleAbout}
-              style={{ background:"none", border:"none",
-                color: activeAbout ? C.p : C.body, fontSize:13.5, fontWeight: activeAbout ? 700 : 600,
-                cursor:"pointer", fontFamily:"inherit", transition:"color 0.15s" }}
-              onMouseEnter={e => { if (!activeAbout) e.currentTarget.style.color=C.p; }}
-              onMouseLeave={e => { if (!activeAbout) e.currentTarget.style.color=C.body; }}>About</button>
+              style={deskLinkBase(activeAbout)}
+              onMouseEnter={e => { if (!activeAbout) e.currentTarget.style.color = navDark ? 'rgba(255,255,255,0.95)' : C.p; }}
+              onMouseLeave={e => { if (!activeAbout) e.currentTarget.style.color = navDark ? 'rgba(255,255,255,0.78)' : C.body; }}>About</button>
             <button type="button" onClick={handleContact}
-              style={{ background:"none", border:"none",
-                color: activeContact ? C.p : C.body, fontSize:13.5, fontWeight: activeContact ? 700 : 600,
-                cursor:"pointer", fontFamily:"inherit", transition:"color 0.15s" }}
-              onMouseEnter={e => { if (!activeContact) e.currentTarget.style.color=C.p; }}
-              onMouseLeave={e => { if (!activeContact) e.currentTarget.style.color=C.body; }}>Contact</button>
+              style={deskLinkBase(activeContact)}
+              onMouseEnter={e => { if (!activeContact) e.currentTarget.style.color = navDark ? 'rgba(255,255,255,0.95)' : C.p; }}
+              onMouseLeave={e => { if (!activeContact) e.currentTarget.style.color = navDark ? 'rgba(255,255,255,0.78)' : C.body; }}>Contact</button>
           </div>
         )}
 
         {!isMobile ? (
-          <PBtn to="/schedule-demo">Schedule a Demo →</PBtn>
+          <Button variant={navDark ? 'primaryDark' : 'primary'} size="sm" to="/schedule-demo">Schedule a Demo →</Button>
         ) : (
           <button
             type="button"
@@ -276,7 +244,7 @@ export function Navbar() {
               background:"transparent", border:"none", cursor:"pointer", padding:0, flexShrink:0,
             }}
           >
-            <HamburgerIcon open={mobileOpen} />
+            <HamburgerIcon open={mobileOpen} navDark={navDark} />
           </button>
         )}
       </nav>
@@ -285,7 +253,7 @@ export function Navbar() {
         <div
           style={{
             position:"fixed", top:64, left:0, right:0, bottom:0, zIndex:99,
-            background:C.surface, overflowY:"auto",
+            background:C.p, overflowY:"auto",
             animation:"navMobilePanelIn 0.22s ease forwards",
           }}
         >
@@ -295,35 +263,49 @@ export function Navbar() {
               onClick={() => setMobileExpanded(mobileExpanded === "services" ? null : "services")}
               style={{
                 width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between",
-                padding:"16px 5vw", background:"none", border:"none", borderBottom:`1px solid ${C.border}`,
+                padding:"16px 5vw", background:"none", border:"none", borderBottom:'1px solid rgba(255,255,255,0.12)',
                 cursor:"pointer", fontFamily:"inherit", textAlign:"left",
               }}
             >
               <span style={{
-                color: activeServices ? C.p : C.body,
+                color: activeServices ? C.p2 : '#FFFFFF',
                 fontSize:15,
-                fontWeight: activeServices ? 700 : 600,
+                fontFamily:"'Akshar', sans-serif",
+                fontWeight: activeServices ? 600 : 500,
               }}>Services</span>
-              <ChevronDown size={14} color={C.muted} style={{
+              <ChevronDown size={14} color="rgba(255,255,255,0.7)" style={{
                 transform: mobileExpanded === "services" ? "rotate(180deg)" : "none",
                 transition:"transform 0.2s",
               }} />
             </button>
             {mobileExpanded === "services" && (
-              <div style={{ background:C.alt }}>
-                {SERVICES_NAV.map((item, i) => (
-                  <RouterLink key={i} to={item.slug} onClick={closeMobile} style={mobileSubLinkStyle}>
+              <div style={{ background:'rgba(255,255,255,0.06)' }}>
+                {SERVICES_NAV.map((item, i) => {
+                  const isAct = pathname === item.slug;
+                  return (
+                  <RouterLink key={i} to={item.slug} onClick={closeMobile} style={{
+                    display:"flex", alignItems:"flex-start", gap:12, padding:"12px 5vw 12px calc(5vw + 12px)",
+                    textDecoration:"none", borderBottom:'1px solid rgba(255,255,255,0.08)',
+                    color: isAct ? C.p2 : 'rgba(255,255,255,0.82)',
+                    fontWeight: isAct ? 600 : 400,
+                    borderLeft: isAct ? `3px solid ${C.p2}` : '3px solid transparent',
+                    paddingLeft: isAct ? 13 : 16,
+                    boxSizing:"border-box",
+                  }}>
                     <span style={{ fontSize:20, width:40, height:40, borderRadius:10, flexShrink:0,
-                      background:C.surface, display:"flex", alignItems:"center", justifyContent:"center",
-                      border:`1px solid ${C.border}` }}>{item.icon}</span>
+                      background:'rgba(255,255,255,0.1)', display:"flex", alignItems:"center", justifyContent:"center",
+                      border:'1px solid rgba(255,255,255,0.15)' }}>{item.icon}</span>
                     <div>
-                      <div style={{ color:C.head, fontWeight:700, fontSize:14 }}>{item.label}</div>
-                      <div style={{ color:C.muted, fontSize:12, marginTop:2 }}>{item.desc}</div>
+                      <div style={{ color: 'inherit', fontWeight:500, fontSize:14, fontFamily:"'Akshar', sans-serif" }}>{item.label}</div>
+                      <div style={{ color:'rgba(255,255,255,0.65)', fontSize:12, marginTop:2,
+                        fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:300 }}>{item.desc}</div>
                     </div>
                   </RouterLink>
-                ))}
+                  );
+                })}
                 <RouterLink to="/services" onClick={closeMobile}
-                  style={{ ...mobileLinkStyle, background:C.surface, color:C.p, fontWeight:700, fontSize:13.5 }}>
+                  style={{ display:"block", padding:"14px 5vw", color:'rgba(255,255,255,0.82)', fontSize:13.5, fontWeight:500, fontFamily:"'Akshar', sans-serif",
+                    textDecoration:"none", borderBottom:'1px solid rgba(255,255,255,0.12)', background:'rgba(255,255,255,0.04)' }}>
                   View all Services →
                 </RouterLink>
               </div>
@@ -334,35 +316,49 @@ export function Navbar() {
               onClick={() => setMobileExpanded(mobileExpanded === "products" ? null : "products")}
               style={{
                 width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between",
-                padding:"16px 5vw", background:"none", border:"none", borderBottom:`1px solid ${C.border}`,
+                padding:"16px 5vw", background:"none", border:"none", borderBottom:'1px solid rgba(255,255,255,0.12)',
                 cursor:"pointer", fontFamily:"inherit", textAlign:"left",
               }}
             >
               <span style={{
-                color: activeProducts ? C.p : C.body,
+                color: activeProducts ? C.p2 : '#FFFFFF',
                 fontSize:15,
-                fontWeight: activeProducts ? 700 : 600,
+                fontFamily:"'Akshar', sans-serif",
+                fontWeight: activeProducts ? 600 : 500,
               }}>Products</span>
-              <ChevronDown size={14} color={C.muted} style={{
+              <ChevronDown size={14} color="rgba(255,255,255,0.7)" style={{
                 transform: mobileExpanded === "products" ? "rotate(180deg)" : "none",
                 transition:"transform 0.2s",
               }} />
             </button>
             {mobileExpanded === "products" && (
-              <div style={{ background:C.alt }}>
-                {PRODUCTS_NAV.map((item, i) => (
-                  <RouterLink key={i} to={item.slug} onClick={closeMobile} style={mobileSubLinkStyle}>
+              <div style={{ background:'rgba(255,255,255,0.06)' }}>
+                {PRODUCTS_NAV.map((item, i) => {
+                  const isAct = pathname === item.slug;
+                  return (
+                  <RouterLink key={i} to={item.slug} onClick={closeMobile} style={{
+                    display:"flex", alignItems:"flex-start", gap:12, padding:"12px 5vw 12px calc(5vw + 12px)",
+                    textDecoration:"none", borderBottom:'1px solid rgba(255,255,255,0.08)',
+                    color: isAct ? C.p2 : 'rgba(255,255,255,0.82)',
+                    fontWeight: isAct ? 600 : 400,
+                    borderLeft: isAct ? `3px solid ${C.p2}` : '3px solid transparent',
+                    paddingLeft: isAct ? 13 : 16,
+                    boxSizing:"border-box",
+                  }}>
                     <span style={{ fontSize:20, width:40, height:40, borderRadius:10, flexShrink:0,
-                      background:C.surface, display:"flex", alignItems:"center", justifyContent:"center",
-                      border:`1px solid ${C.border}` }}>{item.icon}</span>
+                      background:'rgba(255,255,255,0.1)', display:"flex", alignItems:"center", justifyContent:"center",
+                      border:'1px solid rgba(255,255,255,0.15)' }}>{item.icon}</span>
                     <div>
-                      <div style={{ color:C.head, fontWeight:700, fontSize:14 }}>{item.label}</div>
-                      <div style={{ color:C.muted, fontSize:12, marginTop:2 }}>{item.desc}</div>
+                      <div style={{ color: 'inherit', fontWeight:500, fontSize:14, fontFamily:"'Akshar', sans-serif" }}>{item.label}</div>
+                      <div style={{ color:'rgba(255,255,255,0.65)', fontSize:12, marginTop:2,
+                        fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:300 }}>{item.desc}</div>
                     </div>
                   </RouterLink>
-                ))}
+                  );
+                })}
                 <RouterLink to="/products" onClick={closeMobile}
-                  style={{ ...mobileLinkStyle, background:C.surface, color:C.p, fontWeight:700, fontSize:13.5 }}>
+                  style={{ display:"block", padding:"14px 5vw", color:'rgba(255,255,255,0.82)', fontSize:13.5, fontWeight:500, fontFamily:"'Akshar', sans-serif",
+                    textDecoration:"none", borderBottom:'1px solid rgba(255,255,255,0.12)', background:'rgba(255,255,255,0.04)' }}>
                   View all Products →
                 </RouterLink>
               </div>
@@ -372,9 +368,13 @@ export function Navbar() {
               to="/industries"
               onClick={closeMobile}
               style={{
-                ...mobileLinkStyle,
-                color: activeIndustries ? C.p : C.body,
-                fontWeight: activeIndustries ? 700 : 600,
+                display:"block", padding:"14px 5vw", fontSize:15, fontFamily:"'Akshar', sans-serif",
+                textDecoration:"none", borderBottom:'1px solid rgba(255,255,255,0.12)',
+                color: activeIndustries ? C.p2 : 'rgba(255,255,255,0.82)',
+                fontWeight: activeIndustries ? 600 : 400,
+                borderLeft: activeIndustries ? `3px solid ${C.p2}` : '3px solid transparent',
+                paddingLeft: activeIndustries ? 13 : 16,
+                boxSizing:"border-box",
               }}
             >
               Industries
@@ -383,14 +383,14 @@ export function Navbar() {
               type="button"
               onClick={() => { handleAbout(); closeMobile(); }}
               style={{
-                ...mobileLinkStyle,
-                width:"100%",
-                cursor:"pointer",
-                background:"none",
+                display:"block", width:"100%", padding:"14px 5vw", fontSize:15, fontFamily:"'Akshar', sans-serif",
+                cursor:"pointer", background:"none", border:"none", borderBottom:'1px solid rgba(255,255,255,0.12)',
                 textAlign:"left",
-                fontFamily:"inherit",
-                color: activeAbout ? C.p : C.body,
-                fontWeight: activeAbout ? 700 : 600,
+                color: activeAbout ? C.p2 : 'rgba(255,255,255,0.82)',
+                fontWeight: activeAbout ? 600 : 400,
+                borderLeft: activeAbout ? `3px solid ${C.p2}` : '3px solid transparent',
+                paddingLeft: activeAbout ? 13 : 16,
+                boxSizing:"border-box",
               }}
             >
               About
@@ -399,27 +399,29 @@ export function Navbar() {
               type="button"
               onClick={() => { handleContact(); closeMobile(); }}
               style={{
-                ...mobileLinkStyle,
-                width:"100%",
-                cursor:"pointer",
-                background:"none",
+                display:"block", width:"100%", padding:"14px 5vw", fontSize:15, fontFamily:"'Akshar', sans-serif",
+                cursor:"pointer", background:"none", border:"none", borderBottom:'1px solid rgba(255,255,255,0.12)',
                 textAlign:"left",
-                fontFamily:"inherit",
-                color: activeContact ? C.p : C.body,
-                fontWeight: activeContact ? 700 : 600,
+                color: activeContact ? C.p2 : 'rgba(255,255,255,0.82)',
+                fontWeight: activeContact ? 600 : 400,
+                borderLeft: activeContact ? `3px solid ${C.p2}` : '3px solid transparent',
+                paddingLeft: activeContact ? 13 : 16,
+                boxSizing:"border-box",
               }}
             >
               Contact
             </button>
 
             <div style={{ padding:"24px 5vw 8px" }}>
-              <PBtn
+              <Button
+                variant="primaryDark"
+                size="md"
                 to="/schedule-demo"
                 onClick={closeMobile}
                 style={{ width:"100%", justifyContent:"center", boxSizing:"border-box" }}
               >
                 Schedule a Demo →
-              </PBtn>
+              </Button>
             </div>
           </div>
         </div>

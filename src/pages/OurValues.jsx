@@ -2,7 +2,7 @@ import { useState } from 'react'
 import C from '../tokens.js'
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
-import { Link } from 'react-router-dom'
+import { Button } from '../components/ui/Button.jsx'
 import { TrendingUp, Users, Lightbulb, Star, Target, Link as LinkIcon } from 'lucide-react'
 
 function Hero() {
@@ -27,7 +27,8 @@ function Hero() {
               color: C.p2,
               border: `1px solid ${C.p2}30`,
               fontSize: '0.75rem',
-              fontWeight: 600,
+              fontWeight: 500,
+              fontFamily: "'Akshar', sans-serif",
             }}
           >
             🤝 Our Values
@@ -37,11 +38,11 @@ function Hero() {
         <h1
           style={{
             fontSize: 'clamp(2.2rem, 4vw, 3.4rem)',
-            fontWeight: 900,
+            fontWeight: 700,
             color: '#fff',
             lineHeight: 1.1,
             letterSpacing: '-0.03em',
-            fontFamily: "'DM Sans',system-ui,sans-serif",
+            fontFamily: "'Akshar', sans-serif",
             marginBottom: 18,
             animation: 'fadeUp 0.7s 0.1s ease both',
           }}
@@ -57,6 +58,8 @@ function Hero() {
             margin: '0 auto',
             lineHeight: 1.7,
             animation: 'fadeUp 0.7s 0.2s ease both',
+            fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif",
+            fontWeight: 400,
           }}
         >
           We are more than a technology company. Our values define how we work, who we work with, and the impact we aim to create.
@@ -93,11 +96,11 @@ function AboutSection() {
             <h2
               style={{
                 fontSize: 'clamp(1.8rem, 3vw, 2.4rem)',
-                fontWeight: 800,
+                fontWeight: 700,
                 color: C.head,
                 marginBottom: 24,
                 letterSpacing: '-0.02em',
-                fontFamily: "'DM Sans',system-ui,sans-serif",
+                fontFamily: "'Akshar', sans-serif",
               }}
             >
               About Us
@@ -116,6 +119,8 @@ function AboutSection() {
                   color: C.body,
                   lineHeight: 1.78,
                   marginBottom: i === 2 ? 0 : 16,
+                  fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif",
+                  fontWeight: 400,
                 }}
               >
                 {t}
@@ -162,11 +167,12 @@ function AboutSection() {
                   >
                     {c.iconStyle ? <span style={c.iconStyle}>{c.icon}</span> : c.icon}
                   </div>
-                  <div style={{ fontSize: '1.05rem', fontWeight: 700, color: C.head, fontFamily: "'DM Sans',system-ui,sans-serif" }}>
+                  <div style={{ fontSize: '1.05rem', fontWeight: 500, color: C.head, fontFamily: "'Akshar', sans-serif" }}>
                     {c.title}
                   </div>
                 </div>
-                <div style={{ fontSize: '0.92rem', color: C.body, lineHeight: 1.72 }}>{c.body}</div>
+                <div style={{ fontSize: '0.92rem', color: C.body, lineHeight: 1.72,
+                  fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight: 400 }}>{c.body}</div>
               </div>
             ))}
           </div>
@@ -233,7 +239,7 @@ function IdentityCards() {
               style={{
                 background: 'rgba(255,255,255,0.07)',
                 border: `1px solid ${hovered === i ? `${C.p2}70` : 'rgba(255,255,255,0.14)'}`,
-                borderTop: `3px solid ${C.p2}`,
+                borderTop: `3px solid ${C.p}`,
                 borderRadius: 20,
                 padding: '36px 28px',
                 boxShadow: hovered === i ? `0 18px 50px ${C.p2}1A` : `0 10px 28px rgba(0,0,0,0.18)`,
@@ -243,10 +249,11 @@ function IdentityCards() {
                 textAlign: 'center',
               }}
             >
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#fff', marginBottom: 14, fontFamily: "'DM Sans',system-ui,sans-serif", letterSpacing: '-0.01em' }}>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 500, color: '#fff', marginBottom: 14, fontFamily: "'Akshar', sans-serif", letterSpacing: '-0.01em' }}>
                 {c.title}
               </h3>
-              <div style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.80)', lineHeight: 1.78, textAlign: 'left' }}>
+              <div style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.80)', lineHeight: 1.78, textAlign: 'left',
+                fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight: 400 }}>
                 {c.body}
               </div>
             </div>
@@ -272,23 +279,25 @@ function ValuesGrid() {
   return (
     <section style={{ width: '100%', background: C.alt, padding: '80px 5vw' }}>
       <div style={{ maxWidth: 960, margin: '0 auto' }}>
-        <div style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.1em', color: C.accent, textAlign: 'center' }}>
+        <div style={{ fontSize: '0.72rem', fontWeight: 500, letterSpacing: '0.1em', color: C.accent, textAlign: 'center',
+          fontFamily: "'Akshar', sans-serif" }}>
           OUR VALUES
         </div>
         <h2
           style={{
             textAlign: 'center',
             fontSize: 'clamp(1.8rem, 3vw, 2.4rem)',
-            fontWeight: 800,
+            fontWeight: 700,
             color: C.head,
             marginBottom: 12,
             letterSpacing: '-0.02em',
-            fontFamily: "'DM Sans',system-ui,sans-serif",
+            fontFamily: "'Akshar', sans-serif",
           }}
         >
           The Principles Behind Everything We Do
         </h2>
-        <div style={{ fontSize: '1rem', color: C.muted, textAlign: 'center', maxWidth: 520, margin: '0 auto 56px', lineHeight: 1.7 }}>
+        <div style={{ fontSize: '1rem', color: C.muted, textAlign: 'center', maxWidth: 520, margin: '0 auto 56px', lineHeight: 1.7,
+          fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight: 300 }}>
           These six values are not slogans. They are the decisions we make every day.
         </div>
 
@@ -324,10 +333,11 @@ function ValuesGrid() {
                 >
                   {v.icon}
                 </div>
-                <h3 style={{ fontSize: '1rem', fontWeight: 700, color: C.head, marginBottom: 8, fontFamily: "'DM Sans',system-ui,sans-serif" }}>
+                <h3 style={{ fontSize: '1rem', fontWeight: 500, color: C.head, marginBottom: 8, fontFamily: "'Akshar', sans-serif" }}>
                   {v.name}
                 </h3>
-                <div style={{ fontSize: '0.92rem', color: C.body, lineHeight: 1.7 }}>{v.desc}</div>
+                <div style={{ fontSize: '0.92rem', color: C.body, lineHeight: 1.7,
+                  fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight: 400 }}>{v.desc}</div>
               </div>
             )
           })}
@@ -339,77 +349,31 @@ function ValuesGrid() {
 
 function CTA() {
   return (
-    <section style={{ width: '100%', background: C.dark, padding: '72px 5vw' }}>
+    <section style={{ width: '100%', background: C.p, padding: '72px 5vw' }}>
       <div style={{ maxWidth: 680, margin: '0 auto', textAlign: 'center' }}>
         <h2
           style={{
             fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)',
-            fontWeight: 800,
-            color: '#fff',
+            fontWeight: 700,
+            color: '#FFFFFF',
             marginBottom: 16,
             letterSpacing: '-0.02em',
-            fontFamily: "'DM Sans',system-ui,sans-serif",
+            fontFamily: "'Akshar', sans-serif",
           }}
         >
           Ready to Work With a Team That Lives These Values?
         </h2>
-        <p style={{ color: 'rgba(255,255,255,0.68)', marginBottom: 32, lineHeight: 1.7, fontSize: '1rem' }}>
+        <p style={{ color: 'rgba(255,255,255,0.68)', marginBottom: 32, lineHeight: 1.7, fontSize: '1rem',
+          fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight: 400 }}>
           Every engagement starts with a conversation. Let&apos;s talk about your goals.
         </p>
         <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link
-            to="/schedule-demo"
-            style={{
-              background: C.p2,
-              color: C.p,
-              fontWeight: 700,
-              padding: '13px 28px',
-              borderRadius: 10,
-              textDecoration: 'none',
-              fontSize: '0.95rem',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 8,
-              transition: 'all 0.15s',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'none'
-            }}
-          >
+          <Button variant="primaryDark" size="md" to="/schedule-demo">
             Schedule a Free Call →
-          </Link>
-          <Link
-            to="/services"
-            style={{
-              background: 'transparent',
-              color: 'rgba(255,255,255,0.85)',
-              border: '1px solid rgba(255,255,255,0.3)',
-              fontWeight: 700,
-              padding: '13px 28px',
-              borderRadius: 10,
-              textDecoration: 'none',
-              fontSize: '0.95rem',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 8,
-              transition: 'all 0.15s',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)'
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'none'
-              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)'
-            }}
-          >
+          </Button>
+          <Button variant="secondaryDark" size="md" to="/services">
             View Our Services →
-          </Link>
+          </Button>
         </div>
       </div>
     </section>

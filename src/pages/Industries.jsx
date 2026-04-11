@@ -1,38 +1,28 @@
 import C from '../tokens.js'
 import { useState, useEffect } from "react";
+import { Button } from '../components/ui/Button.jsx'
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
 
-const Badge = ({ c=C.p, children }) => (
+const Badge = ({ c=C.p2, children }) => (
   <span style={{ display:"inline-flex", alignItems:"center", gap:5, padding:"4px 13px",
-    borderRadius:99, border:`1px solid ${c}28`, background:`${c}0B`, color:c,
-    fontSize:11.5, letterSpacing:"0.07em", textTransform:"uppercase", fontWeight:700 }}>
+    borderRadius:99, border:`1px solid ${c}28`, background:`${c}18`, color:c,
+    fontSize:11.5, letterSpacing:"0.07em", textTransform:"uppercase", fontWeight:500,
+    fontFamily:"'Akshar', sans-serif" }}>
     {children}
   </span>
 );
 const H = ({ size="h2", style={}, color, children }) => {
   const s = { hero:"clamp(2.2rem,4.5vw,3.6rem)", h2:"clamp(1.7rem,2.5vw,2.3rem)", h3:"1.15rem" };
-  return <h2 style={{ fontSize:s[size], fontWeight:800, color:color||C.head,
+  const fw = size === "h3" ? 500 : 700;
+  return <h2 style={{ fontSize:s[size], fontWeight:fw, color:color||C.head,
     letterSpacing:"-0.026em", lineHeight:1.12,
-    fontFamily:"'DM Sans',system-ui,sans-serif", ...style }}>{children}</h2>;
+    fontFamily:"'Akshar', sans-serif", ...style }}>{children}</h2>;
 };
 const P = ({ style={}, children }) => (
-  <p style={{ fontSize:"clamp(0.95rem,1.05vw,1.02rem)", color:C.body, lineHeight:1.78, ...style }}>{children}</p>
+  <p style={{ fontSize:"clamp(0.95rem,1.05vw,1.02rem)", color:C.body, lineHeight:1.78,
+    fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400, ...style }}>{children}</p>
 );
-function PBtn({ children, href, light }) {
-  const base = { display:"inline-flex", alignItems:"center", gap:8, padding:"12px 26px",
-    borderRadius:10, fontWeight:700, fontSize:14.5, cursor:"pointer",
-    textDecoration:"none", fontFamily:"inherit", transition:"all 0.15s" };
-  const v = light
-    ? {...base, background:C.surface, color:C.p, border:`1.5px solid ${C.border}`, boxShadow:"0 2px 10px rgba(0,0,0,0.07)"}
-    : {...base, background:`linear-gradient(135deg,${C.p},#2A4A7F)`, color:"#fff", border:"none", boxShadow:`0 4px 20px ${C.p}45`};
-  return <a href={href} style={v}
-    onMouseEnter={e => e.currentTarget.style.transform="translateY(-2px)"}
-    onMouseLeave={e => e.currentTarget.style.transform="none"}>
-    {children}
-  </a>;
-}
-
 function Hero() {
   return (
     <section style={{ minHeight:"64vh", display:"flex", alignItems:"center",
@@ -83,9 +73,9 @@ function PrimaryVerticals() {
     },
     {
       tag:"Near-Primary",
-      tagColor:C.accent,
+      tagColor:C.p1,
       icon:"🏥",
-      color:C.accent,
+      color:C.p,
       title:"LTC Facilities",
       subtitle:"SNF, ALF, Memory Care & Behavioral Health",
       desc:"Skilled nursing facilities, assisted living communities, memory care, and behavioral health organizations sit at the same intersection as LTC pharmacy — similar compliance demands, overlapping systems, and the same need for technology that actually understands the care setting.",
@@ -157,15 +147,9 @@ function PrimaryVerticals() {
                 </div>
               </div>
 
-              <a href={v.ctaHref} style={{ display:"inline-flex", alignItems:"center", gap:7,
-                padding:"10px 20px", borderRadius:9, background:`${v.color}14`,
-                border:`1.5px solid ${v.color}35`, color:v.color, fontWeight:700,
-                fontSize:13.5, textDecoration:"none", alignSelf:"flex-start",
-                transition:"all 0.15s" }}
-                onMouseEnter={e => { e.currentTarget.style.background=`${v.color}22`; }}
-                onMouseLeave={e => { e.currentTarget.style.background=`${v.color}14`; }}>
+              <Button to={v.ctaHref} variant="primary" size="sm" style={{ alignSelf:"flex-start" }}>
                 {v.cta} →
-              </a>
+              </Button>
             </div>
           ))}
         </div>
@@ -192,7 +176,7 @@ function BroaderIndustries() {
     <section style={{ padding:"88px 5vw", background:C.alt }}>
       <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:16 }}>
-          <div style={{ marginBottom:14 }}><Badge c={C.amber}>Beyond LTC</Badge></div>
+          <div style={{ marginBottom:14 }}><Badge c={C.p}>Beyond LTC</Badge></div>
           <H size="h2" style={{ marginBottom:14 }}>We Also Work With</H>
         </div>
 
@@ -230,22 +214,12 @@ function BroaderIndustries() {
         </div>
 
         <div style={{ textAlign:"center", marginTop:40 }}>
-          <a href="/services/data-analytics" style={{ display:"inline-flex", alignItems:"center", gap:8,
-            padding:"11px 22px", borderRadius:9, background:C.surface,
-            border:`1.5px solid ${C.border}`, color:C.body, fontWeight:600,
-            fontSize:13.5, textDecoration:"none", marginRight:12, transition:"border-color 0.15s" }}
-            onMouseEnter={e => e.currentTarget.style.borderColor=C.p2}
-            onMouseLeave={e => e.currentTarget.style.borderColor=C.border}>
+          <Button to="/services/data-analytics" variant="primary" size="md" style={{ marginRight:12 }}>
             Data Analytics Service →
-          </a>
-          <a href="/services/custom-development" style={{ display:"inline-flex", alignItems:"center", gap:8,
-            padding:"11px 22px", borderRadius:9, background:C.surface,
-            border:`1.5px solid ${C.border}`, color:C.body, fontWeight:600,
-            fontSize:13.5, textDecoration:"none", transition:"border-color 0.15s" }}
-            onMouseEnter={e => e.currentTarget.style.borderColor=C.p2}
-            onMouseLeave={e => e.currentTarget.style.borderColor=C.border}>
+          </Button>
+          <Button to="/services/custom-development" variant="secondary" size="md">
             Custom Development Service →
-          </a>
+          </Button>
         </div>
       </div>
     </section>
@@ -257,7 +231,7 @@ function RightFit() {
     <section style={{ padding:"88px 5vw", background:C.surface }}>
       <div style={{ maxWidth:860, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:48 }}>
-          <div style={{ marginBottom:14 }}><Badge c={C.accent}>Is There a Fit?</Badge></div>
+          <div style={{ marginBottom:14 }}><Badge c={C.p}>Is There a Fit?</Badge></div>
           <H size="h2" style={{ marginBottom:14 }}>How We Decide Whether to Work Together</H>
           <P style={{ maxWidth:520, margin:"0 auto" }}>
             We're not the right partner for everyone — and we'd rather say that upfront than take on a project we can't do well.
@@ -312,30 +286,19 @@ function RightFit() {
 
 function CTA() {
   return (
-    <section style={{ padding:"80px 5vw",
-      background:`linear-gradient(160deg,${C.dark} 0%,#0D2040 100%)`,
-      position:"relative", overflow:"hidden" }}>
-      <div style={{ position:"absolute", top:-120, right:-60, width:460, height:460, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.p2}22 0%,transparent 70%)`, pointerEvents:"none" }} />
-      <div style={{ position:"absolute", bottom:-60, left:0, width:320, height:320, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.accent}28 0%,transparent 70%)`, pointerEvents:"none" }} />
+    <section style={{ padding:"80px 5vw", background:C.surface, borderTop:`1px solid ${C.border}`,
+      position:"relative" }}>
       <div style={{ maxWidth:620, margin:"0 auto", textAlign:"center", position:"relative", zIndex:1 }}>
-        <H size="h2" style={{ color:"#fff", marginBottom:14 }}>
+        <H size="h2" style={{ color:C.head, marginBottom:14, fontFamily:"'Akshar', sans-serif", fontWeight:700 }}>
           Not Sure If There's a Fit? Just Ask.
         </H>
-        <P style={{ color:"rgba(255,255,255,0.62)", marginBottom:32, fontSize:"1.05rem" }}>
+        <P style={{ color:C.body, marginBottom:32, fontSize:"1.05rem",
+          fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400 }}>
           Book a 30-minute call. We'll tell you honestly whether we're the right team for your project — and if we're not, we'll say so.
         </P>
         <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
-          <PBtn href="/schedule-demo">Schedule a Free Call →</PBtn>
-          <a href="/about" style={{ display:"inline-flex", alignItems:"center", gap:8,
-            padding:"12px 24px", borderRadius:10, background:"transparent",
-            color:"rgba(255,255,255,0.72)", fontWeight:600, fontSize:14.5,
-            border:`1.5px solid rgba(255,255,255,0.22)`, textDecoration:"none" }}
-            onMouseEnter={e => e.currentTarget.style.borderColor="rgba(255,255,255,0.5)"}
-            onMouseLeave={e => e.currentTarget.style.borderColor="rgba(255,255,255,0.22)"}>
-            Learn About Us →
-          </a>
+          <Button variant="primary" size="md" to="/schedule-demo">Schedule a Free Call →</Button>
+          <Button variant="secondary" size="md" to="/about">Learn About Us →</Button>
         </div>
       </div>
     </section>

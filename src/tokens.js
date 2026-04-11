@@ -1,27 +1,25 @@
 const C = {
-  // Brand primaries
-  bg: "#EEF4F8",
-  surface: "#FFFFFF",
-  alt: "#E3EFF6",
-  border: "#C9DFEA",
-  // Primary palette
-  p: "#1C3053",
-  pd: "#141F38",
-  p2: "#6ABDE9",
-  // Subdued secondaries
-  accent: "#008CA4",
-  violet: "#B6CAEB",
-  green: "#6BA769",
-  amber: "#D3A217",
-  red: "#F58033",
-  // Text
-  head: "#1C3053",
-  body: "#2D4066",
-  muted: "#6B8BAF",
-  // Dark sections
-  dark: "#1C3053",
-  // Microsoft brand (MS Cloud page)
-  ms: "#0078D4",
-};
+  bg:      '#C6DBE7',
+  surface: '#FFFFFF',
+  alt:     '#EAF1F6',
+  border:  '#B8D0DF',
 
-export default C;
+  p:       '#143156',
+  pd:      '#0D2240',
+  p2:      '#8AB8E3',
+
+  accent:  '#8AB8E3',
+  violet:  '#C6DBE7',
+  green:   '#83B762',
+  amber:   '#D9A629',
+  red:     '#F79043',
+
+  head:    '#143156',
+  body:    '#1E3A5C',
+  muted:   '#5A7A9A',
+
+  dark:    '#143156',
+  ms:      '#0078D4',
+}
+
+export default C

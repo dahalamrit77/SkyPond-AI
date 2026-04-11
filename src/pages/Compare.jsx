@@ -1,69 +1,41 @@
 import C from '../tokens.js'
 import { useState, useEffect, useRef } from "react";
+import { Button } from '../components/ui/Button.jsx'
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
 import { Search, ClipboardList, Pill, TrendingUp, Link as LinkIcon, FileText, Hospital, Settings, BarChart3, Laptop, Cloud, CheckCircle2, Box, Inbox } from 'lucide-react'
 import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../config/constants.js'
 
 /* ─── PRIMITIVES ──────────────────────────────────────────────────────────── */
-const Badge = ({ c=C.p, children }) => (
+const Badge = ({ c=C.p2, children }) => (
   <span style={{ display:"inline-flex", alignItems:"center", gap:5, padding:"4px 13px",
-    borderRadius:99, border:`1px solid ${c}28`, background:`${c}0B`, color:c,
-    fontSize:11.5, letterSpacing:"0.07em", textTransform:"uppercase", fontWeight:700 }}>
+    borderRadius:99, border:`1px solid ${c}28`, background:`${c}18`, color:c,
+    fontSize:11.5, letterSpacing:"0.07em", textTransform:"uppercase", fontWeight:500,
+    fontFamily:"'Akshar', sans-serif" }}>
     {children}
   </span>
 );
 
 const H = ({ size="h2", style={}, color, children }) => {
   const s = { hero:"clamp(2.5rem,5.2vw,4.2rem)", h2:"clamp(1.85rem,2.8vw,2.6rem)", h3:"1.22rem" };
-  return <h2 style={{ fontSize:s[size], fontWeight:800, color:color||C.head,
+  const fw = size === "h3" ? 500 : 700;
+  return <h2 style={{ fontSize:s[size], fontWeight:fw, color:color||C.head,
     letterSpacing:"-0.028em", lineHeight:1.08,
-    fontFamily:"'DM Sans',system-ui,sans-serif", ...style }}>{children}</h2>;
+    fontFamily:"'Akshar', sans-serif", ...style }}>{children}</h2>;
 };
 
 const P = ({ style={}, children }) => (
-  <p style={{ fontSize:"clamp(0.96rem,1.1vw,1.04rem)", color:C.body, lineHeight:1.76, ...style }}>
+  <p style={{ fontSize:"clamp(0.96rem,1.1vw,1.04rem)", color:C.body, lineHeight:1.76,
+    fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400, ...style }}>
     {children}
   </p>
 );
-
-function PBtn({ children, onClick, href, light }) {
-  const Tag = href ? "a" : "button";
-  const base = { display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
-    borderRadius:10, fontWeight:700, fontSize:14.5, border:"none", cursor:"pointer",
-    textDecoration:"none", fontFamily:"inherit", transition:"all 0.15s" };
-  const v = light
-    ? {...base, background:"#fff", color:C.p, boxShadow:"0 2px 14px rgba(0,0,0,0.13)"}
-    : {...base, background:`linear-gradient(135deg,${C.p},${C.pd})`, color:"#fff", boxShadow:`0 4px 20px ${C.p}45`};
-  return (
-    <Tag href={href} onClick={onClick} style={v}
-      onMouseEnter={e=>{ e.currentTarget.style.transform="translateY(-2px)";
-        e.currentTarget.style.boxShadow = light ? "0 8px 24px rgba(0,0,0,0.18)" : `0 8px 28px ${C.p}60`; }}
-      onMouseLeave={e=>{ e.currentTarget.style.transform="none";
-        e.currentTarget.style.boxShadow = light ? "0 2px 14px rgba(0,0,0,0.13)" : `0 4px 20px ${C.p}45`; }}>
-      {children}
-    </Tag>
-  );
-}
-
-function GBtn({ children, onClick }) {
-  return (
-    <button onClick={onClick} style={{ display:"inline-flex", alignItems:"center", gap:8,
-      padding:"12px 24px", borderRadius:10, background:"transparent", color:C.head,
-      fontWeight:600, fontSize:14.5, border:`1.5px solid ${C.border}`, cursor:"pointer",
-      fontFamily:"inherit", transition:"all 0.15s" }}
-      onMouseEnter={e=>{ e.currentTarget.style.borderColor=C.p; e.currentTarget.style.background=`${C.p}08`; }}
-      onMouseLeave={e=>{ e.currentTarget.style.borderColor=C.border; e.currentTarget.style.background="transparent"; }}>
-      {children}
-    </button>
-  );
-}
 
 function Card({ children, style={}, ac, hover=true }) {
   const [h, setH] = useState(false);
   return (
     <div onMouseEnter={()=>hover&&setH(true)} onMouseLeave={()=>hover&&setH(false)}
-      style={{ background:C.surface, border:`1.5px solid ${h&&ac ? ac+"44" : C.border}`,
+      style={{ background:C.surface, border:`1.5px solid ${h ? C.p2 : C.border}`,
         borderRadius:16, transition:"all 0.2s", transform:h&&hover?"translateY(-4px)":"none",
         boxShadow:h&&hover ? `0 16px 40px ${ac ? ac+"1A":"rgba(0,0,0,0.08)"}` : "0 2px 8px rgba(0,0,0,0.04)",
         ...style }}>
@@ -264,7 +236,7 @@ function DEACard() {
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
         <div>
           <div style={{ fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.08em", color:C.p, marginBottom:3 }}>DEA Audit Readiness</div>
-          <div style={{ fontWeight:800, fontSize:15, color:C.head, fontFamily:"'DM Sans',sans-serif" }}>Compliance Scorecard</div>
+          <div style={{ fontWeight:800, fontSize:15, color:C.head, fontFamily:"'Akshar', sans-serif" }}>Compliance Scorecard</div>
         </div>
         <div style={{ position:"relative", width:68, height:68 }}>
           <svg width={68} height={68} style={{ transform:"rotate(-90deg)" }}>
@@ -274,7 +246,7 @@ function DEACard() {
               strokeLinecap="round" style={{ transition:"stroke-dashoffset 1.2s cubic-bezier(0.4,0,0.2,1)" }} />
           </svg>
           <div style={{ position:"absolute", inset:0, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}>
-            <span style={{ fontSize:17, fontWeight:900, color:C.p, lineHeight:1, fontFamily:"'DM Sans',sans-serif" }}>{on?score:0}</span>
+            <span style={{ fontSize:17, fontWeight:700, color:C.p, lineHeight:1, fontFamily:"'Akshar', sans-serif" }}>{on?score:0}</span>
             <span style={{ fontSize:9, color:C.muted, fontWeight:600 }}>/100</span>
           </div>
         </div>
@@ -323,7 +295,7 @@ function CSCard() {
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:14 }}>
         <div>
           <div style={{ fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.08em", color:C.violet, marginBottom:3 }}>CS Inventory</div>
-          <div style={{ fontWeight:800, fontSize:15, color:C.head, fontFamily:"'DM Sans',sans-serif" }}>Controlled Substances</div>
+          <div style={{ fontWeight:800, fontSize:15, color:C.head, fontFamily:"'Akshar', sans-serif" }}>Controlled Substances</div>
         </div>
         <div style={{ padding:"3px 9px", borderRadius:5, background:`${C.green}15`,
           border:`1px solid ${C.green}30`, fontSize:10, fontWeight:700, color:C.green }}>🟢 Live</div>
@@ -382,7 +354,7 @@ function AnalyticsCard() {
       borderRadius:18, padding:"22px 20px", boxShadow:`0 4px 20px ${C.accent}08` }}>
       <div style={{ marginBottom:14 }}>
         <div style={{ fontSize:10, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.08em", color:C.accent, marginBottom:3 }}>Analytics Dashboard</div>
-        <div style={{ fontWeight:800, fontSize:15, color:C.head, fontFamily:"'DM Sans',sans-serif" }}>LTC Operations Overview</div>
+        <div style={{ fontWeight:800, fontSize:15, color:C.head, fontFamily:"'Akshar', sans-serif" }}>LTC Operations Overview</div>
       </div>
       <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8, marginBottom:14 }}>
         {kpis.map((k,i) => (
@@ -390,7 +362,7 @@ function AnalyticsCard() {
             border:`1px solid ${C.border}`, opacity:on?1:0, transform:on?"none":"translateY(6px)",
             transition:`opacity 0.4s ${i*0.1}s,transform 0.4s ${i*0.1}s` }}>
             <div style={{ fontSize:10.5, color:C.muted, marginBottom:3 }}>{k.l}</div>
-            <div style={{ fontSize:18, fontWeight:900, color:k.c, fontFamily:"'DM Sans',sans-serif", letterSpacing:"-0.02em", lineHeight:1 }}>{k.v}</div>
+            <div style={{ fontSize:18, fontWeight:700, color:k.c, fontFamily:"'Akshar', sans-serif", letterSpacing:"-0.02em", lineHeight:1 }}>{k.v}</div>
             <div style={{ fontSize:10, color:C.green, fontWeight:700, marginTop:3 }}>▲ {k.d}</div>
           </div>
         ))}
@@ -478,8 +450,8 @@ function Hero() {
             </div>
 
             <div style={{ display:"flex", gap:12, flexWrap:"wrap", animation:"fadeUp 0.6s 0.25s ease both" }}>
-              <PBtn onClick={() => go("contact")}>Schedule a Demo →</PBtn>
-              <GBtn onClick={() => go("products")}>Explore Products</GBtn>
+              <Button variant="primary" size="lg" onClick={() => go("contact")}>Schedule a Demo →</Button>
+              <Button variant="secondary" size="lg" onClick={() => go("products")}>Explore Products</Button>
             </div>
 
             {/* stats */}
@@ -490,9 +462,10 @@ function Hero() {
                 <div key={i} style={{ flex:1, paddingRight:18,
                   borderRight: i<a.length-1 ? `1px solid ${C.border}` : "none",
                   marginRight: i<a.length-1 ? 18 : 0 }}>
-                  <div style={{ fontSize:"clamp(1.4rem,2.2vw,1.9rem)", fontWeight:900, color:C.p,
-                    letterSpacing:"-0.03em", fontFamily:"'DM Sans',sans-serif" }}>{v}</div>
-                  <div style={{ color:C.muted, fontSize:11.5, marginTop:2, fontWeight:500 }}>{l}</div>
+                  <div style={{ fontSize:"clamp(1.4rem,2.2vw,1.9rem)", fontWeight:700, color:C.p,
+                    letterSpacing:"-0.03em", fontFamily:"'Akshar', sans-serif" }}>{v}</div>
+                  <div style={{ color:C.muted, fontSize:11.5, marginTop:2, fontWeight:300,
+                    fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif" }}>{l}</div>
                 </div>
               ))}
             </div>
@@ -542,8 +515,8 @@ function Products() {
               <button key={i} onClick={() => setActive(i)} style={{ display:"flex", alignItems:"center",
                 gap:13, padding:"12px 15px", borderRadius:11, textAlign:"left",
                 background: active===i ? `${pr.color}0C` : "transparent",
-                border:`1.5px solid ${active===i ? pr.color+"50" : C.border}`,
-                cursor:"pointer", transition:"all 0.18s", fontFamily:"inherit" }}>
+                border:`1.5px solid ${active===i ? C.p2 : C.border}`,
+                cursor:"pointer", transition:"all 0.18s", fontFamily:"'Akshar', sans-serif", fontWeight:500 }}>
                 <span style={{ fontSize:17, width:37, height:37, flexShrink:0, borderRadius:9,
                   background: active===i ? `${pr.color}18` : C.alt,
                   display:"flex", alignItems:"center", justifyContent:"center" }}>{pr.icon}</span>
@@ -565,8 +538,8 @@ function Products() {
               <div>
                 <span style={{ fontSize:10.5, fontWeight:700, textTransform:"uppercase",
                   letterSpacing:"0.08em", color:p.color }}>{p.tag}</span>
-                <h3 style={{ color:C.head, fontWeight:800, fontSize:18, marginTop:2,
-                  fontFamily:"'DM Sans',sans-serif" }}>{p.title}</h3>
+                <h3 style={{ color:C.head, fontWeight:500, fontSize:18, marginTop:2,
+                  fontFamily:"'Akshar', sans-serif" }}>{p.title}</h3>
               </div>
             </div>
             <P style={{ marginBottom:18, lineHeight:1.72 }}>{p.desc}</P>
@@ -575,9 +548,9 @@ function Products() {
               color:p.color, fontWeight:700, fontSize:12.5, marginBottom:22 }}>
               {p.metric} <span style={{ fontWeight:400, opacity:0.7 }}>{p.ml}</span>
             </div>
-            <div><PBtn onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior:"smooth" })}>
+            <div><Button variant="primary" size="md" onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior:"smooth" })}>
               Request a Demo →
-            </PBtn></div>
+            </Button></div>
           </Card>
         </div>
       </div>
@@ -623,9 +596,10 @@ function Services() {
               <div style={{ width:46, height:46, borderRadius:10, marginBottom:14,
                 background:`${s.color}10`, border:`1px solid ${s.color}25`,
                 display:"flex", alignItems:"center", justifyContent:"center", fontSize:21 }}>{s.icon}</div>
-              <h3 style={{ color:C.head, fontWeight:700, fontSize:16, marginBottom:8,
-                fontFamily:"'DM Sans',sans-serif" }}>{s.title}</h3>
-              <p style={{ color:C.body, fontSize:13.5, lineHeight:1.68 }}>{s.desc}</p>
+              <h3 style={{ color:C.head, fontWeight:500, fontSize:16, marginBottom:8,
+                fontFamily:"'Akshar', sans-serif" }}>{s.title}</h3>
+              <p style={{ color:C.body, fontSize:13.5, lineHeight:1.68,
+                fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400 }}>{s.desc}</p>
             </Card>
           ))}
         </div>
@@ -658,14 +632,9 @@ function IndustriesSection() {
               Our expertise is rooted in long-term care. Our analytics and development capabilities extend beyond it.
             </P>
           </div>
-          <a href="/industries" style={{ display:"inline-flex", alignItems:"center", gap:7,
-            padding:"10px 20px", borderRadius:9, background:C.surface,
-            border:`1.5px solid ${C.border}`, color:C.body, fontWeight:600,
-            fontSize:13.5, textDecoration:"none", flexShrink:0, transition:"border-color 0.15s" }}
-            onMouseEnter={e => e.currentTarget.style.borderColor=C.p2}
-            onMouseLeave={e => e.currentTarget.style.borderColor=C.border}>
+          <Button to="/industries" variant="secondary" size="md" style={{ flexShrink: 0 }}>
             View All Industries →
-          </a>
+          </Button>
         </div>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:20 }}>
           {verticals.map((v, i) => (
@@ -681,7 +650,7 @@ function IndustriesSection() {
                 <div style={{ fontSize:10.5, fontWeight:700, color:v.color,
                   textTransform:"uppercase", letterSpacing:"0.07em", marginBottom:6 }}>{v.tag}</div>
                 <div style={{ color:C.head, fontWeight:700, fontSize:17, marginBottom:10,
-                  fontFamily:"'DM Sans',sans-serif" }}>{v.title}</div>
+                  fontFamily:"'Akshar', sans-serif" }}>{v.title}</div>
                 <p style={{ color:C.body, fontSize:13.5, lineHeight:1.68, flex:1 }}>{v.desc}</p>
                 <div style={{ color:v.color, fontSize:13, fontWeight:700, marginTop:18 }}>Learn more →</div>
               </div>
@@ -746,30 +715,26 @@ function Testimonials() {
 
 function CTABanner() {
   return (
-    <section style={{ padding:"80px 5vw", background:C.dark, position:"relative", overflow:"hidden" }}>
+    <section style={{ padding:"80px 5vw", background:C.p, position:"relative", overflow:"hidden" }}>
       <div style={{ position:"absolute", top:-140, right:-80, width:520, height:520, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.p}55 0%,transparent 70%)`, pointerEvents:"none" }} />
+        background:"radial-gradient(circle at 70% 50%, rgba(255,255,255,0.04) 0%, transparent 60%)", pointerEvents:"none" }} />
       <div style={{ position:"absolute", bottom:-70, left:0, width:380, height:380, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.accent}44 0%,transparent 70%)`, pointerEvents:"none" }} />
+        background:"radial-gradient(circle at 30% 50%, rgba(255,255,255,0.04) 0%, transparent 60%)", pointerEvents:"none" }} />
       <div style={{ maxWidth:680, margin:"0 auto", textAlign:"center", position:"relative", zIndex:1 }}>
-        <H size="h2" style={{ color:"#fff", marginBottom:14 }}>
+        <H size="h2" style={{ color:"#FFFFFF", marginBottom:14, fontFamily:"'Akshar', sans-serif", fontWeight:700 }}>
           The Full LTC Pharmacy Platform.<br/>One Partner. Zero Gaps.
         </H>
-        <P style={{ color:"rgba(255,255,255,0.66)", marginBottom:32, fontSize:16 }}>
+        <P style={{ color:"rgba(255,255,255,0.68)", marginBottom:32, fontSize:16,
+          fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400 }}>
           Don't settle for a narrow automation tool or a general-purpose AI platform. SkypondTech is purpose-built for LTC pharmacy — DEA compliance, CS inventory, AI automation, analytics, and PointClickCare — everything you need, from one team that only works in LTC.
         </P>
         <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
-          <PBtn light onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior:"smooth" })}>
+          <Button variant="primaryDark" size="md" onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior:"smooth" })}>
             Schedule a Demo →
-          </PBtn>
-          <a href={`tel:${CONTACT_PHONE}`} style={{ display:"inline-flex", alignItems:"center", gap:8,
-            padding:"12px 24px", borderRadius:10, background:"transparent",
-            color:"rgba(255,255,255,0.78)", fontWeight:600, fontSize:14, textDecoration:"none",
-            border:"1.5px solid rgba(255,255,255,0.22)", fontFamily:"inherit", transition:"border-color 0.15s" }}
-            onMouseEnter={e => e.currentTarget.style.borderColor="rgba(255,255,255,0.55)"}
-            onMouseLeave={e => e.currentTarget.style.borderColor="rgba(255,255,255,0.22)"}>
+          </Button>
+          <Button variant="secondaryDark" size="md" href={`tel:${CONTACT_PHONE}`} style={{ fontSize: '0.9rem' }}>
             📞 {CONTACT_PHONE_DISPLAY}
-          </a>
+          </Button>
         </div>
       </div>
     </section>
@@ -781,8 +746,10 @@ function Contact() {
   const [sent, setSent] = useState(false);
   const inp = { width:"100%", padding:"11px 13px", borderRadius:9, background:C.alt,
     border:`1.5px solid ${C.border}`, color:C.head, fontSize:14, outline:"none",
-    transition:"border-color 0.2s", boxSizing:"border-box", fontFamily:"inherit" };
-  const lbl = { color:C.muted, fontSize:12.5, display:"block", marginBottom:5, fontWeight:600 };
+    transition:"border-color 0.2s", boxSizing:"border-box",
+    fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400 };
+  const lbl = { color:C.muted, fontSize:12.5, display:"block", marginBottom:5, fontWeight:500,
+    fontFamily:"'Akshar', sans-serif" };
   return (
     <section id="contact" style={{ padding:"92px 5vw", background:C.surface }}>
       <div style={{ maxWidth:640, margin:"0 auto" }}>
@@ -793,7 +760,7 @@ function Contact() {
         </div>
         {sent ? (
           <Card hover={false} style={{ padding:"48px 36px", textAlign:"center" }}>
-            <div style={{ fontSize:48, marginBottom:14 }}>✅</div>
+            <div style={{ fontSize:48, marginBottom:14, color:C.green }}>✅</div>
             <H size="h3" style={{ marginBottom:10 }}>We'll Be in Touch</H>
             <P>Our team responds within one business day. Reach us directly at {CONTACT_EMAIL} or {CONTACT_PHONE_DISPLAY}.</P>
           </Card>
@@ -841,9 +808,9 @@ function Contact() {
                   onFocus={e => e.target.style.borderColor=C.p}
                   onBlur={e => e.target.style.borderColor=C.border} />
               </div>
-              <PBtn onClick={() => { if(form.name && form.email) setSent(true); }}>
+              <Button variant="primary" size="md" onClick={() => { if(form.name && form.email) setSent(true); }}>
                 Send Message →
-              </PBtn>
+              </Button>
             </div>
           </Card>
         )}

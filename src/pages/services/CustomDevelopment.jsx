@@ -1,44 +1,34 @@
 import C from '../../tokens.js'
 import { useState, useEffect, useRef } from "react";
+import { Button } from '../../components/ui/Button.jsx'
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
 import { ShieldCheck, Smartphone, Link as LinkIcon, Settings, BarChart3, Hospital, Cloud, Wrench } from 'lucide-react'
 import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../config/constants.js'
 
-const Badge = ({ c=C.p, children }) => (
+const Badge = ({ c=C.p2, children }) => (
   <span style={{ display:"inline-flex", alignItems:"center", gap:5, padding:"4px 13px",
-    borderRadius:99, border:`1px solid ${c}28`, background:`${c}0B`, color:c,
-    fontSize:11.5, letterSpacing:"0.07em", textTransform:"uppercase", fontWeight:700 }}>
+    borderRadius:99, border:`1px solid ${c}28`, background:`${c}18`, color:c,
+    fontSize:11.5, letterSpacing:"0.07em", textTransform:"uppercase", fontWeight:500,
+    fontFamily:"'Akshar', sans-serif" }}>
     {children}
   </span>
 );
 const H = ({ size="h2", style={}, color, children }) => {
   const s = { hero:"clamp(2.4rem,5vw,4rem)", h2:"clamp(1.8rem,2.7vw,2.5rem)", h3:"1.2rem" };
-  return <h2 style={{ fontSize:s[size], fontWeight:800, color:color||C.head,
-    letterSpacing:"-0.026em", lineHeight:1.1, fontFamily:"'DM Sans',system-ui,sans-serif", ...style }}>{children}</h2>;
+  const fw = size === "h3" ? 500 : 700;
+  return <h2 style={{ fontSize:s[size], fontWeight:fw, color:color||C.head,
+    letterSpacing:"-0.026em", lineHeight:1.1, fontFamily:"'Akshar', sans-serif", ...style }}>{children}</h2>;
 };
 const P = ({ style={}, children }) => (
-  <p style={{ fontSize:"clamp(0.96rem,1.1vw,1.04rem)", color:C.body, lineHeight:1.76, ...style }}>{children}</p>
+  <p style={{ fontSize:"clamp(0.96rem,1.1vw,1.04rem)", color:C.body, lineHeight:1.76,
+    fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400, ...style }}>{children}</p>
 );
-function PBtn({ children, onClick, href, light }) {
-  const Tag = href ? "a" : "button";
-  const base = { display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
-    borderRadius:10, fontWeight:700, fontSize:14.5, border:"none", cursor:"pointer",
-    textDecoration:"none", fontFamily:"inherit", transition:"all 0.15s" };
-  const v = light
-    ? {...base, background:"#fff", color:C.p, boxShadow:"0 2px 14px rgba(0,0,0,0.13)"}
-    : {...base, background:`linear-gradient(135deg,${C.p},${C.pd})`, color:"#fff", boxShadow:`0 4px 20px ${C.p}45`};
-  return <Tag href={href} onClick={onClick} style={v}
-    onMouseEnter={e=>{ e.currentTarget.style.transform="translateY(-2px)"; e.currentTarget.style.boxShadow=light?"0 8px 24px rgba(0,0,0,0.18)":`0 8px 28px ${C.p}60`; }}
-    onMouseLeave={e=>{ e.currentTarget.style.transform="none"; e.currentTarget.style.boxShadow=light?"0 2px 14px rgba(0,0,0,0.13)":`0 4px 20px ${C.p}45`; }}>
-    {children}
-  </Tag>;
-}
 function Card({ children, style={}, ac=C.p, hover=true }) {
   const [h, setH] = useState(false);
   return <div onMouseEnter={()=>hover&&setH(true)} onMouseLeave={()=>hover&&setH(false)}
-    style={{ background:C.surface, border:`1.5px solid ${h?ac+"44":C.border}`, borderRadius:16,
+    style={{ background:C.surface, border:`1.5px solid ${h ? C.p2 : C.border}`, borderRadius:16,
       transition:"all 0.2s", transform:h&&hover?"translateY(-4px)":"none",
       boxShadow:h&&hover?`0 16px 40px ${ac}1A`:"0 2px 8px rgba(0,0,0,0.04)", ...style }}>{children}</div>;
 }
@@ -85,50 +75,38 @@ function TechStack() {
 function Hero() {
   return (
     <section style={{ minHeight:"88vh", display:"flex", alignItems:"center",
-      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.dark }}>
-      <div style={{ position:"absolute", inset:0,
-        backgroundImage:`linear-gradient(${C.p}08 1px,transparent 1px),linear-gradient(90deg,${C.p}08 1px,transparent 1px)`,
-        backgroundSize:"52px 52px", pointerEvents:"none" }} />
-      <div style={{ position:"absolute", top:-180, right:-80, width:700, height:700, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.p}22 0%,transparent 68%)`, pointerEvents:"none" }} />
-      <div style={{ position:"absolute", bottom:-80, left:-60, width:500, height:500, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.violet}24 0%,transparent 68%)`, pointerEvents:"none" }} />
+      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.bg }}>
 
       <div style={{ maxWidth:1100, margin:"0 auto", width:"100%", position:"relative", zIndex:1 }}>
         <div style={{ display:"grid", gridTemplateColumns:"1.05fr 1fr", gap:64, alignItems:"center" }}>
           <div>
             <div style={{ display:"flex", gap:10, marginBottom:20, animation:"fadeUp 0.6s ease both" }}>
               <Badge c={C.p}>💻 Service</Badge>
-              <Badge c={C.muted}>Custom Development</Badge>
+              <Badge c={C.p}>Custom Development</Badge>
             </div>
-            <H size="hero" color="#fff" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
+            <H size="hero" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
               Software Built Around{" "}
-              <span style={{ background:`linear-gradient(90deg,${C.p},${C.violet})`,
-                WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
+              <span style={{ color:C.p }}>
                 Your LTC Workflows
               </span>
             </H>
-            <P style={{ maxWidth:520, color:"rgba(255,255,255,0.7)", marginBottom:32, fontSize:"1.08rem", animation:"fadeUp 0.6s 0.18s ease both" }}>
+            <P style={{ maxWidth:520, marginBottom:32, fontSize:"1.08rem", animation:"fadeUp 0.6s 0.18s ease both" }}>
               Off-the-shelf software wasn't designed for LTC pharmacy. We build the custom applications, internal tools, and system integrations that match exactly how your pharmacy actually operates — with LTC domain knowledge built in from day one.
             </P>
             <div style={{ display:"flex", gap:12, flexWrap:"wrap", animation:"fadeUp 0.6s 0.25s ease both" }}>
-              <PBtn href="/schedule-demo">Discuss Your Project →</PBtn>
-              <a href="#whatwebuild" style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
-                borderRadius:10, background:"transparent", color:"rgba(255,255,255,0.8)", fontWeight:600, fontSize:14.5,
-                border:"1.5px solid rgba(255,255,255,0.2)", textDecoration:"none", transition:"border-color 0.15s" }}
-                onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.5)"}
-                onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.2)"}>
+              <Button variant="primary" size="lg" to="/schedule-demo">Discuss Your Project →</Button>
+              <Button variant="secondary" size="lg" onClick={() => document.getElementById("whatwebuild")?.scrollIntoView({ behavior:"smooth" })}>
                 See What We Build ↓
-              </a>
+              </Button>
             </div>
-            <div style={{ display:"flex", gap:0, marginTop:52, borderTop:"1px solid rgba(255,255,255,0.1)", paddingTop:30,
+            <div style={{ display:"flex", gap:0, marginTop:52, borderTop:`1px solid ${C.border}`, paddingTop:30,
               animation:"fadeUp 0.6s 0.4s ease both" }}>
               {[["LTC","Domain expertise"],["Full-stack","React · Node · Azure"],["HIPAA","Compliant builds"],["50+","Projects delivered"]].map(([v,l],i,a) => (
                 <div key={i} style={{ flex:1, paddingRight:16,
-                  borderRight:i<a.length-1?"1px solid rgba(255,255,255,0.1)":"none", marginRight:i<a.length-1?16:0 }}>
+                  borderRight:i<a.length-1?`1px solid ${C.p}`:"none", marginRight:i<a.length-1?16:0 }}>
                   <div style={{ fontSize:"clamp(1rem,1.5vw,1.3rem)", fontWeight:900, color:C.p,
-                    letterSpacing:"-0.02em", fontFamily:"'DM Sans',sans-serif" }}>{v}</div>
-                  <div style={{ color:"rgba(255,255,255,0.4)", fontSize:11.5, marginTop:2, fontWeight:500 }}>{l}</div>
+                    letterSpacing:"-0.02em", fontFamily:"'Akshar', sans-serif" }}>{v}</div>
+                  <div style={{ color:C.p, fontSize:11.5, marginTop:2, fontWeight:500 }}>{l}</div>
                 </div>
               ))}
             </div>
@@ -148,16 +126,16 @@ function WhatWeBuild() {
     { icon:<Smartphone size={20} />, color:C.p, tag:"Web & Mobile", title:"Telepharmacy & Patient-Facing Applications",
       desc:"Web and mobile applications for telepharmacy delivery, patient medication management, RPh remote review, and facility portal access. Built with HIPAA-compliant architecture and LTC-specific workflow logic.",
       examples:["RPh remote review interface","Patient medication history portal","Facility staff order status portal","Mobile dispensing confirmation app","Telepharmacy video consultation platform"] },
-    { icon:<LinkIcon size={20} />, color:C.accent, tag:"Integration", title:"System Integration & Data Pipelines",
+    { icon:<LinkIcon size={20} />, color:C.p, tag:"Integration", title:"System Integration & Data Pipelines",
       desc:"Custom data bridges between your pharmacy system, EHR platforms, billing systems, and external databases. We handle field mapping, transformation, error handling, and monitoring.",
       examples:["PMS-to-EHR bidirectional feeds","Billing system reconciliation","Insurance verification APIs","DEA database integration","Census-to-order automation pipelines"] },
-    { icon:<Settings size={20} />, color:C.violet, tag:"Internal Tools", title:"Internal Operations Tools",
+    { icon:<Settings size={20} />, color:C.p, tag:"Internal Tools", title:"Internal Operations Tools",
       desc:"Custom internal applications that replace spreadsheets and manual processes — workflow management, exception queuing, compliance tracking, staff assignment, and operational reporting.",
       examples:["Compliance exception management system","Staff workflow assignment tool","Order priority queue manager","Facility communication platform","Audit documentation system"] },
-    { icon:<BarChart3 size={20} />, color:C.green, tag:"Reporting", title:"Custom Reporting & Automation",
+    { icon:<BarChart3 size={20} />, color:C.p, tag:"Reporting", title:"Custom Reporting & Automation",
       desc:"Automated reporting systems that pull data from multiple sources, format it correctly, and deliver it on schedule — eliminating manual report compilation entirely.",
       examples:["Automated DEA compliance reports","Facility performance report delivery","Executive summary automation","Survey-ready documentation packages","Billing reconciliation reports"] },
-    { icon:<ShieldCheck size={20} />, color:C.amber, tag:"Compliance", title:"Regulatory & Compliance Infrastructure",
+    { icon:<ShieldCheck size={20} />, color:C.p, tag:"Compliance", title:"Regulatory & Compliance Infrastructure",
       desc:"Purpose-built compliance tools: DEA verification, CS audit trails, ARCOS reporting systems, prior authorization platforms, and document management with full audit history.",
       examples:["DEA registration verification system","CS inventory audit trail","Prior auth workflow platform","Document generation & e-signature","State board reporting tools"] },
   ];
@@ -224,17 +202,17 @@ function WhatWeBuild() {
 function Process() {
   const steps = [
     { n:"01", title:"Requirements & Scope Definition", desc:"We run structured discovery sessions with your operational, clinical, and IT stakeholders to define exact requirements — not a sales discovery call, but a genuine technical scope document with user stories, acceptance criteria, and constraints.", color:C.p },
-    { n:"02", title:"Architecture Design", desc:"We design the application architecture, data model, integration points, and security model before writing any code. You review and approve the design — no surprises during build.", color:C.accent },
-    { n:"03", title:"Iterative Build with Weekly Demos", desc:"We build in 2-week sprints with a working demo at the end of each. You see real progress, provide feedback, and shape the product throughout development — not just at the end.", color:C.violet },
-    { n:"04", title:"QA & Compliance Validation", desc:"Every build goes through structured QA: functional testing, security review, HIPAA compliance validation, and performance testing. Compliance is verified before, not after, deployment.", color:C.green },
-    { n:"05", title:"Deployment & Training", desc:"We deploy to your environment, train your team, and provide full technical documentation. Go-live is planned for low-disruption timing — usually overnight or over a weekend.", color:C.amber },
+    { n:"02", title:"Architecture Design", desc:"We design the application architecture, data model, integration points, and security model before writing any code. You review and approve the design — no surprises during build.", color:C.p },
+    { n:"03", title:"Iterative Build with Weekly Demos", desc:"We build in 2-week sprints with a working demo at the end of each. You see real progress, provide feedback, and shape the product throughout development — not just at the end.", color:C.p },
+    { n:"04", title:"QA & Compliance Validation", desc:"Every build goes through structured QA: functional testing, security review, HIPAA compliance validation, and performance testing. Compliance is verified before, not after, deployment.", color:C.p },
+    { n:"05", title:"Deployment & Training", desc:"We deploy to your environment, train your team, and provide full technical documentation. Go-live is planned for low-disruption timing — usually overnight or over a weekend.", color:C.p },
     { n:"06", title:"Ongoing Support & Iteration", desc:"Most clients continue with us post-launch — new features, regulatory changes, integrations with new systems. We stay involved so the software evolves with your pharmacy.", color:C.p },
   ];
   return (
     <section style={{ padding:"88px 5vw", background:C.surface }}>
       <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:52 }}>
-          <div style={{ marginBottom:14 }}><Badge c={C.accent}>🗺 Process</Badge></div>
+          <div style={{ marginBottom:14 }}><Badge c={C.p}>🗺 Process</Badge></div>
           <H size="h2" style={{ marginBottom:14 }}>How We Build Custom Software</H>
           <P style={{ maxWidth:440, margin:"0 auto" }}>An iterative, transparent process that keeps you in control from requirements through go-live.</P>
         </div>
@@ -248,10 +226,10 @@ function Process() {
               <div style={{ width:40, height:40, borderRadius:10, background:`${s.color}12`,
                 border:`1px solid ${s.color}30`, display:"flex", alignItems:"center",
                 justifyContent:"center", flexShrink:0, fontWeight:900, fontSize:14,
-                color:s.color, fontFamily:"'DM Sans',sans-serif" }}>{s.n}</div>
+                color:s.color, fontFamily:"'Akshar', sans-serif" }}>{s.n}</div>
               <div>
                 <div style={{ color:C.head, fontWeight:700, fontSize:15.5, marginBottom:6,
-                  fontFamily:"'DM Sans',sans-serif" }}>{s.title}</div>
+                  fontFamily:"'Akshar', sans-serif" }}>{s.title}</div>
                 <div style={{ color:C.body, fontSize:13.5, lineHeight:1.65 }}>{s.desc}</div>
               </div>
             </div>
@@ -281,7 +259,7 @@ function UseCases() {
     <section style={{ padding:"88px 5vw", background:C.alt }}>
       <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:52 }}>
-          <div style={{ marginBottom:14 }}><Badge c={C.violet}>📁 Projects</Badge></div>
+          <div style={{ marginBottom:14 }}><Badge c={C.p}>📁 Projects</Badge></div>
           <H size="h2" style={{ marginBottom:14 }}>Custom Software We've Shipped</H>
           <P style={{ maxWidth:440, margin:"0 auto" }}>Real custom development projects for LTC pharmacies — not hypothetical examples.</P>
         </div>
@@ -290,14 +268,12 @@ function UseCases() {
             <Card key={i} ac={C.p} style={{ padding:"26px 24px" }}>
               <div style={{ fontSize:28, marginBottom:14 }}>{c.icon}</div>
               <H size="h3" style={{ marginBottom:8, fontSize:16 }}>{c.title}</H>
-              <div style={{ display:"flex", gap:7, marginBottom:12, alignItems:"flex-start" }}>
+              <div style={{ display:"grid", gridTemplateColumns:"auto 1fr", columnGap:10, rowGap:12, alignItems:"start" }}>
                 <span style={{ fontSize:11, padding:"2px 8px", borderRadius:4, background:`${C.p}0C`,
-                  color:C.p, fontWeight:700, flexShrink:0, marginTop:1 }}>WHO</span>
+                  color:C.p, fontWeight:700, justifySelf:"start", marginTop:1 }}>WHO</span>
                 <span style={{ color:C.muted, fontSize:13, lineHeight:1.5 }}>{c.who}</span>
-              </div>
-              <div style={{ display:"flex", gap:7, alignItems:"flex-start" }}>
                 <span style={{ fontSize:11, padding:"2px 8px", borderRadius:4, background:`${C.green}0C`,
-                  color:C.green, fontWeight:700, flexShrink:0, marginTop:1 }}>RESULT</span>
+                  color:C.green, fontWeight:700, justifySelf:"start", marginTop:1 }}>RESULT</span>
                 <span style={{ color:C.body, fontSize:13, lineHeight:1.55 }}>{c.outcome}</span>
               </div>
             </Card>
@@ -367,7 +343,7 @@ function Related() {
               <a href={it.href} style={{ display:"block", padding:"24px 22px", textDecoration:"none" }}>
                 <div style={{ fontSize:24, marginBottom:12 }}>{it.icon}</div>
                 <div style={{ fontSize:10.5, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.07em", color:it.color, marginBottom:6 }}>{it.tag}</div>
-                <div style={{ color:C.head, fontWeight:700, fontSize:16, marginBottom:8, fontFamily:"'DM Sans',sans-serif" }}>{it.title}</div>
+                <div style={{ color:C.head, fontWeight:700, fontSize:16, marginBottom:8, fontFamily:"'Akshar', sans-serif" }}>{it.title}</div>
                 <div style={{ color:C.body, fontSize:13.5, lineHeight:1.6 }}>{it.desc}</div>
                 <div style={{ color:it.color, fontSize:13, fontWeight:700, marginTop:14 }}>Learn more →</div>
               </a>
@@ -381,25 +357,19 @@ function Related() {
 
 function CTA() {
   return (
-    <section style={{ padding:"80px 5vw", background:C.dark, position:"relative", overflow:"hidden" }}>
-      <div style={{ position:"absolute", top:-140, right:-80, width:500, height:500, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.p}55 0%,transparent 70%)`, pointerEvents:"none" }} />
-      <div style={{ position:"absolute", bottom:-70, left:0, width:360, height:360, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.violet}44 0%,transparent 70%)`, pointerEvents:"none" }} />
+    <section style={{ padding:"80px 5vw", background:C.surface, borderTop:`1px solid ${C.border}`,
+      position:"relative" }}>
       <div style={{ maxWidth:660, margin:"0 auto", textAlign:"center", position:"relative", zIndex:1 }}>
-        <H size="h2" style={{ color:"#fff", marginBottom:14 }}>Have a Custom LTC Pharmacy Software Problem?</H>
-        <P style={{ color:"rgba(255,255,255,0.68)", marginBottom:32, fontSize:16 }}>
+        <H size="h2" style={{ color:C.head, marginBottom:14, fontFamily:"'Akshar', sans-serif", fontWeight:700 }}>Have a Custom LTC Pharmacy Software Problem?</H>
+        <P style={{ color:C.body, marginBottom:32, fontSize:16,
+          fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400 }}>
           Tell us what you're trying to build or fix. We'll review the requirements, give you an honest assessment of scope and cost, and let you decide if we're the right fit — no pressure, no obligation.
         </P>
         <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
-          <PBtn light href="/schedule-demo">Discuss Your Project →</PBtn>
-          <a href={`tel:${CONTACT_PHONE}`} style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
-            borderRadius:10, background:"transparent", color:"rgba(255,255,255,0.78)", fontWeight:600, fontSize:14,
-            textDecoration:"none", border:"1.5px solid rgba(255,255,255,0.22)", fontFamily:"inherit" }}
-            onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.55)"}
-            onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.22)"}>
+          <Button variant="primary" size="md" to="/schedule-demo">Discuss Your Project →</Button>
+          <Button variant="secondary" size="md" href={`tel:${CONTACT_PHONE}`} style={{ fontSize:"0.9rem" }}>
             📞 {CONTACT_PHONE_DISPLAY}
-          </a>
+          </Button>
         </div>
       </div>
     </section>

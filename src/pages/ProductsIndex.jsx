@@ -1,11 +1,11 @@
 import C from '../tokens.js'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Button } from '../components/ui/Button.jsx'
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
 import { Search, ClipboardList, Pill, TrendingUp, Link as LinkIcon, FileText } from 'lucide-react'
 
-const Badge = ({ c = C.p, children }) => (
+const Badge = ({ c = C.p2, children }) => (
   <span
     style={{
       display: 'inline-flex',
@@ -14,12 +14,13 @@ const Badge = ({ c = C.p, children }) => (
       padding: '4px 13px',
       borderRadius: 99,
       border: `1px solid ${c}28`,
-      background: `${c}0B`,
+      background: `${c}18`,
       color: c,
       fontSize: 11.5,
       letterSpacing: '0.07em',
       textTransform: 'uppercase',
-      fontWeight: 700,
+      fontWeight: 500,
+      fontFamily: "'Akshar', sans-serif",
     }}
   >
     {children}
@@ -97,7 +98,7 @@ function ProductCard({ icon, color, tag, title, desc }) {
       onMouseLeave={() => setH(false)}
       style={{
         background: C.surface,
-        border: `1.5px solid ${h ? color + '44' : C.border}`,
+        border: `1.5px solid ${h ? C.p2 : C.border}`,
         borderRadius: 16,
         transition: 'all 0.2s',
         transform: h ? 'translateY(-4px)' : 'none',
@@ -115,11 +116,11 @@ function ProductCard({ icon, color, tag, title, desc }) {
       <h3
         style={{
           fontSize: 'clamp(1.05rem,1.2vw,1.22rem)',
-          fontWeight: 800,
+          fontWeight: 500,
           color: C.head,
           letterSpacing: '-0.02em',
           marginBottom: 10,
-          fontFamily: "'DM Sans',system-ui,sans-serif",
+          fontFamily: "'Akshar', sans-serif",
           lineHeight: 1.2,
         }}
       >
@@ -132,6 +133,8 @@ function ProductCard({ icon, color, tag, title, desc }) {
           lineHeight: 1.72,
           flex: 1,
           marginBottom: 0,
+          fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif",
+          fontWeight: 400,
         }}
       >
         {desc}
@@ -194,11 +197,11 @@ function Hero() {
         <h1
           style={{
             fontSize: 'clamp(2.1rem,4.6vw,3.5rem)',
-            fontWeight: 800,
+            fontWeight: 700,
             color: '#fff',
             letterSpacing: '-0.028em',
             lineHeight: 1.1,
-            fontFamily: "'DM Sans',system-ui,sans-serif",
+            fontFamily: "'Akshar', sans-serif",
             marginBottom: 22,
             animation: 'fadeUp 0.5s 0.08s ease both',
           }}
@@ -213,6 +216,8 @@ function Hero() {
             fontSize: '1.06rem',
             lineHeight: 1.78,
             animation: 'fadeUp 0.5s 0.14s ease both',
+            fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif",
+            fontWeight: 400,
           }}
         >
           DEA compliance, controlled substance tracking, LTC analytics, and more — purpose-built for LTC pharmacy.
@@ -247,7 +252,7 @@ function CTA() {
     <section
       style={{
         padding: '80px 5vw',
-        background: `linear-gradient(160deg,${C.dark} 0%,#0D2040 100%)`,
+        background: C.p,
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -260,7 +265,7 @@ function CTA() {
           width: 460,
           height: 460,
           borderRadius: '50%',
-          background: `radial-gradient(circle,${C.p2}22 0%,transparent 70%)`,
+          background: 'radial-gradient(circle at 70% 50%, rgba(255,255,255,0.04) 0%, transparent 60%)',
           pointerEvents: 'none',
         }}
       />
@@ -272,7 +277,7 @@ function CTA() {
           width: 320,
           height: 320,
           borderRadius: '50%',
-          background: `radial-gradient(circle,${C.accent}28 0%,transparent 70%)`,
+          background: 'radial-gradient(circle at 30% 50%, rgba(255,255,255,0.04) 0%, transparent 60%)',
           pointerEvents: 'none',
         }}
       />
@@ -280,42 +285,19 @@ function CTA() {
         <h2
           style={{
             fontSize: 'clamp(1.65rem,2.4vw,2.1rem)',
-            fontWeight: 800,
-            color: '#fff',
+            fontWeight: 700,
+            color: '#FFFFFF',
             letterSpacing: '-0.02em',
             marginBottom: 20,
-            fontFamily: "'DM Sans',system-ui,sans-serif",
+            fontFamily: "'Akshar', sans-serif",
             lineHeight: 1.15,
           }}
         >
           See the Platform in Action
         </h2>
-        <Link
-          to="/schedule-demo"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            padding: '12px 26px',
-            borderRadius: 10,
-            fontWeight: 700,
-            fontSize: 14.5,
-            textDecoration: 'none',
-            fontFamily: 'inherit',
-            transition: 'all 0.15s',
-            background: C.surface,
-            color: C.p,
-            boxShadow: '0 2px 14px rgba(0,0,0,0.1)',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-2px)'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'none'
-          }}
-        >
+        <Button variant="primaryDark" size="md" to="/schedule-demo">
           Schedule a Demo →
-        </Link>
+        </Button>
       </div>
     </section>
   )

@@ -1,45 +1,35 @@
 import C from '../../tokens.js'
 import { useState, useEffect, useRef } from "react";
+import { Button } from '../../components/ui/Button.jsx'
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
 import { Printer, ClipboardList, Search, Pill, FolderArchive, Hourglass, BarChart3, Hospital, FileText } from 'lucide-react'
 import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../config/constants.js'
 
-const Badge = ({ c=C.p, children }) => (
+const Badge = ({ c=C.p2, children }) => (
   <span style={{ display:"inline-flex", alignItems:"center", gap:5, padding:"4px 13px",
-    borderRadius:99, border:`1px solid ${c}28`, background:`${c}0B`, color:c,
-    fontSize:11.5, letterSpacing:"0.07em", textTransform:"uppercase", fontWeight:700 }}>
+    borderRadius:99, border:`1px solid ${c}28`, background:`${c}18`, color:c,
+    fontSize:11.5, letterSpacing:"0.07em", textTransform:"uppercase", fontWeight:500,
+    fontFamily:"'Akshar', sans-serif" }}>
     {children}
   </span>
 );
 const H = ({ size="h2", style={}, color, children }) => {
   const s = { hero:"clamp(2.4rem,5vw,4rem)", h2:"clamp(1.8rem,2.7vw,2.5rem)", h3:"1.2rem" };
-  return <h2 style={{ fontSize:s[size], fontWeight:800, color:color||C.head,
+  const fw = size === "h3" ? 500 : 700;
+  return <h2 style={{ fontSize:s[size], fontWeight:fw, color:color||C.head,
     letterSpacing:"-0.026em", lineHeight:1.1,
-    fontFamily:"'DM Sans',system-ui,sans-serif", ...style }}>{children}</h2>;
+    fontFamily:"'Akshar', sans-serif", ...style }}>{children}</h2>;
 };
 const P = ({ style={}, children }) => (
-  <p style={{ fontSize:"clamp(0.96rem,1.1vw,1.04rem)", color:C.body, lineHeight:1.76, ...style }}>{children}</p>
+  <p style={{ fontSize:"clamp(0.96rem,1.1vw,1.04rem)", color:C.body, lineHeight:1.76,
+    fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400, ...style }}>{children}</p>
 );
-function PBtn({ children, onClick, href, light }) {
-  const Tag = href ? "a" : "button";
-  const base = { display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
-    borderRadius:10, fontWeight:700, fontSize:14.5, border:"none", cursor:"pointer",
-    textDecoration:"none", fontFamily:"inherit", transition:"all 0.15s" };
-  const v = light
-    ? {...base, background:"#fff", color:C.accent, boxShadow:"0 2px 14px rgba(0,0,0,0.13)"}
-    : {...base, background:`linear-gradient(135deg,${C.accent},#0670A0)`, color:"#fff", boxShadow:`0 4px 20px ${C.accent}45`};
-  return <Tag href={href} onClick={onClick} style={v}
-    onMouseEnter={e=>{ e.currentTarget.style.transform="translateY(-2px)"; e.currentTarget.style.boxShadow=light?"0 8px 24px rgba(0,0,0,0.18)":`0 8px 28px ${C.accent}60`; }}
-    onMouseLeave={e=>{ e.currentTarget.style.transform="none"; e.currentTarget.style.boxShadow=light?"0 2px 14px rgba(0,0,0,0.13)":`0 4px 20px ${C.accent}45`; }}>
-    {children}
-  </Tag>;
-}
 function Card({ children, style={}, ac=C.accent, hover=true }) {
   const [h, setH] = useState(false);
   return <div onMouseEnter={()=>hover&&setH(true)} onMouseLeave={()=>hover&&setH(false)}
-    style={{ background:C.surface, border:`1.5px solid ${h?ac+"44":C.border}`, borderRadius:16,
+    style={{ background:C.surface, border:`1.5px solid ${h ? C.p2 : C.border}`, borderRadius:16,
       transition:"all 0.2s", transform:h&&hover?"translateY(-4px)":"none",
       boxShadow:h&&hover?`0 16px 40px ${ac}1A`:"0 2px 8px rgba(0,0,0,0.04)", ...style }}>{children}</div>;
 }
@@ -68,7 +58,7 @@ function AutoWidget() {
         <div>
           <div style={{ fontSize:11, fontWeight:700, color:"rgba(255,255,255,0.35)",
             textTransform:"uppercase", letterSpacing:"0.08em", marginBottom:4 }}>Automation Impact</div>
-          <div style={{ fontSize:17, fontWeight:800, color:"#fff", fontFamily:"'DM Sans',sans-serif" }}>Time Saved Per Workflow</div>
+          <div style={{ fontSize:17, fontWeight:800, color:"#fff", fontFamily:"'Akshar', sans-serif" }}>Time Saved Per Workflow</div>
         </div>
         <div style={{ display:"flex", gap:14 }}>
           {[["Before", "rgba(255,255,255,0.18)"], ["After AI", C.accent]].map(([l,c]) => (
@@ -115,9 +105,9 @@ function AutoWidget() {
         {[["89%","Avg time reduction"], ["0","Errors added by AI"], ["24/7","Consistent performance"]].map(([v,l]) => (
           <div key={l} style={{ padding:"14px 12px", borderRadius:10, background:"rgba(255,255,255,0.05)",
             border:"1px solid rgba(255,255,255,0.08)", textAlign:"center" }}>
-            <div style={{ fontSize:20, fontWeight:900, color:C.accent, fontFamily:"'DM Sans',sans-serif",
+            <div style={{ fontSize:20, fontWeight:900, color:C.accent, fontFamily:"'Akshar', sans-serif",
               letterSpacing:"-0.02em" }}>{v}</div>
-            <div style={{ fontSize:10.5, color:"rgba(255,255,255,0.4)", marginTop:4 }}>{l}</div>
+            <div style={{ fontSize:10.5, color:"rgba(255,255,255,0.62)", marginTop:4, fontWeight:500 }}>{l}</div>
           </div>
         ))}
       </div>
@@ -128,55 +118,43 @@ function AutoWidget() {
 function Hero() {
   return (
     <section style={{ minHeight:"88vh", display:"flex", alignItems:"center",
-      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.dark }}>
-      <div style={{ position:"absolute", inset:0,
-        backgroundImage:`linear-gradient(${C.accent}08 1px,transparent 1px),linear-gradient(90deg,${C.accent}08 1px,transparent 1px)`,
-        backgroundSize:"52px 52px", pointerEvents:"none" }} />
-      <div style={{ position:"absolute", top:-180, right:-80, width:700, height:700, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.accent}22 0%,transparent 68%)`, pointerEvents:"none" }} />
-      <div style={{ position:"absolute", bottom:-80, left:-60, width:500, height:500, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.p}30 0%,transparent 68%)`, pointerEvents:"none" }} />
+      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.bg }}>
 
       <div style={{ maxWidth:1100, margin:"0 auto", width:"100%", position:"relative", zIndex:1 }}>
         <div style={{ display:"grid", gridTemplateColumns:"1.05fr 1fr", gap:64, alignItems:"center" }}>
           <div>
             <div style={{ display:"flex", gap:10, marginBottom:20, animation:"fadeUp 0.6s ease both" }}>
-              <Badge c={C.accent}>⚙ Service</Badge>
-              <Badge c={C.muted}>AI Automation</Badge>
+              <Badge c={C.p}>⚙ Service</Badge>
+              <Badge c={C.p}>AI Automation</Badge>
             </div>
-            <H size="hero" color="#fff" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
+            <H size="hero" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
               Replace Manual Bottlenecks with{" "}
-              <span style={{ background:`linear-gradient(90deg,${C.accent},${C.p2})`,
-                WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
+              <span style={{ color:C.p }}>
                 Intelligent Automation
               </span>
             </H>
-            <P style={{ maxWidth:520, color:"rgba(255,255,255,0.7)", marginBottom:32,
+            <P style={{ maxWidth:520, marginBottom:32,
               fontSize:"1.08rem", animation:"fadeUp 0.6s 0.18s ease both" }}>
               We build AI workflows purpose-designed for LTC pharmacy — not repurposed from generic automation tools.
               Prior auth, DEA compliance reporting, order triage, fax processing — automated end-to-end, with full audit trails.
             </P>
             <div style={{ display:"flex", gap:12, flexWrap:"wrap", animation:"fadeUp 0.6s 0.25s ease both" }}>
-              <PBtn href="/schedule-demo">See It in Action →</PBtn>
-              <a href="#automations" style={{ display:"inline-flex", alignItems:"center", gap:8, padding:"12px 24px",
-                borderRadius:10, background:"transparent", color:"rgba(255,255,255,0.8)", fontWeight:600, fontSize:14.5,
-                border:"1.5px solid rgba(255,255,255,0.2)", textDecoration:"none", transition:"border-color 0.15s" }}
-                onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.5)"}
-                onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.2)"}>
+              <Button variant="primary" size="lg" to="/schedule-demo">See It in Action →</Button>
+              <Button variant="secondary" size="lg" onClick={() => document.getElementById("automations")?.scrollIntoView({ behavior:"smooth" })}>
                 See What We Automate ↓
-              </a>
+              </Button>
             </div>
 
             <div style={{ display:"flex", gap:0, marginTop:52,
-              borderTop:"1px solid rgba(255,255,255,0.1)", paddingTop:32,
+              borderTop:`1px solid ${C.border}`, paddingTop:32,
               animation:"fadeUp 0.6s 0.4s ease both" }}>
               {[["89%","Avg time reduction"],["Zero","Errors introduced"],["24/7","Consistent output"],["Weeks","Time to ROI"]].map(([v,l],i,a) => (
                 <div key={i} style={{ flex:1, paddingRight:18,
-                  borderRight:i<a.length-1?"1px solid rgba(255,255,255,0.1)":"none",
+                  borderRight:i<a.length-1?`1px solid ${C.border}`:"none",
                   marginRight:i<a.length-1?18:0 }}>
-                  <div style={{ fontSize:"clamp(1.4rem,2.2vw,1.9rem)", fontWeight:900, color:C.accent,
-                    letterSpacing:"-0.03em", fontFamily:"'DM Sans',sans-serif" }}>{v}</div>
-                  <div style={{ color:"rgba(255,255,255,0.4)", fontSize:11.5, marginTop:2, fontWeight:500 }}>{l}</div>
+                  <div style={{ fontSize:"clamp(1.4rem,2.2vw,1.9rem)", fontWeight:900, color:C.head,
+                    letterSpacing:"-0.03em", fontFamily:"'Akshar', sans-serif" }}>{v}</div>
+                  <div style={{ color:C.body, fontSize:12.5, marginTop:6, fontWeight:600, lineHeight:1.35 }}>{l}</div>
                 </div>
               ))}
             </div>
@@ -208,7 +186,7 @@ function Problem() {
             <P style={{ marginBottom:16 }}>That's not an operational quirk. It's a solvable problem. AI automation doesn't replace your pharmacists — it eliminates the repetitive work so they can focus on clinical judgment, patient safety, and the decisions that actually require human expertise.</P>
             <div style={{ padding:"16px 18px", borderRadius:12, background:`${C.accent}08`,
               border:`1px solid ${C.accent}25`, marginTop:8 }}>
-              <div style={{ fontSize:13.5, color:C.accent, fontWeight:600, lineHeight:1.6 }}>
+              <div style={{ fontSize:13.5, color:C.p, fontWeight:600, lineHeight:1.6 }}>
                 The goal isn't to automate everything. It's to identify which specific workflows in your pharmacy are pure manual overhead — and eliminate that overhead precisely.
               </div>
             </div>
@@ -220,7 +198,7 @@ function Problem() {
                 <span style={{ fontSize:22, flexShrink:0, marginTop:2 }}>{p.icon}</span>
                 <div>
                   <div style={{ color:C.head, fontWeight:700, fontSize:14.5, marginBottom:5,
-                    fontFamily:"'DM Sans',sans-serif" }}>{p.title}</div>
+                    fontFamily:"'Akshar', sans-serif" }}>{p.title}</div>
                   <div style={{ color:C.body, fontSize:13.5, lineHeight:1.65 }}>{p.desc}</div>
                 </div>
               </div>
@@ -240,7 +218,7 @@ function Automations() {
       before:"45 min / case", after:"8 min / case", saving:"83%",
       desc:"We automate the entire prior auth workflow — from identifying authorization requirements to generating structured documentation, submitting requests, tracking status, and flagging denials for follow-up. Built to work with your existing payer integrations.",
       steps:["Prescription triggers PA requirement check","Required documentation auto-compiled from patient record","Structured PA request generated and submitted","Status tracked with automatic follow-up reminders","Denials flagged to clinical team with appeal documentation ready"],
-      color:C.accent,
+      color:C.p,
     },
     {
       icon:<Printer size={20} />, title:"Fax Processing & Triage", tag:"Volume Reduction",
@@ -254,21 +232,21 @@ function Automations() {
       before:"6 min / order", after:"0.5 min / order", saving:"92%",
       desc:"Prescription data is extracted, validated against your formulary and dispensing rules, DEA status verified, CS scheduling confirmed, and the order queued for RPh review — with a complete structured record and zero manual re-entry.",
       steps:["eRx or fax data extracted and structured","Patient and prescriber records matched","DEA verification and CS schedule confirmed","Dispensing rules applied (DAW, auto-refill, batch)","Packaged for RPh review with full audit trail"],
-      color:C.violet,
+      color:C.p,
     },
     {
       icon:<BarChart3 size={20} />, title:"DEA Compliance Reporting", tag:"Regulatory",
       before:"3 hrs / report", after:"8 min / report", saving:"96%",
       desc:"DEA regulatory reports are assembled automatically from your pharmacy data — ARCOS submissions, DEA Form 222 tracking, CS inventory reconciliation — formatted correctly and filed on schedule. Audit trails maintained automatically.",
       steps:["CS transaction data aggregated across systems","ARCOS report formatted and validated","DEA Form 222 records reconciled","Discrepancies flagged before submission","Report filed and confirmation archived"],
-      color:C.green,
+      color:C.p,
     },
     {
       icon:<FolderArchive size={20} />, title:"Document Generation & Archival", tag:"Compliance",
       before:"60 min / day", after:"3 min / day", saving:"95%",
       desc:"Compliance documents, patient correspondence, facility reports, and regulatory submissions are generated from templates with live data, routed for e-signature where required, and archived with full search and retrieval capability.",
       steps:["Document type and recipient identified","Template populated with live patient/pharmacy data","Routed for e-signature if required","Filed with structured metadata for retrieval","Audit trail linked to source transaction"],
-      color:C.amber,
+      color:C.p,
     },
   ];
   const a = autos[active];
@@ -276,7 +254,7 @@ function Automations() {
     <section id="automations" style={{ padding:"88px 5vw", background:C.alt }}>
       <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:52 }}>
-          <div style={{ marginBottom:14 }}><Badge c={C.accent}>⚡ What We Automate</Badge></div>
+          <div style={{ marginBottom:14 }}><Badge c={C.p}>⚡ What We Automate</Badge></div>
           <H size="h2" style={{ marginBottom:14 }}>5 High-Impact LTC Pharmacy Automations</H>
           <P style={{ maxWidth:480, margin:"0 auto" }}>Each automation is built specifically for LTC pharmacy workflows — not adapted from generic RPA tools.</P>
         </div>
@@ -325,7 +303,7 @@ function Automations() {
                   <div style={{ fontSize:10, color:C.muted, fontWeight:700,
                     textTransform:"uppercase", letterSpacing:"0.06em", marginBottom:4 }}>{l}</div>
                   <div style={{ fontSize:15, fontWeight:800, color:c,
-                    fontFamily:"'DM Sans',sans-serif" }}>{v}</div>
+                    fontFamily:"'Akshar', sans-serif" }}>{v}</div>
                 </div>
               ))}
             </div>
@@ -353,11 +331,11 @@ function Automations() {
 
 function HowItWorks() {
   const steps = [
-    { n:"01", title:"Workflow Discovery Session", desc:"We spend time inside your current workflows — watching how staff process faxes, enter orders, and handle compliance tasks — before we design anything. The automation matches your reality, not a generic template.", color:C.accent },
+    { n:"01", title:"Workflow Discovery Session", desc:"We spend time inside your current workflows — watching how staff process faxes, enter orders, and handle compliance tasks — before we design anything. The automation matches your reality, not a generic template.", color:C.p },
     { n:"02", title:"Automation Design & Approval", desc:"We map out each automation in plain language with your team. You see exactly what gets automated, what gets escalated to humans, and how exceptions are handled — before a single line of code is written.", color:C.p },
-    { n:"03", title:"Build Against Your Live Systems", desc:"We build the automation integrated with your actual pharmacy management system, EHR, and data sources. No sandbox-only testing — we validate against real workflows.", color:C.violet },
-    { n:"04", title:"Parallel Run & Validation", desc:"Before full deployment, the automation runs in parallel with your manual process. We compare outputs, measure accuracy, and tune edge case handling until the results are pharmacy-grade reliable.", color:C.green },
-    { n:"05", title:"Deploy & Monitor", desc:"Automation goes live with full monitoring. Every run is logged, exceptions are surfaced immediately, and we track performance metrics week-over-week. You always know what the AI is doing.", color:C.accent },
+    { n:"03", title:"Build Against Your Live Systems", desc:"We build the automation integrated with your actual pharmacy management system, EHR, and data sources. No sandbox-only testing — we validate against real workflows.", color:C.p },
+    { n:"04", title:"Parallel Run & Validation", desc:"Before full deployment, the automation runs in parallel with your manual process. We compare outputs, measure accuracy, and tune edge case handling until the results are pharmacy-grade reliable.", color:C.p },
+    { n:"05", title:"Deploy & Monitor", desc:"Automation goes live with full monitoring. Every run is logged, exceptions are surfaced immediately, and we track performance metrics week-over-week. You always know what the AI is doing.", color:C.p },
   ];
   return (
     <section style={{ padding:"88px 5vw", background:C.surface }}>
@@ -377,10 +355,10 @@ function HowItWorks() {
               <div style={{ width:42, height:42, borderRadius:11, background:`${s.color}12`,
                 border:`1px solid ${s.color}30`, display:"flex", alignItems:"center",
                 justifyContent:"center", flexShrink:0, fontWeight:900, fontSize:15,
-                color:s.color, fontFamily:"'DM Sans',sans-serif" }}>{s.n}</div>
+                color:s.color, fontFamily:"'Akshar', sans-serif" }}>{s.n}</div>
               <div>
                 <div style={{ color:C.head, fontWeight:700, fontSize:16, marginBottom:6,
-                  fontFamily:"'DM Sans',sans-serif" }}>{s.title}</div>
+                  fontFamily:"'Akshar', sans-serif" }}>{s.title}</div>
                 <div style={{ color:C.body, fontSize:14.5, lineHeight:1.68 }}>{s.desc}</div>
               </div>
             </div>
@@ -419,14 +397,12 @@ function UseCases() {
             <Card key={i} ac={C.accent} style={{ padding:"26px 24px" }}>
               <div style={{ fontSize:28, marginBottom:14 }}>{c.icon}</div>
               <H size="h3" style={{ marginBottom:8, fontSize:16 }}>{c.title}</H>
-              <div style={{ display:"flex", gap:7, marginBottom:12, alignItems:"flex-start" }}>
+              <div style={{ display:"grid", gridTemplateColumns:"auto 1fr", columnGap:10, rowGap:12, alignItems:"start" }}>
                 <span style={{ fontSize:11, padding:"2px 8px", borderRadius:4, background:`${C.accent}0C`,
-                  color:C.accent, fontWeight:700, flexShrink:0, marginTop:1 }}>WHO</span>
+                  color:C.p, fontWeight:700, justifySelf:"start", marginTop:1 }}>WHO</span>
                 <span style={{ color:C.muted, fontSize:13, lineHeight:1.5 }}>{c.who}</span>
-              </div>
-              <div style={{ display:"flex", gap:7, alignItems:"flex-start" }}>
                 <span style={{ fontSize:11, padding:"2px 8px", borderRadius:4, background:`${C.green}0C`,
-                  color:C.green, fontWeight:700, flexShrink:0, marginTop:1 }}>RESULT</span>
+                  color:C.green, fontWeight:700, justifySelf:"start", marginTop:1 }}>RESULT</span>
                 <span style={{ color:C.body, fontSize:13, lineHeight:1.55 }}>{c.outcome}</span>
               </div>
             </Card>
@@ -485,9 +461,9 @@ function Related() {
   const items = [
     { icon:<Hospital size={20} />, color:C.p, tag:"Service", title:"LTC Pharmacy IT", href:"/services/ltc-pharmacy-it",
       desc:"Custom LTC pharmacy applications, telepharmacy platforms, and full-stack system integrations." },
-    { icon:<BarChart3 size={20} />, color:C.violet, tag:"Service", title:"Data Analytics & Power BI", href:"/services/data-analytics",
+    { icon:<BarChart3 size={20} />, color:C.p, tag:"Service", title:"Data Analytics & Power BI", href:"/services/data-analytics",
       desc:"Custom dashboards and analytics pipelines that make your pharmacy data genuinely actionable." },
-    { icon:<FileText size={20} />, color:C.accent, tag:"Product", title:"Document Automation", href:"/products/document-automation",
+    { icon:<FileText size={20} />, color:C.p, tag:"Product", title:"Document Automation", href:"/products/document-automation",
       desc:"AI-powered prior auth generation, compliance templating, and audit-ready archival." },
   ];
   return (
@@ -502,7 +478,7 @@ function Related() {
                 <div style={{ fontSize:10.5, fontWeight:700, textTransform:"uppercase",
                   letterSpacing:"0.07em", color:it.color, marginBottom:6 }}>{it.tag}</div>
                 <div style={{ color:C.head, fontWeight:700, fontSize:16, marginBottom:8,
-                  fontFamily:"'DM Sans',sans-serif" }}>{it.title}</div>
+                  fontFamily:"'Akshar', sans-serif" }}>{it.title}</div>
                 <div style={{ color:C.body, fontSize:13.5, lineHeight:1.6 }}>{it.desc}</div>
                 <div style={{ color:it.color, fontSize:13, fontWeight:700, marginTop:14 }}>Learn more →</div>
               </a>
@@ -516,28 +492,21 @@ function Related() {
 
 function CTA() {
   return (
-    <section style={{ padding:"80px 5vw", background:C.dark, position:"relative", overflow:"hidden" }}>
-      <div style={{ position:"absolute", top:-140, right:-80, width:500, height:500, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.accent}45 0%,transparent 70%)`, pointerEvents:"none" }} />
-      <div style={{ position:"absolute", bottom:-70, left:0, width:360, height:360, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.p}44 0%,transparent 70%)`, pointerEvents:"none" }} />
+    <section style={{ padding:"80px 5vw", background:C.surface, borderTop:`1px solid ${C.border}`,
+      position:"relative" }}>
       <div style={{ maxWidth:660, margin:"0 auto", textAlign:"center", position:"relative", zIndex:1 }}>
-        <H size="h2" style={{ color:"#fff", marginBottom:14 }}>
+        <H size="h2" style={{ color:C.head, marginBottom:14, fontFamily:"'Akshar', sans-serif", fontWeight:700 }}>
           Ready to See What Gets Automated in Your Pharmacy?
         </H>
-        <P style={{ color:"rgba(255,255,255,0.68)", marginBottom:32, fontSize:16 }}>
+        <P style={{ color:C.body, marginBottom:32, fontSize:16,
+          fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400 }}>
           Schedule a workflow discovery session with our team. We'll map your current manual processes, identify the 2–3 highest-impact automations, and show you exactly what the ROI looks like before you commit to anything.
         </P>
         <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
-          <PBtn light href="/schedule-demo">Book a Discovery Session →</PBtn>
-          <a href={`tel:${CONTACT_PHONE}`} style={{ display:"inline-flex", alignItems:"center", gap:8,
-            padding:"12px 24px", borderRadius:10, background:"transparent",
-            color:"rgba(255,255,255,0.78)", fontWeight:600, fontSize:14, textDecoration:"none",
-            border:"1.5px solid rgba(255,255,255,0.22)", fontFamily:"inherit" }}
-            onMouseEnter={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.55)"}
-            onMouseLeave={e=>e.currentTarget.style.borderColor="rgba(255,255,255,0.22)"}>
+          <Button variant="primary" size="md" to="/schedule-demo">Book a Discovery Session →</Button>
+          <Button variant="secondary" size="md" href={`tel:${CONTACT_PHONE}`} style={{ fontSize:"0.9rem" }}>
             📞 {CONTACT_PHONE_DISPLAY}
-          </a>
+          </Button>
         </div>
       </div>
     </section>

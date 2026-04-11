@@ -27,15 +27,37 @@ export default function App() {
   return (
     <>
       <style>{`
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;1,9..40,400&display=swap');
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-Book.woff2') format('woff2'),
+       url('/fonts/Gotham-Book.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-Light.woff2') format('woff2'),
+       url('/fonts/Gotham-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #EEF4F8; color: #2D4066; font-family: 'DM Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+body {
+  background: #C6DBE7;
+  color: #1E3A5C;
+  font-family: 'Gotham', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 @keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes dropIn { from { opacity: 0; transform: translateX(-50%) translateY(-6px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 ::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #EEF4F8; }
-::-webkit-scrollbar-thumb { background: #C9DFEA; border-radius: 3px; }
+::-webkit-scrollbar-track { background: #C6DBE7; }
+::-webkit-scrollbar-thumb { background: #8AB8E3; border-radius: 3px; }
       `}</style>
 
       <ScrollToTop />

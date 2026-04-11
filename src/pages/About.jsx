@@ -1,40 +1,30 @@
 import C from '../tokens.js'
 import { useState, useEffect } from "react";
+import { Button } from '../components/ui/Button.jsx'
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
 import { Search, Wrench, TrendingUp, Target, Microscope, Link as LinkIcon, Users, MapPin, Mail, Phone } from 'lucide-react'
 import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../config/constants.js'
 
-const Badge = ({ c=C.p, children }) => (
+const Badge = ({ c=C.p2, children }) => (
   <span style={{ display:"inline-flex", alignItems:"center", gap:5, padding:"4px 13px",
-    borderRadius:99, border:`1px solid ${c}28`, background:`${c}0B`, color:c,
-    fontSize:11.5, letterSpacing:"0.07em", textTransform:"uppercase", fontWeight:700 }}>
+    borderRadius:99, border:`1px solid ${c}28`, background:`${c}18`, color:c,
+    fontSize:11.5, letterSpacing:"0.07em", textTransform:"uppercase", fontWeight:500,
+    fontFamily:"'Akshar', sans-serif" }}>
     {children}
   </span>
 );
 const H = ({ size="h2", style={}, color, children }) => {
   const s = { hero:"clamp(2.4rem,5vw,3.8rem)", h2:"clamp(1.8rem,2.7vw,2.4rem)", h3:"1.15rem" };
-  return <h2 style={{ fontSize:s[size], fontWeight:800, color:color||C.head,
+  const fw = size === "h3" ? 500 : 700;
+  return <h2 style={{ fontSize:s[size], fontWeight:fw, color:color||C.head,
     letterSpacing:"-0.026em", lineHeight:1.12,
-    fontFamily:"'DM Sans',system-ui,sans-serif", ...style }}>{children}</h2>;
+    fontFamily:"'Akshar', sans-serif", ...style }}>{children}</h2>;
 };
 const P = ({ style={}, children }) => (
-  <p style={{ fontSize:"clamp(0.96rem,1.1vw,1.04rem)", color:C.body, lineHeight:1.78, ...style }}>{children}</p>
+  <p style={{ fontSize:"clamp(0.96rem,1.1vw,1.04rem)", color:C.body, lineHeight:1.78,
+    fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400, ...style }}>{children}</p>
 );
-function PBtn({ children, href, light }) {
-  const base = { display:"inline-flex", alignItems:"center", gap:8, padding:"12px 26px",
-    borderRadius:10, fontWeight:700, fontSize:14.5, border:"none", cursor:"pointer",
-    textDecoration:"none", fontFamily:"inherit", transition:"all 0.15s" };
-  const v = light
-    ? {...base, background:C.surface, color:C.p, boxShadow:"0 2px 14px rgba(0,0,0,0.1)"}
-    : {...base, background:`linear-gradient(135deg,${C.p},#2A4A7F)`, color:"#fff", boxShadow:`0 4px 20px ${C.p}45`};
-  return <a href={href} style={v}
-    onMouseEnter={e=>{ e.currentTarget.style.transform="translateY(-2px)"; }}
-    onMouseLeave={e=>{ e.currentTarget.style.transform="none"; }}>
-    {children}
-  </a>;
-}
-
 function Hero() {
   return (
     <section style={{ minHeight:"72vh", display:"flex", alignItems:"center",
@@ -50,7 +40,7 @@ function Hero() {
 
       <div style={{ maxWidth:860, margin:"0 auto", position:"relative", zIndex:1, textAlign:"center" }}>
         <div style={{ marginBottom:20, animation:"fadeUp 0.5s ease both" }}>
-          <Badge c={C.p2}>About SkypondTech.AI</Badge>
+          <Badge c={C.green}>About SkypondTech.AI</Badge>
         </div>
         <H size="hero" color="#fff" style={{ marginBottom:22, animation:"fadeUp 0.5s 0.08s ease both" }}>
           Built for a Gap{" "}
@@ -66,15 +56,10 @@ function Hero() {
         </P>
         <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap",
           animation:"fadeUp 0.5s 0.2s ease both" }}>
-          <PBtn href="/schedule-demo">Talk to Our Team →</PBtn>
-          <a href="#story" style={{ display:"inline-flex", alignItems:"center", gap:8,
-            padding:"12px 24px", borderRadius:10, background:"transparent",
-            color:"rgba(255,255,255,0.72)", fontWeight:600, fontSize:14.5,
-            border:`1.5px solid rgba(255,255,255,0.22)`, textDecoration:"none" }}
-            onMouseEnter={e => e.currentTarget.style.borderColor="rgba(255,255,255,0.5)"}
-            onMouseLeave={e => e.currentTarget.style.borderColor="rgba(255,255,255,0.22)"}>
+          <Button variant="primaryDark" size="lg" to="/schedule-demo">Talk to Our Team →</Button>
+          <Button variant="secondaryDark" size="lg" onClick={() => document.getElementById("story")?.scrollIntoView({ behavior:"smooth" })}>
             Our Story ↓
-          </a>
+          </Button>
         </div>
       </div>
     </section>
@@ -116,7 +101,7 @@ function StorySection() {
               { year:"Early 2020s", color:C.p,      icon:<Search size={17} />,
                 title:"The Gap Identified",
                 desc:"After nearly a decade working inside LTC pharmacy — hands-on with dispensing systems, DEA workflows, and facility integrations — the team saw the same problem everywhere: pharmacies patching critical operations together with manual work and software that was never built for them." },
-              { year:"Year One",    color:C.accent,  icon:<Wrench size={17} />,
+              { year:"Year One",    color:C.red,  icon:<Wrench size={17} />,
                 title:"First Builds",
                 desc:"First custom integrations and internal tools built specifically for LTC pharmacy operations — not adapted from other industries, designed for this one." },
               { year:"Growing",     color:C.green,   icon:<TrendingUp size={17} />,
@@ -141,7 +126,7 @@ function StorySection() {
                   <div style={{ fontSize:10.5, fontWeight:700, color:item.color,
                     textTransform:"uppercase", letterSpacing:"0.07em", marginBottom:4 }}>{item.year}</div>
                   <div style={{ color:C.head, fontWeight:700, fontSize:15.5, marginBottom:6,
-                    fontFamily:"'DM Sans',sans-serif" }}>{item.title}</div>
+                    fontFamily:"'Akshar', sans-serif" }}>{item.title}</div>
                   <div style={{ color:C.body, fontSize:14, lineHeight:1.68 }}>{item.desc}</div>
                 </div>
               </div>
@@ -168,7 +153,7 @@ function Mission() {
     <section style={{ padding:"88px 5vw", background:C.alt }}>
       <div style={{ maxWidth:1060, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:52 }}>
-          <div style={{ marginBottom:14 }}><Badge c={C.accent}>Our Mission</Badge></div>
+          <div style={{ marginBottom:14 }}><Badge c={C.p}>Our Mission</Badge></div>
           <H size="h2" style={{ marginBottom:14 }}>
             What We're Here to Do
           </H>
@@ -295,14 +280,14 @@ function Location() {
           <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14 }}>
             {[
               { num:"LTC Only",  sub:"Our entire focus",             color:C.p },
-              { num:"10–15 Yrs",   sub:"Deep domain experience",       color:C.accent },
+              { num:"10–15 Yrs",   sub:"Deep domain experience",       color:C.pd },
               { num:"6",         sub:"Specialized services",         color:C.green },
               { num:"100%",      sub:"Client satisfaction target",   color:C.amber },
             ].map((s, i) => (
               <div key={i} style={{ padding:"24px 20px", borderRadius:14, background:C.surface,
                 border:`1.5px solid ${s.color}30`, textAlign:"center" }}>
                 <div style={{ fontSize:"clamp(1.4rem,2vw,1.8rem)", fontWeight:900, color:s.color,
-                  fontFamily:"'DM Sans',sans-serif", letterSpacing:"-0.02em" }}>{s.num}</div>
+                  fontFamily:"'Akshar', sans-serif", letterSpacing:"-0.02em" }}>{s.num}</div>
                 <div style={{ color:C.muted, fontSize:12.5, marginTop:5, lineHeight:1.4 }}>{s.sub}</div>
               </div>
             ))}
@@ -315,30 +300,19 @@ function Location() {
 
 function CTA() {
   return (
-    <section style={{ padding:"80px 5vw",
-      background:`linear-gradient(160deg,${C.dark} 0%,#0D2040 100%)`,
-      position:"relative", overflow:"hidden" }}>
-      <div style={{ position:"absolute", top:-120, right:-60, width:480, height:480, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.p2}25 0%,transparent 70%)`, pointerEvents:"none" }} />
-      <div style={{ position:"absolute", bottom:-60, left:0, width:340, height:340, borderRadius:"50%",
-        background:`radial-gradient(circle,${C.accent}30 0%,transparent 70%)`, pointerEvents:"none" }} />
+    <section style={{ padding:"80px 5vw", background:C.surface, borderTop:`1px solid ${C.border}`,
+      position:"relative" }}>
       <div style={{ maxWidth:640, margin:"0 auto", textAlign:"center", position:"relative", zIndex:1 }}>
-        <H size="h2" style={{ color:"#fff", marginBottom:14 }}>
+        <H size="h2" style={{ color:C.head, marginBottom:14, fontFamily:"'Akshar', sans-serif", fontWeight:700 }}>
           Ready to Work With a Team That Knows LTC Pharmacy?
         </H>
-        <P style={{ color:"rgba(255,255,255,0.62)", marginBottom:32, fontSize:"1.05rem" }}>
+        <P style={{ color:C.body, marginBottom:32, fontSize:"1.05rem",
+          fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400 }}>
           Book a free discovery call. We'll talk through your current setup, identify where the gaps are, and be straight with you about what we can help with.
         </P>
         <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
-          <PBtn href="/schedule-demo">Schedule a Free Call →</PBtn>
-          <a href="/services" style={{ display:"inline-flex", alignItems:"center", gap:8,
-            padding:"12px 24px", borderRadius:10, background:"transparent",
-            color:"rgba(255,255,255,0.75)", fontWeight:600, fontSize:14.5,
-            border:`1.5px solid rgba(255,255,255,0.22)`, textDecoration:"none" }}
-            onMouseEnter={e => e.currentTarget.style.borderColor="rgba(255,255,255,0.5)"}
-            onMouseLeave={e => e.currentTarget.style.borderColor="rgba(255,255,255,0.22)"}>
-            View Our Services →
-          </a>
+          <Button variant="primary" size="md" to="/schedule-demo">Schedule a Free Call →</Button>
+          <Button variant="secondary" size="md" to="/services">View Our Services →</Button>
         </div>
       </div>
     </section>
