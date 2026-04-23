@@ -5,6 +5,7 @@ import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../config/c
 
 export function Footer() {
   const [hoveredLink, setHoveredLink] = useState(null)
+  const logoBase = import.meta.env.BASE_URL;
 
   return (
     <footer style={{ background:C.p, borderTop:'1px solid rgba(255,255,255,0.12)', padding:"44px 5vw 22px" }}>
@@ -13,13 +14,10 @@ export function Footer() {
           <div>
             <div style={{ display:"flex", alignItems:"center", gap:9, marginBottom:12 }}>
               <img
-                src="/logosymbol.png"
+                src={`${logoBase}navbar-logo-white.png`}
                 alt="SkypondTech"
-                style={{ width:30, height:30, objectFit:"contain" }}
+                style={{ width:220, height:"auto", maxHeight:56, objectFit:"contain", objectPosition:"left center", display:"block" }}
               />
-              <span style={{ color:'#FFFFFF', fontWeight:700, fontSize:16, fontFamily:"'Akshar', sans-serif" }}>
-                SkypondTech<span style={{ color:C.p2 }}>.ai</span>
-              </span>
             </div>
             <p style={{ color:'rgba(255,255,255,0.65)', fontSize:13.5, lineHeight:1.7, maxWidth:240, marginBottom:16,
               fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400 }}>

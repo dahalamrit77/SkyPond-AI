@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from '../components/ui/Button.jsx'
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
-import { Search, ClipboardList, Pill, TrendingUp, Link as LinkIcon, FileText, Hospital, Settings, BarChart3, Laptop, Cloud, CheckCircle2, Box, Inbox, Activity } from 'lucide-react'
+import { Search, ClipboardList, Pill, TrendingUp, Link as LinkIcon, FileText, Hospital, Settings, BarChart3, Laptop, Cloud, CheckCircle2, Box, Inbox, Activity, Zap, Building2, Users } from 'lucide-react'
 import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../config/constants.js'
 
 /* ─── PRIMITIVES ──────────────────────────────────────────────────────────── */
@@ -418,13 +418,13 @@ function Hero() {
             <div style={{ display:"flex", flexDirection:"column", gap:8, marginBottom:28,
               animation:"fadeUp 0.6s 0.2s ease both" }}>
               {[
-                ["⚡","6 purpose-built products — DEA & CS tools no competitor offers"],
-                ["🏥","100% LTC-only focus — not diluted by retail or specialty pharmacy"],
-                ["👥","Real named clients — not anonymous testimonials"],
-              ].map(([icon,txt]) => (
+                { icon: Zap, txt:"6 purpose-built products — DEA & CS tools no competitor offers" },
+                { icon: Building2, txt:"100% LTC-only focus — not diluted by retail or specialty pharmacy" },
+                { icon: Users, txt:"Real named clients — not anonymous testimonials" },
+              ].map(({ icon: Icon, txt }) => (
                 <div key={txt} style={{ display:"inline-flex", alignItems:"center", gap:10,
                   padding:"10px 14px", borderRadius:9, background:`${C.p}0A`, border:`1px solid ${C.p}20` }}>
-                  <span style={{ fontSize:15 }}>{icon}</span>
+                  <Icon size={15} color={C.p} />
                   <span style={{ fontSize:13, color:C.p, fontWeight:600 }}>{txt}</span>
                 </div>
               ))}
@@ -570,9 +570,7 @@ function Services() {
           <P style={{ maxWidth:500 }}>
             TJM Labs and PillSpark are automation tools. SkypondTech is your complete LTC technology partner — from DEA compliance to custom development to Microsoft cloud infrastructure.
           </P>
-          <Button to="/compare" variant="ghost" size="md" style={{ marginTop: 10, whiteSpace: 'normal', justifyContent: 'flex-start' }}>
-            See how we compare →
-          </Button>
+          {/* Compare page removed */}
         </div>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:18 }}>
           {SERVICES.map((s,i) => (

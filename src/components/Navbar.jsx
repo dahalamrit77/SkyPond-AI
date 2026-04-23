@@ -156,19 +156,20 @@ export function Navbar() {
 
   const closeMobile = () => setMobileOpen(false);
   const navDark = sc || pathname !== "/";
+  const logoBase = import.meta.env.BASE_URL;
 
   const logoWordmarkStyle = {
-    height: 34,
-    width: "auto",
-    maxWidth: 220,
+    width: 220,
+    height: "auto",
+    maxHeight: 42,
     objectFit: "contain",
     objectPosition: "left center",
     display: "block",
     backgroundColor: "transparent",
     border: "none",
     verticalAlign: "middle",
-    ...(navDark ? { mixBlendMode: "multiply" } : { mixBlendMode: "normal" }),
   };
+  const navbarLogoSrc = `${logoBase}${navDark ? "navbar-logo-white.png" : "navbar-logo-blue.png"}`;
 
   const activeServices = pathname.startsWith("/services");
   const activeProducts = pathname.startsWith("/products");
@@ -210,7 +211,7 @@ export function Navbar() {
         <RouterLink to="/" style={{ display:"flex", alignItems:"center", textDecoration:"none",
           background:"transparent", lineHeight:0 }}
           aria-label="SkypondTech home">
-          <img src="/navbar-skypond-tech-logo.png" alt="Skypond Tech" style={logoWordmarkStyle} />
+          <img src={navbarLogoSrc} alt="Skypond Tech" style={logoWordmarkStyle} />
         </RouterLink>
 
         {!isMobile && (

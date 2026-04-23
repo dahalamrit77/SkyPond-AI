@@ -6,7 +6,6 @@ import About from './pages/About.jsx'
 import OurValues from './pages/OurValues.jsx'
 import Industries from './pages/Industries.jsx'
 import ScheduleDemo from './pages/ScheduleDemo.jsx'
-import Compare from './pages/Compare.jsx'
 import ServicesIndex from './pages/ServicesIndex.jsx'
 import ProductsIndex from './pages/ProductsIndex.jsx'
 import AIAutomation from './pages/services/AIAutomation.jsx'
@@ -67,7 +66,6 @@ body {
         <Route path="/our-values" element={<OurValues />} />
         <Route path="/industries" element={<Industries />} />
         <Route path="/schedule-demo" element={<ScheduleDemo />} />
-        <Route path="/compare" element={<Compare />} />
         <Route path="/services" element={<ServicesIndex />} />
         <Route path="/products" element={<ProductsIndex />} />
         <Route path="/services/ai-automation" element={<AIAutomation />} />
