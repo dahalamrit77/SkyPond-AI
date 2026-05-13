@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products — Skypond Tech</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Fraunces:opsz,wght@9..144,700;9..144,800;9..144,900&display=swap');
+:root{--navy:#0d1f3c;--navy-mid:#132a52;--navy-light:#1c3a6e;--green:#6abf5e;--green-dark:#4a9e40;--white:#ffffff;--off-white:#f0f4f8;--text-mid:#3d5a78;--text-muted:#8fa3be;--text-pale:#c8d8ea;--text-light:#e4edf7;--border-dark:rgba(255,255,255,0.08);--border-mid:rgba(255,255,255,0.14);--border-lite:rgba(255,255,255,0.22);}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--off-white);color:var(--navy);overflow-x:hidden;}
+nav{background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 56px;height:66px;position:sticky;top:0;z-index:200;border-bottom:1px solid var(--border-dark);}
+.nav-logo{display:flex;align-items:center;gap:10px;color:var(--white);font-weight:600;font-size:14px;letter-spacing:.04em;text-decoration:none;}
+.logo-sq{width:30px;height:30px;background:var(--green);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:var(--navy);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{color:var(--text-muted);font-size:14px;font-weight:400;transition:color .2s;text-decoration:none;}
+.nav-links a:hover,.nav-links a.active{color:var(--white);}
+.nav-cta{background:var(--white);color:var(--navy);padding:8px 18px;border-radius:6px;font-size:13px;font-weight:600;transition:background .2s,color .2s;text-decoration:none;}
+.nav-cta:hover{background:var(--green);color:var(--white);}
+.hero{background:var(--navy);padding:80px 56px 72px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-120px;right:-80px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(106,191,94,0.09) 0%,transparent 68%);pointer-events:none;}
+.hero::after{content:'';position:absolute;bottom:-160px;left:-60px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,0.05) 0%,transparent 68%);pointer-events:none;}
+.breadcrumb{display:flex;align-items:center;gap:8px;margin-bottom:28px;}
+.breadcrumb a,.breadcrumb span{font-size:12px;color:var(--text-muted);text-decoration:none;}
+.breadcrumb a:hover{color:var(--green);}
+.pill{display:inline-flex;align-items:center;gap:7px;background:rgba(106,191,94,0.12);border:1px solid rgba(106,191,94,0.28);color:var(--green);padding:5px 14px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:22px;}
+.hero h1{font-family:'Fraunces',serif;font-size:52px;font-weight:900;color:var(--white);line-height:1.08;max-width:620px;margin-bottom:20px;}
+.hero h1 em{font-style:normal;color:var(--green);}
+.hero p{font-size:17px;color:var(--text-pale);font-weight:300;line-height:1.7;max-width:520px;}
+.tabs-bar{background:var(--navy-mid);border-bottom:1px solid var(--border-dark);padding:0 56px;display:flex;gap:0;overflow-x:auto;}
+.tab{background:none;border:none;border-bottom:2px solid transparent;padding:15px 20px;color:var(--text-muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;margin-bottom:-1px;}
+.tab:hover{color:var(--text-light);}
+.tab.active{color:var(--green);border-bottom-color:var(--green);}
+.grid-section{padding:64px 56px;max-width:1260px;margin:0 auto;}
+.grid-head{margin-bottom:42px;}
+.grid-head h2{font-family:'Fraunces',serif;font-size:32px;font-weight:800;color:var(--navy);margin-bottom:8px;}
+.grid-head p{font-size:15px;color:var(--text-mid);font-weight:300;}
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.pcard{background:var(--white);border-radius:18px;border:1px solid #d8e3ef;overflow:hidden;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s;text-decoration:none;color:inherit;}
+.pcard:hover{transform:translateY(-5px);box-shadow:0 18px 52px rgba(13,31,60,0.13);}
+.pcard-top{background:var(--navy);padding:30px 28px 26px;position:relative;overflow:hidden;}
+.pcard-top::after{content:'';position:absolute;bottom:-30px;right:-30px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,0.03);}
+.pcard-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;}
+.ic-1{background:rgba(20,184,166,0.15);}
+.ic-2{background:rgba(106,191,94,0.15);}
+.ic-3{background:rgba(59,130,246,0.15);}
+.ic-4{background:rgba(245,158,11,0.15);}
+.ic-5{background:rgba(168,85,247,0.15);}
+.ic-6{background:rgba(236,72,153,0.15);}
+.pcard-top h3{font-family:'Fraunces',serif;font-size:21px;font-weight:800;color:var(--white);margin-bottom:8px;line-height:1.2;}
+.badge{display:inline-block;background:rgba(106,191,94,0.18);color:var(--green);font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 10px;border-radius:100px;border:1px solid rgba(106,191,94,0.28);}
+.pcard-body{padding:24px 28px;flex:1;display:flex;flex-direction:column;}
+.pcard-desc{font-size:14px;color:var(--text-mid);line-height:1.65;margin-bottom:20px;}
+.feat-list{list-style:none;margin-bottom:24px;flex:1;}
+.feat-list li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--navy);padding:6px 0;border-bottom:1px solid #eef2f6;font-weight:400;}
+.feat-list li:last-child{border-bottom:none;}
+.chk{width:18px;height:18px;flex-shrink:0;border-radius:50%;background:#e8f7e6;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.pcard-foot{padding:16px 28px 24px;border-top:1px solid #eef2f6;display:flex;gap:10px;}
+.btn-primary{flex:1;background:var(--navy);color:var(--white);border:none;border-radius:8px;padding:11px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;}
+.btn-primary:hover{background:var(--navy-light);}
+.btn-ghost{background:none;border:1px solid #d8e3ef;border-radius:8px;padding:11px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--navy);cursor:pointer;transition:all .2s;text-decoration:none;display:flex;align-items:center;gap:6px;}
+.btn-ghost:hover{border-color:var(--navy);background:#f5f8fb;}
+.cta-band{background:var(--navy-mid);border-top:1px solid var(--border-dark);padding:72px 56px;text-align:center;}
+.cta-band h2{font-family:'Fraunces',serif;font-size:38px;font-weight:800;color:var(--white);margin-bottom:12px;}
+.cta-band p{font-size:16px;color:var(--text-muted);margin-bottom:34px;font-weight:300;}
+.cta-row{display:flex;gap:16px;justify-content:center;}
+.btn-cg{background:var(--green);color:var(--navy);border:none;border-radius:8px;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s;text-decoration:none;}
+.btn-cg:hover{background:#7dcf71;}
+.btn-co{background:none;border:1px solid var(--border-lite);border-radius:8px;padding:14px 28px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:background .2s;text-decoration:none;}
+.btn-co:hover{background:rgba(255,255,255,0.06);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+.pcard{animation:fadeUp .45s ease both;}
+.pcard:nth-child(1){animation-delay:.05s;}.pcard:nth-child(2){animation-delay:.11s;}.pcard:nth-child(3){animation-delay:.17s;}
+.pcard:nth-child(4){animation-delay:.23s;}.pcard:nth-child(5){animation-delay:.29s;}.pcard:nth-child(6){animation-delay:.35s;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="#" class="nav-logo"><div class="logo-sq">SP</div>SKYPOND TECH</a>
+  <ul class="nav-links">
+    <li><a href="#">Services</a></li>
+    <li><a href="index.html" class="active">Products</a></li>
+    <li><a href="#">Industries</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <a href="#" class="nav-cta">Schedule a Demo →</a>
+</nav>
+
+<section class="hero">
+  <div class="breadcrumb"><a href="#">Home</a><span>/</span><span>Products</span></div>
+  <div class="pill">⬡ Product Suite</div>
+  <h1>Purpose-built tools for <em>LTC pharmacy</em> operations</h1>
+  <p>Every product was designed from inside the industry — not adapted from generic software. DEA compliance, CS inventory, LTC analytics, facility integrations, and more.</p>
+</section>
+
+<div class="tabs-bar">
+  <button class="tab active" onclick="filter('all',this)">All Products</button>
+  <button class="tab" onclick="filter('compliance',this)">Compliance</button>
+  <button class="tab" onclick="filter('operations',this)">Operations</button>
+  <button class="tab" onclick="filter('analytics',this)">Analytics</button>
+  <button class="tab" onclick="filter('integration',this)">Integrations</button>
+</div>
+
+<div class="grid-section">
+  <div class="grid-head">
+    <h2>The Complete LTC Pharmacy Stack</h2>
+    <p>Six products. One team that knows the space.</p>
+  </div>
+  <div class="products-grid">
+
+    <div class="pcard" data-cat="compliance">
+      <div class="pcard-top">
+        <div class="pcard-icon ic-1">🔍</div>
+        <h3>DEA Lookup Tool</h3>
+        <span class="badge">Compliance</span>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-desc">Instantly validate DEA registrant information against live federal databases. Built for pharmacists who can't afford verification delays.</p>
+        <ul class="feat-list">
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Real-time DEA number validation</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Registrant schedule verification</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Bulk CSV upload for batch validation</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Audit-ready timestamped logs</li>
+        </ul>
+      </div>
+      <div class="pcard-foot">
+        <a href="dea-lookup-tool.html" class="btn-primary">View Product →</a>
+        <a href="#" class="btn-ghost">Demo</a>
+      </div>
+    </div>
+
+    <div class="pcard" data-cat="compliance">
+      <div class="pcard-top">
+        <div class="pcard-icon ic-2">📋</div>
+        <h3>DEA Compliance Reporting</h3>
+        <span class="badge">Compliance</span>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-desc">Automate CSOS, ARCOS, and DEA Form 222 reporting workflows. Eliminate manual errors and stay ahead of inspection cycles.</p>
+        <ul class="feat-list">
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>CSOS & ARCOS automated filing</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>DEA Form 222 digital workflow</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Exception flagging & alerts</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Multi-location reporting rollup</li>
+        </ul>
+      </div>
+      <div class="pcard-foot">
+        <a href="dea-compliance-reporting.html" class="btn-primary">View Product →</a>
+        <a href="#" class="btn-ghost">Demo</a>
+      </div>
+    </div>
+
+    <div class="pcard" data-cat="operations">
+      <div class="pcard-top">
+        <div class="pcard-icon ic-3">📦</div>
+        <h3>CS Inventory</h3>
+        <span class="badge">Operations</span>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-desc">Real-time controlled substance inventory management built for LTC pharmacy workflows. Track, reconcile, and audit with confidence.</p>
+        <ul class="feat-list">
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Real-time perpetual inventory</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Automated discrepancy alerts</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Schedule II–V tracking</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>One-click biennial inventory export</li>
+        </ul>
+      </div>
+      <div class="pcard-foot">
+        <a href="cs-inventory.html" class="btn-primary">View Product →</a>
+        <a href="#" class="btn-ghost">Demo</a>
+      </div>
+    </div>
+
+    <div class="pcard" data-cat="analytics">
+      <div class="pcard-top">
+        <div class="pcard-icon ic-4">📊</div>
+        <h3>LTC Analytics</h3>
+        <span class="badge">Analytics</span>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-desc">Pharmacy-specific dashboards that surface the metrics that matter in long-term care — utilization, adherence, cost trends, and facility KPIs.</p>
+        <ul class="feat-list">
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Facility-level performance views</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Medication utilization trends</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Cost & margin analytics</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Configurable KPI dashboards</li>
+        </ul>
+      </div>
+      <div class="pcard-foot">
+        <a href="ltc-analytics.html" class="btn-primary">View Product →</a>
+        <a href="#" class="btn-ghost">Demo</a>
+      </div>
+    </div>
+
+    <div class="pcard" data-cat="integration">
+      <div class="pcard-top">
+        <div class="pcard-icon ic-5">🔗</div>
+        <h3>PointClickCare Feed</h3>
+        <span class="badge">Integration</span>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-desc">Bidirectional data integration between your pharmacy system and PointClickCare — eliminating manual re-entry and closing the loop with facilities.</p>
+        <ul class="feat-list">
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Real-time HL7/FHIR data sync</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>ADT admission/discharge triggers</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>MAR reconciliation automation</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Exception queue & error reporting</li>
+        </ul>
+      </div>
+      <div class="pcard-foot">
+        <a href="pointclickcare-feed.html" class="btn-primary">View Product →</a>
+        <a href="#" class="btn-ghost">Demo</a>
+      </div>
+    </div>
+
+    <div class="pcard" data-cat="operations">
+      <div class="pcard-top">
+        <div class="pcard-icon ic-6">⚡</div>
+        <h3>Document Automation</h3>
+        <span class="badge">Operations</span>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-desc">Generate, route, and archive pharmacy documents at scale — from prior auth letters to facility agreements — without manual assembly.</p>
+        <ul class="feat-list">
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Template-driven document generation</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>e-Signature workflow routing</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>HIPAA-compliant archiving</li>
+          <li><div class="chk"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#4a9e40" stroke-width="1.5" stroke-linecap="round"/></svg></div>Full audit trail on every document</li>
+        </ul>
+      </div>
+      <div class="pcard-foot">
+        <a href="document-automation.html" class="btn-primary">View Product →</a>
+        <a href="#" class="btn-ghost">Demo</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<section class="cta-band">
+  <h2>Ready to see it in action?</h2>
+  <p>Walk through any product with someone who actually knows LTC pharmacy.</p>
+  <div class="cta-row">
+    <a href="#" class="btn-cg">Schedule a Demo →</a>
+    <a href="#" class="btn-co">Talk to Sales</a>
+  </div>
+</section>
+
+<script>
+function filter(cat, btn) {
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.pcard').forEach(c => {
+    c.style.display = (cat === 'all' || c.dataset.cat === cat) ? 'flex' : 'none';
+  });
+}
+</script>
+</body>
+</html>

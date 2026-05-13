@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEA Compliance Reporting — Skypond Tech</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Fraunces:opsz,wght@9..144,700;9..144,800;9..144,900&display=swap');
+:root{
+  --navy:#0d1f3c;--navy-mid:#132a52;--navy-light:#1c3a6e;
+  --green:#6abf5e;--green-dk:#4a9e40;--green-pale:#e8f7e6;
+  --green-glow:rgba(106,191,94,0.10);
+  --white:#ffffff;--off-white:#f0f4f8;
+  --text-navy:#0d1f3c;--text-mid:#3d5a78;--text-muted:#8fa3be;
+  --text-pale:#c8d8ea;--text-light:#e4edf7;
+  --bd-dark:rgba(255,255,255,0.08);--bd-mid:rgba(255,255,255,0.14);
+  --bd-lite:rgba(255,255,255,0.22);--bd-light:#d8e3ef;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--off-white);color:var(--text-navy);overflow-x:hidden;}
+a{text-decoration:none;}
+/* NAV */
+nav{background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 56px;height:66px;position:sticky;top:0;z-index:200;border-bottom:1px solid var(--bd-dark);}
+.nav-logo{display:flex;align-items:center;gap:10px;color:var(--white);font-weight:600;font-size:14px;letter-spacing:.04em;}
+.logo-sq{width:30px;height:30px;background:var(--green);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:var(--navy);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{color:var(--text-muted);font-size:14px;font-weight:400;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--white);}
+.nav-cta{background:var(--white);color:var(--navy);padding:8px 18px;border-radius:6px;font-size:13px;font-weight:600;transition:background .2s,color .2s;}
+.nav-cta:hover{background:var(--green);color:var(--white);}
+/* BREADCRUMB */
+.bc{background:var(--navy-mid);border-bottom:1px solid var(--bd-dark);padding:10px 56px;display:flex;align-items:center;gap:8px;}
+.bc a,.bc span{font-size:12px;color:var(--text-muted);}
+.bc a:hover{color:var(--green);}
+.bc .sep{color:var(--bd-mid);}
+.bc .cur{color:var(--text-pale);}
+/* HERO */
+.hero{background:var(--navy);padding:72px 56px 0;position:relative;overflow:hidden;}
+.hero-glow{position:absolute;pointer-events:none;border-radius:50%;}
+.glow-tr{top:-140px;right:-100px;width:560px;height:560px;background:radial-gradient(circle,rgba(106,191,94,0.09) 0%,transparent 68%);}
+.glow-bl{bottom:0;left:-80px;width:420px;height:420px;background:radial-gradient(circle,rgba(59,130,246,0.06) 0%,transparent 68%);}
+.hero-top{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 460px;gap:60px;align-items:center;padding-bottom:60px;}
+.hero-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(106,191,94,0.12);border:1px solid rgba(106,191,94,0.28);color:var(--green);padding:5px 14px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:22px;}
+.hero-title{font-family:'Fraunces',serif;font-size:46px;font-weight:900;color:var(--white);line-height:1.08;margin-bottom:22px;}
+.hero-title em{font-style:normal;color:var(--green);}
+.hero-sub{font-size:16px;color:var(--text-pale);font-weight:300;line-height:1.75;margin-bottom:36px;max-width:460px;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-green{background:var(--green);color:var(--navy);border:none;border-radius:8px;padding:13px 26px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-green:hover{background:#7dcf71;}
+.btn-outline{background:none;border:1px solid var(--bd-lite);border-radius:8px;padding:13px 26px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-outline:hover{background:rgba(255,255,255,0.06);}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.hstat{background:rgba(255,255,255,0.05);border:1px solid var(--bd-dark);border-radius:14px;padding:22px 20px;transition:background .25s;}
+.hstat:hover{background:rgba(255,255,255,0.08);}
+.hstat-num{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--green);line-height:1;margin-bottom:6px;}
+.hstat-label{font-size:12px;color:var(--text-muted);line-height:1.45;font-weight:400;}
+/* DIAGRAM STRIP */
+.diag-strip{background:rgba(255,255,255,0.03);border-top:1px solid var(--bd-dark);padding:44px 56px 48px;}
+.diag-inner{max-width:1100px;margin:0 auto;}
+.diag-eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:32px;text-align:center;}
+.diag-track{display:grid;align-items:center;}
+.dnode{background:rgba(255,255,255,0.06);border:1px solid var(--bd-mid);border-radius:16px;padding:22px 18px;text-align:center;}
+.dnode.sp{background:rgba(106,191,94,0.12);border-color:rgba(106,191,94,0.35);}
+.dnode-icon{font-size:28px;margin-bottom:10px;display:block;}
+.dnode-title{font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px;}
+.dnode-sub{font-size:11px;color:var(--text-muted);line-height:1.4;}
+.dpills{margin-top:12px;display:flex;flex-direction:column;gap:5px;}
+.dpill{font-size:10px;background:rgba(255,255,255,0.07);border:1px solid var(--bd-dark);color:var(--text-pale);border-radius:6px;padding:4px 8px;animation:ppulse 3s ease-in-out infinite;}
+.dpill:nth-child(2){animation-delay:.7s;}.dpill:nth-child(3){animation-delay:1.4s;}
+@keyframes ppulse{0%,100%{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1);}50%{background:rgba(106,191,94,0.14);border-color:rgba(106,191,94,0.3);color:var(--green);}}
+.dconn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:0 6px;}
+.dconn-tag{font-size:10px;font-weight:600;color:var(--green);background:rgba(106,191,94,0.1);border:1px solid rgba(106,191,94,0.2);padding:3px 10px;border-radius:100px;white-space:nowrap;}
+.dconn-line{width:100%;height:2px;background:linear-gradient(90deg,var(--bd-mid),var(--green) 50%,var(--bd-mid));position:relative;}
+.dconn-line::after{content:'';position:absolute;right:-1px;top:-4px;border-left:8px solid var(--green);border-top:5px solid transparent;border-bottom:5px solid transparent;}
+/* SECTIONS */
+.section{padding:80px 56px;}
+.section.light{background:var(--white);}
+.section.pale{background:var(--off-white);}
+.section.dark{background:var(--navy);}
+.sec-inner{max-width:1100px;margin:0 auto;}
+.sec-tag{display:inline-block;background:rgba(106,191,94,0.10);border:1px solid rgba(106,191,94,0.22);color:var(--green-dk);padding:4px 12px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
+.sec-tag.wt{background:rgba(106,191,94,0.12);color:var(--green);border-color:rgba(106,191,94,0.25);}
+.sec-title{font-family:'Fraunces',serif;font-size:34px;font-weight:800;color:var(--text-navy);line-height:1.15;margin-bottom:12px;}
+.sec-title.wh{color:var(--white);}
+.sec-desc{font-size:16px;color:var(--text-mid);font-weight:300;line-height:1.7;max-width:580px;}
+.sec-desc.wh{color:var(--text-pale);}
+.sec-head{margin-bottom:52px;}
+/* FEATURE SPLIT */
+.feat-split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-bottom:72px;}
+.feat-split:last-child{margin-bottom:0;}
+.feat-split.rev{direction:rtl;}
+.feat-split.rev>*{direction:ltr;}
+.fst-text h3{font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--text-navy);margin-bottom:12px;line-height:1.2;}
+.fst-text p{font-size:15px;color:var(--text-mid);line-height:1.72;font-weight:300;margin-bottom:16px;}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.checklist li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-navy);font-weight:400;}
+.chk{width:20px;height:20px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.chk svg{width:11px;height:11px;}
+/* MOCKUP */
+.mockup{background:var(--navy);border-radius:18px;border:1px solid rgba(255,255,255,0.1);overflow:hidden;box-shadow:0 24px 56px rgba(13,31,60,.22);}
+.mtbar{background:rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.08);padding:10px 16px;display:flex;align-items:center;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot.r{background:#ff5f57;}.dot.y{background:#febc2e;}.dot.g{background:#28c840;}
+.mtab{margin-left:10px;font-size:11px;color:var(--text-muted);background:rgba(255,255,255,0.06);border-radius:4px;padding:3px 10px;}
+.mbody{padding:20px;}
+/* HOW IT WORKS */
+.hiw{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+.hiw::before{content:'';position:absolute;top:44px;left:12%;right:12%;height:2px;background:repeating-linear-gradient(90deg,var(--bd-light) 0,var(--bd-light) 6px,transparent 6px,transparent 14px);z-index:0;}
+.hiw-step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px;position:relative;z-index:1;}
+.hiw-circ{width:88px;height:88px;border-radius:50%;background:var(--white);border:2px solid var(--bd-light);display:flex;align-items:center;justify-content:center;margin-bottom:20px;position:relative;transition:border-color .3s,box-shadow .3s;}
+.hiw-step:hover .hiw-circ{border-color:var(--green);box-shadow:0 0 0 6px rgba(106,191,94,0.1);}
+.hiw-ico{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;}
+.hiw-n{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--green);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--bd-light);}
+.hiw-step h4{font-size:14px;font-weight:600;color:var(--text-navy);margin-bottom:8px;}
+.hiw-step p{font-size:13px;color:var(--text-mid);line-height:1.6;font-weight:300;}
+/* USE CASES */
+.uc-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.uc{background:rgba(255,255,255,0.04);border:1px solid var(--bd-dark);border-radius:18px;padding:32px;display:grid;grid-template-columns:64px 1fr;gap:20px;align-items:start;transition:background .25s,border-color .25s;}
+.uc:hover{background:rgba(255,255,255,0.07);border-color:rgba(106,191,94,0.25);}
+.uc-iw{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.uc h4{font-size:16px;font-weight:600;color:var(--white);margin-bottom:8px;line-height:1.3;}
+.uc p{font-size:13.5px;color:var(--text-muted);line-height:1.65;font-weight:300;}
+.uc-res{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12px;font-weight:600;color:var(--green);}
+/* COMPLIANCE */
+.comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.comp-item{background:rgba(255,255,255,0.04);border:1px solid var(--bd-dark);border-radius:14px;padding:20px;display:flex;align-items:center;gap:14px;}
+.comp-dot{width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;}
+.comp-item strong{display:block;font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px;}
+.comp-item span{font-size:12px;color:var(--text-muted);}
+/* RELATED */
+.rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.rel{background:var(--white);border:1px solid var(--bd-light);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:10px;transition:transform .2s,box-shadow .2s;}
+.rel:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(13,31,60,.08);}
+.rel-ico{font-size:20px;}
+.rel h4{font-size:14px;font-weight:600;color:var(--text-navy);}
+.rel p{font-size:13px;color:var(--text-mid);line-height:1.55;flex:1;font-weight:300;}
+.rel-lnk{font-size:12px;font-weight:600;color:var(--green-dk);display:inline-flex;align-items:center;gap:4px;}
+/* CTA */
+.cta-band{background:var(--navy-mid);border-top:1px solid var(--bd-dark);padding:80px 56px;}
+.cta-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;}
+.cta-inner h2{font-family:'Fraunces',serif;font-size:38px;font-weight:800;color:var(--white);margin-bottom:12px;}
+.cta-inner p{font-size:16px;color:var(--text-muted);font-weight:300;max-width:520px;}
+.cta-btns{display:flex;flex-direction:column;gap:12px;flex-shrink:0;}
+/* ANIMS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+@keyframes sin{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+@keyframes ppulse{0%,100%{opacity:.6;}50%{opacity:1;}}
+.au{animation:fadeUp .5s ease both;}
+.au1{animation-delay:.05s}.au2{animation-delay:.12s}.au3{animation-delay:.19s}.au4{animation-delay:.26s}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo"><div class="logo-sq">SP</div>SKYPOND TECH</a>
+  <ul class="nav-links">
+    <li><a href="#">Services</a></li>
+    <li><a href="index.html" class="active">Products</a></li>
+    <li><a href="#">Industries</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <a href="#" class="nav-cta">Schedule a Demo →</a>
+</nav><div class="bc">
+  <a href="#">Home</a><span class="sep">/</span>
+  <a href="index.html">Products</a><span class="sep">/</span>
+  <span class="cur">DEA Compliance Reporting</span>
+</div><section class="hero">
+  <div class="hero-glow glow-tr"></div><div class="hero-glow glow-bl"></div>
+  <div class="hero-top">
+    <div class="au au1">
+      <div class="hero-pill">📋 Compliance Reporting</div>
+      <h1 class="hero-title">Automated <em>DEA reporting</em> that eliminates manual filing risk</h1>
+      <p class="hero-sub">Handle CSOS ordering, ARCOS submissions, and DEA Form 222 workflows without managing it by spreadsheet. Designed for LTC pharmacies that can't afford a filing mistake or a missed deadline.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-green">Schedule a Demo →</a>
+        <a href="#how" class="btn-outline">See How It Works ↓</a>
+      </div>
+    </div>
+    <div class="hero-stats au au2"><div class="hstat"><div class="hstat-num">80%</div><div class="hstat-label">Reduction in manual reporting time</div></div><div class="hstat"><div class="hstat-num">0</div><div class="hstat-label">Missed filing deadlines for clients</div></div><div class="hstat"><div class="hstat-num">CSOS</div><div class="hstat-label">Certified integration</div></div><div class="hstat"><div class="hstat-num">Multi-site</div><div class="hstat-label">Rollup reporting</div></div></div>
+  </div><div class="diag-strip">
+  <div class="diag-inner">
+    <div class="diag-eyebrow">How reporting flows</div>
+    <div class="diag-track" style="grid-template-columns:200px 1fr 200px 1fr 200px;"><div class="dnode"><span class="dnode-icon">💊</span><div class="dnode-title">Your Pharmacy System</div><div class="dnode-sub">Dispense & ordering transactions</div><div class="dpills"><div class="dpill">CII orders</div><div class="dpill">Dispense records</div><div class="dpill">Returns & adjustments</div></div></div><div class="dconn"><div class="dconn-tag">data pull & validation</div><div class="dconn-line"></div></div><div class="dnode sp"><span class="dnode-icon">⚡</span><div class="dnode-title">Skypond Platform</div><div class="dnode-sub">Maps, validates & formats for DEA requirements</div></div><div class="dconn"><div class="dconn-tag">automated submission</div><div class="dconn-line"></div></div><div class="dnode"><span class="dnode-icon">🏛️</span><div class="dnode-title">DEA Systems</div><div class="dnode-sub">ARCOS · CSOS · Form 222</div><div class="dpills"><div class="dpill">Confirmation receipt</div><div class="dpill">Archived record</div><div class="dpill">Audit trail</div></div></div></div>
+  </div>
+</div>
+</section><section class="section light" id="features">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-tag">Capabilities</div>
+      <h2 class="sec-title">Every DEA obligation — handled automatically</h2>
+      <p class="sec-desc">From quarterly ARCOS to Schedule II ordering, the system takes care of the mechanics so your team focuses on compliance decisions, not data entry.</p>
+    </div>
+    <div class="feat-split">
+  <div class="fst-text"><h3>ARCOS automated filing — quarterly, on time, every time</h3><p>Generate and submit quarterly ARCOS reports directly to the DEA without manual data extraction or formatting. Built-in validation catches errors before submission — not after a rejection notice.</p><ul class="checklist"><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Auto-generated from your dispensing transaction data</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>DEA format validation before every submission</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Confirmation receipts archived automatically</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Multi-location rollup into a single filing workflow</li></ul></div>
+  <div class="mockup"><div class="mtbar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><div class="mtab">ARCOS Report — Q1 2026 Draft</div></div><div class="mbody">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+  <div style="font-size:12px;font-weight:600;color:var(--text-pale);text-transform:uppercase;letter-spacing:.06em;">Quarterly Filing Status</div>
+  <div style="font-size:11px;background:rgba(245,158,11,0.12);color:#f5c96a;border-radius:6px;padding:4px 10px;font-weight:600;">Due Apr 30, 2026</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+  <div style="background:rgba(106,191,94,0.08);border:1px solid rgba(106,191,94,0.2);border-radius:10px;padding:14px;text-align:center;">
+    <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:900;color:var(--green);">1,847</div>
+    <div style="font-size:11px;color:var(--text-muted);">Transactions</div>
+  </div>
+  <div style="background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:10px;padding:14px;text-align:center;">
+    <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:900;color:#7eb8f7;">12</div>
+    <div style="font-size:11px;color:var(--text-muted);">Drug Codes</div>
+  </div>
+  <div style="background:rgba(106,191,94,0.08);border:1px solid rgba(106,191,94,0.2);border-radius:10px;padding:14px;text-align:center;">
+    <div style="font-family:'Fraunces',serif;font-size:24px;font-weight:900;color:var(--green);">0</div>
+    <div style="font-size:11px;color:var(--text-muted);">Exceptions</div>
+  </div>
+</div>
+<div style="display:flex;flex-direction:column;gap:7px;">
+  <div style="background:rgba(106,191,94,0.06);border:1px solid rgba(106,191,94,0.18);border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="font-size:12px;color:var(--text-light);">✓ Data validation passed</div>
+    <div style="font-size:10px;color:var(--green);font-weight:600;">Complete</div>
+  </div>
+  <div style="background:rgba(106,191,94,0.06);border:1px solid rgba(106,191,94,0.18);border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="font-size:12px;color:var(--text-light);">✓ DEA format requirements met</div>
+    <div style="font-size:10px;color:var(--green);font-weight:600;">Complete</div>
+  </div>
+  <div style="background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="font-size:12px;color:#f5c96a;">⏳ Awaiting pharmacist review &amp; approval</div>
+    <div style="font-size:10px;color:#f5c96a;font-weight:600;">Pending</div>
+  </div>
+</div></div></div>
+</div>
+    <div class="feat-split rev">
+  <div class="fst-text"><h3>DEA Form 222 — paperless Schedule II ordering via CSOS</h3><p>Replace paper Form 222 with a fully digital ordering workflow. Approve, sign, and transmit Schedule I and II purchase orders electronically via CSOS — with a complete audit trail on every transaction.</p><ul class="checklist"><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Digital DEA Form 222 from creation to CSOS submission</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Pharmacist e-sign and approve in the same workflow</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Supplier confirmation linked to the original order</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Full order history searchable by drug, date, or supplier</li></ul></div>
+  <div class="mockup"><div class="mtbar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><div class="mtab">Form 222 — Digital Ordering Workflow</div></div><div class="mbody">
+<div style="font-size:12px;font-weight:600;color:var(--text-pale);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;">Schedule II Purchase Order</div>
+<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;margin-bottom:12px;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+    <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Supplier DEA</div><div style="font-size:12px;color:var(--white);font-weight:500;">PM0010148</div></div>
+    <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Order Date</div><div style="font-size:12px;color:var(--white);font-weight:500;">Apr 24, 2026</div></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:6px;">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;padding:0 6px;">
+      <span>Drug</span><span>Qty</span><span>Unit</span>
+    </div>
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;font-size:11px;color:var(--text-light);background:rgba(255,255,255,0.04);border-radius:6px;padding:8px 6px;">
+      <span>Oxycodone HCl 5mg</span><span>500</span><span>Tablets</span>
+    </div>
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;font-size:11px;color:var(--text-light);background:rgba(255,255,255,0.04);border-radius:6px;padding:8px 6px;">
+      <span>Hydromorphone 2mg</span><span>200</span><span>Tablets</span>
+    </div>
+  </div>
+</div>
+<div style="display:flex;gap:8px;">
+  <div style="flex:1;background:rgba(106,191,94,0.12);border:1px solid rgba(106,191,94,0.28);border-radius:8px;padding:10px;text-align:center;font-size:12px;color:var(--green);font-weight:600;cursor:pointer;">✓ Approve &amp; Submit via CSOS</div>
+  <div style="background:rgba(255,255,255,0.06);border:1px solid var(--bd-mid);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--text-muted);cursor:pointer;">Review</div>
+</div></div></div>
+</div>
+    <div class="feat-split">
+  <div class="fst-text"><h3>Compliance calendar — no deadline falls through the cracks</h3><p>A built-in compliance calendar tracks every DEA reporting obligation by frequency and jurisdiction. ARCOS quarters, biennial inventory dates, and Form 222 cycles all in one view — with automated reminders to your team.</p><ul class="checklist"><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>All DEA deadlines tracked and surfaced automatically</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Automated reminders at configurable lead times</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Exception flagging when data issues need attention before filing</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Multi-location deadline management in one dashboard</li></ul></div>
+  <div class="mockup"><div class="mtbar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><div class="mtab">Compliance Calendar — All Deadlines</div></div><div class="mbody">
+<div style="font-size:12px;font-weight:600;color:var(--text-pale);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;">Upcoming Filing Obligations</div>
+<div style="display:flex;flex-direction:column;gap:8px;">
+  <div style="display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:12px 14px;">
+    <div style="width:40px;height:40px;background:rgba(245,158,11,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">📤</div>
+    <div><div style="font-size:13px;color:var(--white);font-weight:600;">ARCOS Q1 Submission</div><div style="font-size:11px;color:var(--text-muted);">Due Apr 30 · All 3 locations</div></div>
+    <div style="font-size:11px;color:#f5c96a;font-weight:600;">6 days</div>
+  </div>
+  <div style="display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;background:rgba(255,255,255,0.04);border:1px solid var(--bd-dark);border-radius:10px;padding:12px 14px;">
+    <div style="width:40px;height:40px;background:rgba(59,130,246,0.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">📋</div>
+    <div><div style="font-size:13px;color:var(--white);font-weight:600;">Biennial Inventory (DEA)</div><div style="font-size:11px;color:var(--text-muted);">Due Jun 1 · North location</div></div>
+    <div style="font-size:11px;color:var(--text-muted);font-weight:600;">38 days</div>
+  </div>
+  <div style="display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;background:rgba(255,255,255,0.04);border:1px solid var(--bd-dark);border-radius:10px;padding:12px 14px;">
+    <div style="width:40px;height:40px;background:rgba(106,191,94,0.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;">📊</div>
+    <div><div style="font-size:13px;color:var(--white);font-weight:600;">ARCOS Q2 Submission</div><div style="font-size:11px;color:var(--text-muted);">Due Jul 31 · All 3 locations</div></div>
+    <div style="font-size:11px;color:var(--text-muted);font-weight:600;">97 days</div>
+  </div>
+</div></div></div>
+</div>
+  </div>
+</section><section class="section pale" id="how">
+  <div class="sec-inner">
+    <div class="sec-head" style="text-align:center;">
+      <div class="sec-tag" style="margin:0 auto 14px;">How It Works</div>
+      <h2 class="sec-title">From your data to DEA submission — automatically</h2>
+      <p class="sec-desc" style="margin:0 auto;">Integrates with your existing pharmacy system. Most clients are live within two weeks.</p>
+    </div>
+    <div class="hiw"><div class="hiw-step">
+      <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(106,191,94,0.12);">🔌</div><div class="hiw-n">01</div></div>
+      <h4>Connect data source</h4><p>We integrate with your pharmacy system via API or scheduled pull and map your transaction data to DEA reporting formats.</p>
+    </div><div class="hiw-step">
+      <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(59,130,246,0.12);">✅</div><div class="hiw-n">02</div></div>
+      <h4>Auto-generated & validated</h4><p>Draft reports are generated on schedule. Validation checks completeness, quantity accuracy, and DEA format requirements before you review.</p>
+    </div><div class="hiw-step">
+      <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(245,158,11,0.12);">👁️</div><div class="hiw-n">03</div></div>
+      <h4>Review exceptions</h4><p>Any flagged items surface for pharmacist review. Approve corrections or override with documented justification.</p>
+    </div><div class="hiw-step">
+      <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(106,191,94,0.12);">📤</div><div class="hiw-n">04</div></div>
+      <h4>Submit & archive</h4><p>Approved reports transmit directly to DEA systems. Confirmations and full submission records are archived automatically.</p>
+    </div></div>
+  </div>
+</section><section class="section dark">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-tag wt">Who It's For</div>
+      <h2 class="sec-title wh">Built for how LTC pharmacies actually operate</h2>
+      <p class="sec-desc wh">Whether you run one location or thirty, the compliance burden is real — and this is designed for it.</p>
+    </div>
+    <div class="uc-grid"><div class="uc">
+      <div class="uc-iw" style="background:rgba(106,191,94,0.12);">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><rect x="4" y="4" width="22" height="22" rx="3" stroke="#6abf5e" stroke-width="1.8"/><path d="M9 12h12M9 16h8" stroke="#6abf5e" stroke-width="1.6" stroke-linecap="round"/><circle cx="21" cy="21" r="5" fill="var(--navy)" stroke="#6abf5e" stroke-width="1.5"/><path d="M19.5 21l1 1 2-2" stroke="#6abf5e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div><h4>Independent LTC pharmacies</h4><p>Stop spending 20+ hours a quarter extracting, formatting, and submitting ARCOS data. Let the system handle the mechanics while your pharmacists handle compliance decisions.</p><div class="uc-res">→ Hours recovered every quarter</div></div>
+    </div><div class="uc">
+      <div class="uc-iw" style="background:rgba(59,130,246,0.12);">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><rect x="3" y="5" width="24" height="20" rx="3" stroke="#7eb8f7" stroke-width="1.8"/><path d="M9 12h5M9 16h8" stroke="#7eb8f7" stroke-width="1.5" stroke-linecap="round"/><circle cx="21" cy="10" r="4" fill="rgba(59,130,246,0.15)" stroke="#7eb8f7" stroke-width="1.5"/><path d="M19.5 10l1 1 2-2" stroke="#7eb8f7" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div><h4>Multi-location pharmacy chains</h4><p>Consolidate reporting across all locations into one workflow. One review cycle. One submission process. One compliance officer who can see everything.</p><div class="uc-res">→ Unified compliance across all locations</div></div>
+    </div><div class="uc">
+      <div class="uc-iw" style="background:rgba(245,158,11,0.12);">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><circle cx="15" cy="12" r="6" stroke="#f5c96a" stroke-width="1.8"/><path d="M8 26c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="#f5c96a" stroke-width="1.8" stroke-linecap="round"/><path d="M22 8l6 4-6 4" stroke="#f5c96a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div><h4>Compliance officers</h4><p>Get a real-time view of every upcoming deadline, every pending exception, and every submitted report across your entire operation — without chasing pharmacists for status updates.</p><div class="uc-res">→ Full visibility across every obligation</div></div>
+    </div><div class="uc">
+      <div class="uc-iw" style="background:rgba(168,85,247,0.12);">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><rect x="3" y="4" width="24" height="22" rx="3" stroke="#c79cf7" stroke-width="1.8"/><path d="M3 10h24" stroke="#c79cf7" stroke-width="1.5"/><path d="M9 16h6M9 20h10" stroke="#c79cf7" stroke-width="1.5" stroke-linecap="round"/><path d="M22 13l5 3-5 3" stroke="#c79cf7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div><h4>Preparing for DEA inspection</h4><p>Pull a complete submission history with all confirmation receipts and exception resolutions in minutes — not hours of hunting through email attachments and shared drives.</p><div class="uc-res">→ Inspection-ready in minutes, not hours</div></div>
+    </div></div>
+  </div>
+</section><section class="section dark" style="padding-top:0;">
+  <div class="sec-inner">
+    <div style="border-top:1px solid var(--bd-dark);padding-top:64px;">
+      <div class="sec-head">
+        <div class="sec-tag wt">Security &amp; Compliance</div>
+        <h2 class="sec-title wh">Every report. Every deadline. Every time.</h2>
+        <p class="sec-desc wh">Our reporting engine is built and maintained by people with direct experience in DEA regulatory requirements for controlled substance dispensers.</p>
+      </div>
+      <div class="comp-grid"><div class="comp-item"><div class="comp-dot"></div><div><strong>CSOS Certified</strong><span>Electronic Schedule I/II ordering via CSOS</span></div></div><div class="comp-item"><div class="comp-dot"></div><div><strong>ARCOS Reporting</strong><span>Quarterly automated submissions to DEA ARCOS</span></div></div><div class="comp-item"><div class="comp-dot"></div><div><strong>DEA Form 222</strong><span>Full digital workflow for Schedule II purchase orders</span></div></div><div class="comp-item"><div class="comp-dot"></div><div><strong>21 CFR Part 11</strong><span>Electronic signature compliance</span></div></div><div class="comp-item"><div class="comp-dot"></div><div><strong>Encrypted Submissions</strong><span>All DEA transmissions encrypted end-to-end</span></div></div><div class="comp-item"><div class="comp-dot"></div><div><strong>Complete Audit Trail</strong><span>Every action logged with user, timestamp, and outcome</span></div></div></div>
+    </div>
+  </div>
+</section><section class="section light">
+  <div class="sec-inner">
+    <div class="sec-head"><div class="sec-tag">Related Products</div><h2 class="sec-title">Works well with</h2></div>
+    <div class="rel-grid"><div class="rel"><div class="rel-ico">🔍</div><h4>DEA Lookup Tool</h4><p>Instant prescriber DEA number verification against live federal databases.</p><a href="dea-lookup-tool.html" class="rel-lnk">Learn more →</a></div><div class="rel"><div class="rel-ico">📦</div><h4>CS Inventory</h4><p>Real-time controlled substance inventory with automated discrepancy alerts.</p><a href="cs-inventory.html" class="rel-lnk">Learn more →</a></div><div class="rel"><div class="rel-ico">📊</div><h4>LTC Analytics</h4><p>Pharmacy-specific dashboards for utilization, cost, and compliance KPIs.</p><a href="ltc-analytics.html" class="rel-lnk">Learn more →</a></div></div>
+  </div>
+</section><section class="cta-band">
+  <div class="cta-inner">
+    <div><h2>Ready to automate your DEA reporting?</h2><p>See how the system handles your full reporting cycle — from data pull to DEA submission — in a live walkthrough.</p></div>
+    <div class="cta-btns">
+      <a href="#" class="btn-green" style="justify-content:center;">Schedule a Demo →</a>
+      <a href="#" class="btn-outline" style="justify-content:center;">Talk to Sales</a>
+    </div>
+  </div>
+</section>
+</body>
+</html>

@@ -470,7 +470,7 @@ function CTA() {
           Ready to Work with an LTC Pharmacy IT Team That Actually Gets It?
         </H>
         <P style={{ color:"rgba(255,255,255,0.68)", marginBottom:32, fontSize:16 }}>
-          Schedule a conversation with Ramesh KC. We'll review your current systems, identify the highest-impact opportunities, and give you a clear, honest plan — no fluff, no upsell.
+          Schedule a conversation. We'll review your current systems, identify the highest-impact opportunities, and give you a clear, honest plan — no fluff, no upsell.
         </P>
         <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
           <PBtn light href="/schedule">Schedule a Consultation →</PBtn>

@@ -115,14 +115,14 @@ export function Navbar() {
   const [mobileExpanded, setMobileExpanded] = useState(null);
   const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 900);
   const navigate = useNavigate();
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   const handleAbout = () => {
     navigate("/about");
   };
 
   const handleContact = () => {
-    navigate("/schedule-demo");
+    navigate({ pathname: "/", hash: "#contact" }, { replace: pathname === "/" })
   };
 
   useEffect(() => {
@@ -159,9 +159,9 @@ export function Navbar() {
   const logoBase = import.meta.env.BASE_URL;
 
   const logoWordmarkStyle = {
-    width: 220,
+    width: 250,
     height: "auto",
-    maxHeight: 42,
+    maxHeight: 46,
     objectFit: "contain",
     objectPosition: "left center",
     display: "block",
@@ -175,7 +175,7 @@ export function Navbar() {
   const activeProducts = pathname.startsWith("/products");
   const activeIndustries = pathname === "/industries";
   const activeAbout = pathname === "/about";
-  const activeContact = pathname === "/schedule-demo";
+  const activeContact = pathname === "/" && hash === "#contact";
 
   const deskLinkBase = (isActive) => ({
     fontSize:13.5,

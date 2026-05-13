@@ -8,6 +8,12 @@ import Industries from './pages/Industries.jsx'
 import ScheduleDemo from './pages/ScheduleDemo.jsx'
 import ServicesIndex from './pages/ServicesIndex.jsx'
 import ProductsIndex from './pages/ProductsIndex.jsx'
+import DeaLookupTool from './pages/products/DeaLookupTool.jsx'
+import DeaComplianceReporting from './pages/products/DeaComplianceReporting.jsx'
+import CsInventory from './pages/products/CsInventory.jsx'
+import LtcAnalytics from './pages/products/LtcAnalytics.jsx'
+import PointclickcareFeed from './pages/products/PointclickcareFeed.jsx'
+import DocumentAutomation from './pages/products/DocumentAutomation.jsx'
 import AIAutomation from './pages/services/AIAutomation.jsx'
 import CustomDevelopment from './pages/services/CustomDevelopment.jsx'
 import DataAnalytics from './pages/services/DataAnalytics.jsx'
@@ -68,6 +74,12 @@ body {
         <Route path="/schedule-demo" element={<ScheduleDemo />} />
         <Route path="/services" element={<ServicesIndex />} />
         <Route path="/products" element={<ProductsIndex />} />
+        <Route path="/products/dea-lookup" element={<DeaLookupTool />} />
+        <Route path="/products/dea-compliance-reporting" element={<DeaComplianceReporting />} />
+        <Route path="/products/cs-inventory" element={<CsInventory />} />
+        <Route path="/products/ltc-analytics" element={<LtcAnalytics />} />
+        <Route path="/products/pointclickcare-feed" element={<PointclickcareFeed />} />
+        <Route path="/products/document-automation" element={<DocumentAutomation />} />
         <Route path="/services/ai-automation" element={<AIAutomation />} />
         <Route path="/services/custom-development" element={<CustomDevelopment />} />
         <Route path="/services/data-analytics" element={<DataAnalytics />} />

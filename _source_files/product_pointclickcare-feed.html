@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PointClickCare Data Feed — Skypond Tech</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Fraunces:opsz,wght@9..144,700;9..144,800;9..144,900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0d1f3c; --navy-mid:#132a52; --navy-light:#1c3a6e;
+  --green:#6abf5e; --green-dk:#4a9e40; --green-pale:#e8f7e6;
+  --green-glow:rgba(106,191,94,0.10);
+  --white:#ffffff; --off-white:#f0f4f8;
+  --text-navy:#0d1f3c; --text-mid:#3d5a78; --text-muted:#8fa3be;
+  --text-pale:#c8d8ea; --text-light:#e4edf7;
+  --bd-dark:rgba(255,255,255,0.08); --bd-mid:rgba(255,255,255,0.14);
+  --bd-lite:rgba(255,255,255,0.22); --bd-light:#d8e3ef;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--off-white);color:var(--text-navy);overflow-x:hidden;}
+a{text-decoration:none;}
+
+/* NAV */
+nav{background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 56px;height:66px;position:sticky;top:0;z-index:200;border-bottom:1px solid var(--bd-dark);}
+.nav-logo{display:flex;align-items:center;gap:10px;color:var(--white);font-weight:600;font-size:14px;letter-spacing:.04em;}
+.logo-sq{width:30px;height:30px;background:var(--green);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:var(--navy);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{color:var(--text-muted);font-size:14px;font-weight:400;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--white);}
+.nav-cta{background:var(--white);color:var(--navy);padding:8px 18px;border-radius:6px;font-size:13px;font-weight:600;transition:background .2s,color .2s;}
+.nav-cta:hover{background:var(--green);color:var(--white);}
+
+/* BREADCRUMB */
+.bc{background:var(--navy-mid);border-bottom:1px solid var(--bd-dark);padding:10px 56px;display:flex;align-items:center;gap:8px;}
+.bc a,.bc span{font-size:12px;color:var(--text-muted);}
+.bc a:hover{color:var(--green);}
+.bc .sep{color:var(--bd-mid);}
+.bc .cur{color:var(--text-pale);}
+
+/* HERO */
+.hero{background:var(--navy);padding:72px 56px 0;position:relative;overflow:hidden;}
+.hero-glow{position:absolute;pointer-events:none;border-radius:50%;}
+.glow-tr{top:-140px;right:-100px;width:560px;height:560px;background:radial-gradient(circle,rgba(106,191,94,0.09) 0%,transparent 68%);}
+.glow-bl{bottom:0;left:-80px;width:420px;height:420px;background:radial-gradient(circle,rgba(59,130,246,0.06) 0%,transparent 68%);}
+.hero-top{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 460px;gap:60px;align-items:center;padding-bottom:60px;}
+.hero-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(106,191,94,0.12);border:1px solid rgba(106,191,94,0.28);color:var(--green);padding:5px 14px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:22px;}
+.hero-title{font-family:'Fraunces',serif;font-size:46px;font-weight:900;color:var(--white);line-height:1.08;margin-bottom:22px;}
+.hero-title em{font-style:normal;color:var(--green);}
+.hero-sub{font-size:16px;color:var(--text-pale);font-weight:300;line-height:1.75;margin-bottom:36px;max-width:460px;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-green{background:var(--green);color:var(--navy);border:none;border-radius:8px;padding:13px 26px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-green:hover{background:#7dcf71;}
+.btn-outline{background:none;border:1px solid var(--bd-lite);border-radius:8px;padding:13px 26px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-outline:hover{background:rgba(255,255,255,0.06);}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.hstat{background:rgba(255,255,255,0.05);border:1px solid var(--bd-dark);border-radius:14px;padding:22px 20px;transition:background .25s;}
+.hstat:hover{background:rgba(255,255,255,0.08);}
+.hstat-num{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--green);line-height:1;margin-bottom:6px;}
+.hstat-label{font-size:12px;color:var(--text-muted);line-height:1.45;font-weight:400;}
+
+/* FLOW DIAGRAM STRIP */
+.flow-strip{background:rgba(255,255,255,0.03);border-top:1px solid var(--bd-dark);padding:44px 56px 48px;}
+.flow-inner{max-width:1100px;margin:0 auto;}
+.flow-eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:32px;text-align:center;}
+.flow-track{display:grid;grid-template-columns:210px 1fr 230px 1fr 210px;align-items:center;}
+.flow-node{background:rgba(255,255,255,0.06);border:1px solid var(--bd-mid);border-radius:16px;padding:22px 18px;text-align:center;}
+.flow-node.sp{background:rgba(106,191,94,0.12);border-color:rgba(106,191,94,0.35);}
+.fni{font-size:30px;margin-bottom:10px;display:block;}
+.fnt{font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px;}
+.fns{font-size:11px;color:var(--text-muted);line-height:1.4;}
+.flow-pills{margin-top:12px;display:flex;flex-direction:column;gap:5px;}
+.fpill{font-size:10px;background:rgba(255,255,255,0.07);border:1px solid var(--bd-dark);color:var(--text-pale);border-radius:6px;padding:4px 8px;animation:ppulse 3s ease-in-out infinite;}
+.fpill:nth-child(2){animation-delay:.7s;}
+.fpill:nth-child(3){animation-delay:1.4s;}
+@keyframes ppulse{0%,100%{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1);}50%{background:rgba(106,191,94,0.14);border-color:rgba(106,191,94,0.3);color:var(--green);}}
+.flow-connector{display:flex;flex-direction:column;align-items:center;gap:6px;padding:0 6px;}
+.conn-tag{font-size:10px;font-weight:600;color:var(--green);background:rgba(106,191,94,0.1);border:1px solid rgba(106,191,94,0.2);padding:3px 10px;border-radius:100px;white-space:nowrap;}
+.conn-line{width:100%;height:2px;background:linear-gradient(90deg,var(--bd-mid),var(--green) 50%,var(--bd-mid));position:relative;}
+.conn-line::after{content:'';position:absolute;right:-1px;top:-4px;border-left:8px solid var(--green);border-top:5px solid transparent;border-bottom:5px solid transparent;}
+
+/* SECTIONS */
+.section{padding:80px 56px;}
+.section.light{background:var(--white);}
+.section.pale{background:var(--off-white);}
+.section.dark{background:var(--navy);}
+.section-inner{max-width:1100px;margin:0 auto;}
+.sec-tag{display:inline-block;background:rgba(106,191,94,0.10);border:1px solid rgba(106,191,94,0.22);color:var(--green-dk);padding:4px 12px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
+.sec-tag.wt{background:rgba(106,191,94,0.12);color:var(--green);border-color:rgba(106,191,94,0.25);}
+.sec-title{font-family:'Fraunces',serif;font-size:34px;font-weight:800;color:var(--text-navy);line-height:1.15;margin-bottom:12px;}
+.sec-title.wh{color:var(--white);}
+.sec-desc{font-size:16px;color:var(--text-mid);font-weight:300;line-height:1.7;max-width:580px;}
+.sec-desc.wh{color:var(--text-pale);}
+.sec-head{margin-bottom:52px;}
+
+/* FEATURE SPLIT */
+.feat-split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-bottom:72px;}
+.feat-split:last-child{margin-bottom:0;}
+.feat-split.rev{direction:rtl;}
+.feat-split.rev > *{direction:ltr;}
+.fst-text h3{font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--text-navy);margin-bottom:12px;line-height:1.2;}
+.fst-text p{font-size:15px;color:var(--text-mid);line-height:1.72;font-weight:300;margin-bottom:16px;}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.checklist li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-navy);font-weight:400;}
+.chk{width:20px;height:20px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.chk svg{width:11px;height:11px;}
+
+/* MOCKUP SHELL */
+.mockup{background:var(--navy);border-radius:18px;border:1px solid rgba(255,255,255,0.1);overflow:hidden;box-shadow:0 24px 56px rgba(13,31,60,0.22);}
+.mtbar{background:rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.08);padding:10px 16px;display:flex;align-items:center;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot.r{background:#ff5f57;}.dot.y{background:#febc2e;}.dot.g{background:#28c840;}
+.mtab{margin-left:10px;font-size:11px;color:var(--text-muted);background:rgba(255,255,255,0.06);border-radius:4px;padding:3px 10px;}
+.mbody{padding:20px;}
+
+/* Feed rows mockup */
+.feed-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.feed-hdr-t{font-size:12px;font-weight:600;color:var(--text-pale);letter-spacing:.06em;text-transform:uppercase;}
+.live-ind{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--green);font-weight:500;}
+.livdot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.4s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.feed-rows{display:flex;flex-direction:column;gap:8px;}
+.frow{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:11px 14px;display:grid;grid-template-columns:32px 1fr auto;gap:12px;align-items:center;animation:sin .5s ease both;}
+.frow:nth-child(1){animation-delay:.1s}.frow:nth-child(2){animation-delay:.25s}.frow:nth-child(3){animation-delay:.4s}.frow:nth-child(4){animation-delay:.55s}
+@keyframes sin{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+.frow-ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.fi1{background:rgba(106,191,94,0.15);}.fi2{background:rgba(59,130,246,0.15);}.fi3{background:rgba(245,158,11,0.15);}.fi4{background:rgba(168,85,247,0.15);}
+.frow-txt strong{display:block;font-size:12px;color:var(--white);font-weight:600;margin-bottom:2px;}
+.frow-txt span{font-size:11px;color:var(--text-muted);}
+.fst{font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px;white-space:nowrap;}
+.s1{background:rgba(106,191,94,0.15);color:var(--green);}
+.s2{background:rgba(59,130,246,0.15);color:#7eb8f7;}
+.s3{background:rgba(245,158,11,0.12);color:#f5c96a;}
+
+/* Payor mockup */
+.payor-hdr h4{font-size:12px;font-weight:600;color:var(--text-pale);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px;}
+.payor-hdr span{font-size:11px;color:var(--text-muted);}
+.payor-hdr{margin-bottom:16px;}
+.prow{display:flex;flex-direction:column;gap:5px;margin-bottom:10px;}
+.prow-top{display:flex;justify-content:space-between;}
+.pnm{font-size:12px;color:var(--text-light);font-weight:500;}
+.pct{font-size:11px;color:var(--text-muted);}
+.pbar-bg{height:6px;background:rgba(255,255,255,0.06);border-radius:100px;overflow:hidden;}
+.pbar{height:100%;border-radius:100px;}
+.change-note{display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 12px;background:rgba(106,191,94,0.08);border:1px solid rgba(106,191,94,0.2);border-radius:10px;}
+.change-note span{font-size:11px;color:var(--text-pale);}
+.change-note strong{font-size:11px;color:var(--green);}
+
+/* Before/After */
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.ba-col{border-radius:12px;padding:16px;}
+.ba-col.before{background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);}
+.ba-col.after{background:rgba(106,191,94,0.07);border:1px solid rgba(106,191,94,0.22);}
+.ba-label{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;}
+.ba-col.before .ba-label{color:#f87171;}
+.ba-col.after .ba-label{color:#6abf5e;}
+.ba-item{display:flex;align-items:center;gap:8px;font-size:11px;margin-bottom:8px;}
+.ba-col.before .ba-item{color:#8fa3be;}
+.ba-col.after .ba-item{color:#c8d8ea;}
+.ba-ico{font-size:14px;flex-shrink:0;}
+
+/* HOW IT WORKS */
+.hiw{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+.hiw::before{content:'';position:absolute;top:44px;left:12%;right:12%;height:2px;background:repeating-linear-gradient(90deg,var(--bd-light) 0,var(--bd-light) 6px,transparent 6px,transparent 14px);z-index:0;}
+.hiw-step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px;position:relative;z-index:1;}
+.hiw-circ{width:88px;height:88px;border-radius:50%;background:var(--white);border:2px solid var(--bd-light);display:flex;align-items:center;justify-content:center;margin-bottom:20px;position:relative;transition:border-color .3s,box-shadow .3s;}
+.hiw-step:hover .hiw-circ{border-color:var(--green);box-shadow:0 0 0 6px rgba(106,191,94,0.1);}
+.hiw-ico{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;}
+.hiw-n{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--green);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--bd-light);}
+.hiw-step h4{font-size:14px;font-weight:600;color:var(--text-navy);margin-bottom:8px;}
+.hiw-step p{font-size:13px;color:var(--text-mid);line-height:1.6;font-weight:300;}
+
+/* USE CASES */
+.uc-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.uc{background:rgba(255,255,255,0.04);border:1px solid var(--bd-dark);border-radius:18px;padding:32px;display:grid;grid-template-columns:64px 1fr;gap:20px;align-items:start;transition:background .25s,border-color .25s;}
+.uc:hover{background:rgba(255,255,255,0.07);border-color:rgba(106,191,94,0.25);}
+.uc-iw{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.uc h4{font-size:16px;font-weight:600;color:var(--white);margin-bottom:8px;line-height:1.3;}
+.uc p{font-size:13.5px;color:var(--text-muted);line-height:1.65;font-weight:300;}
+.uc-res{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12px;font-weight:600;color:var(--green);}
+
+/* COMPLIANCE */
+.comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.comp-item{background:rgba(255,255,255,0.04);border:1px solid var(--bd-dark);border-radius:14px;padding:20px;display:flex;align-items:center;gap:14px;}
+.comp-dot{width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;}
+.comp-item strong{display:block;font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px;}
+.comp-item span{font-size:12px;color:var(--text-muted);}
+
+/* RELATED */
+.rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.rel{background:var(--white);border:1px solid var(--bd-light);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:10px;transition:transform .2s,box-shadow .2s;}
+.rel:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(13,31,60,.08);}
+.rel-ico{font-size:20px;}
+.rel h4{font-size:14px;font-weight:600;color:var(--text-navy);}
+.rel p{font-size:13px;color:var(--text-mid);line-height:1.55;flex:1;font-weight:300;}
+.rel-lnk{font-size:12px;font-weight:600;color:var(--green-dk);display:inline-flex;align-items:center;gap:4px;}
+
+/* CTA */
+.cta-band{background:var(--navy-mid);border-top:1px solid var(--bd-dark);padding:80px 56px;}
+.cta-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;}
+.cta-inner h2{font-family:'Fraunces',serif;font-size:38px;font-weight:800;color:var(--white);margin-bottom:12px;}
+.cta-inner p{font-size:16px;color:var(--text-muted);font-weight:300;max-width:520px;}
+.cta-btns{display:flex;flex-direction:column;gap:12px;flex-shrink:0;}
+
+/* ANIMS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.au{animation:fadeUp .5s ease both;}
+.au1{animation-delay:.05s}.au2{animation-delay:.12s}.au3{animation-delay:.19s}.au4{animation-delay:.26s}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo"><div class="logo-sq">SP</div>SKYPOND TECH</a>
+  <ul class="nav-links">
+    <li><a href="#">Services</a></li>
+    <li><a href="../index.html" class="active">Products</a></li>
+    <li><a href="#">Industries</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <a href="#" class="nav-cta">Schedule a Demo →</a>
+</nav>
+
+<div class="bc">
+  <a href="#">Home</a><span class="sep">/</span>
+  <a href="../index.html">Products</a><span class="sep">/</span>
+  <span class="cur">PointClickCare Data Feed</span>
+</div>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="hero">
+  <div class="hero-glow glow-tr"></div>
+  <div class="hero-glow glow-bl"></div>
+  <div class="hero-top">
+    <div class="au au1">
+      <div class="hero-pill">📡 Real-Time Data Feed</div>
+      <h1 class="hero-title">Every <em>PointClickCare</em> change, delivered to your pharmacy instantly</h1>
+      <p class="hero-sub">Our platform monitors PointClickCare in real time and pushes every relevant change — payor updates, census shifts, coverage modifications — directly into your pharmacy's document management system. No manual reports. No facility logins. No billing on the wrong payor.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-green">Schedule a Demo →</a>
+        <a href="#how" class="btn-outline">See How It Works ↓</a>
+      </div>
+    </div>
+    <div class="hero-stats au au2">
+      <div class="hstat"><div class="hstat-num">Real-time</div><div class="hstat-label">PCC change detection as it happens</div></div>
+      <div class="hstat"><div class="hstat-num">Auto</div><div class="hstat-label">Pushed to your doc management system</div></div>
+      <div class="hstat"><div class="hstat-num">Zero</div><div class="hstat-label">Manual report runs needed</div></div>
+      <div class="hstat"><div class="hstat-num">HIPAA</div><div class="hstat-label">Compliant by design</div></div>
+    </div>
+  </div>
+
+  <!-- DATA FLOW DIAGRAM -->
+  <div class="flow-strip">
+    <div class="flow-inner">
+      <div class="flow-eyebrow">How data moves</div>
+      <div class="flow-track">
+        <div class="flow-node">
+          <span class="fni">🏥</span>
+          <div class="fnt">PointClickCare</div>
+          <div class="fns">Facility EHR — staff enter changes here</div>
+          <div class="flow-pills">
+            <div class="fpill">Payor source changed</div>
+            <div class="fpill">Admission / discharge</div>
+            <div class="fpill">Coverage updated</div>
+          </div>
+        </div>
+        <div class="flow-connector">
+          <div class="conn-tag">monitored in real time</div>
+          <div class="conn-line"></div>
+        </div>
+        <div class="flow-node sp">
+          <span class="fni">⚡</span>
+          <div class="fnt">Skypond Platform</div>
+          <div class="fns">Detects, validates &amp; routes every change event instantly</div>
+        </div>
+        <div class="flow-connector">
+          <div class="conn-tag">automatically pushed</div>
+          <div class="conn-line"></div>
+        </div>
+        <div class="flow-node">
+          <span class="fni">💊</span>
+          <div class="fnt">Your Pharmacy System</div>
+          <div class="fns">Document management receives updates instantly</div>
+          <div class="flow-pills">
+            <div class="fpill">Billing team notified</div>
+            <div class="fpill">Census record updated</div>
+            <div class="fpill">Claim corrected</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FEATURES ══════════════════ -->
+<section class="section light" id="features">
+  <div class="section-inner">
+    <div class="sec-head">
+      <div class="sec-tag">Capabilities</div>
+      <h2 class="sec-title">Built for what LTC pharmacies actually need</h2>
+      <p class="sec-desc">Not a generic EHR connector — every feature targets the specific operational pain of relying on manual PCC workflows.</p>
+    </div>
+
+    <!-- Feature 1: Live feed -->
+    <div class="feat-split au">
+      <div class="fst-text">
+        <h3>Real-time change feed, delivered to your system</h3>
+        <p>The moment a facility staff member updates a resident record in PointClickCare — payor source, coverage, census status — our platform captures it and pushes it directly to your document management system. No batches. No polling delays. No stale data.</p>
+        <ul class="checklist">
+          <li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Payor source changes delivered the moment they happen</li>
+          <li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Admissions, discharges, and transfers tracked in real time</li>
+          <li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Insurance coverage modifications captured automatically</li>
+          <li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Full delivery confirmation and timestamped audit log</li>
+        </ul>
+      </div>
+      <div class="mockup">
+        <div class="mtbar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><div class="mtab">PCC Change Feed — Live</div></div>
+        <div class="mbody">
+          <div class="feed-hdr">
+            <div class="feed-hdr-t">Incoming Changes</div>
+            <div class="live-ind"><div class="livdot"></div>Live</div>
+          </div>
+          <div class="feed-rows">
+            <div class="frow"><div class="frow-ico fi1">💳</div><div class="frow-txt"><strong>Payor Source Changed</strong><span>R. Martinez · Sunrise SNF · Medicare → Managed Care</span></div><div class="fst s1">Pushed</div></div>
+            <div class="frow"><div class="frow-ico fi2">🏥</div><div class="frow-txt"><strong>New Admission</strong><span>T. Johnson · Maplewood Care · Medicare Part A</span></div><div class="fst s2">Delivered</div></div>
+            <div class="frow"><div class="frow-ico fi3">📤</div><div class="frow-txt"><strong>Discharge Recorded</strong><span>E. Kim · Valley View SNF · Fills suspended</span></div><div class="fst s1">Pushed</div></div>
+            <div class="frow"><div class="frow-ico fi4">🛡️</div><div class="frow-txt"><strong>Coverage Updated</strong><span>M. Okafor · Elmwood · Private Pay → Medicaid</span></div><div class="fst s3">Routing</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 2: Payor accuracy (reversed) -->
+    <div class="feat-split rev au">
+      <div class="fst-text">
+        <h3>Bill to the right payor — before the claim goes out</h3>
+        <p>Payor source changes are the most common reason LTC pharmacy claims get rejected. A Medicare spell ends, a resident moves to managed care, a private-pay patient qualifies for Medicaid — if your system doesn't know, the claim goes out wrong.</p>
+        <p>The PCC feed ensures your billing team sees every payor change in time to correct it before submission, not after a denial.</p>
+        <ul class="checklist">
+          <li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Medicare, Medicaid, managed care, and private pay tracked</li>
+          <li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Billing team notified before the next claim cycle</li>
+          <li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Fewer rejections from stale or incorrect payor data</li>
+        </ul>
+      </div>
+      <div class="mockup">
+        <div class="mtbar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><div class="mtab">Payor Distribution — Sunrise SNF</div></div>
+        <div class="mbody">
+          <div class="payor-hdr"><h4>Current Payor Breakdown</h4><span>142 active residents · Updated just now</span></div>
+          <div class="prow"><div class="prow-top"><span class="pnm">Medicare Part A</span><span class="pct">54 residents · 38%</span></div><div class="pbar-bg"><div class="pbar" style="width:38%;background:#6abf5e;"></div></div></div>
+          <div class="prow"><div class="prow-top"><span class="pnm">Medicaid</span><span class="pct">47 residents · 33%</span></div><div class="pbar-bg"><div class="pbar" style="width:33%;background:#7eb8f7;"></div></div></div>
+          <div class="prow"><div class="prow-top"><span class="pnm">Managed Care</span><span class="pct">29 residents · 20%</span></div><div class="pbar-bg"><div class="pbar" style="width:20%;background:#f5c96a;"></div></div></div>
+          <div class="prow"><div class="prow-top"><span class="pnm">Private Pay</span><span class="pct">12 residents · 9%</span></div><div class="pbar-bg"><div class="pbar" style="width:9%;background:#c79cf7;"></div></div></div>
+          <div class="change-note"><span>💳</span><span>3 payor changes received today —</span><strong>billing team notified</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 3: No manual logins -->
+    <div class="feat-split au">
+      <div class="fst-text">
+        <h3>No manual report runs. No facility logins. Ever.</h3>
+        <p>Many LTC pharmacy teams have staff whose job includes logging into PointClickCare at each facility — sometimes multiple times a day — just to pull census and payor reports. When facility credentials expire or change, the workflow breaks.</p>
+        <p>The PCC feed replaces that entirely. Your pharmacy never needs facility-level access to stay current. The data comes to you, automatically.</p>
+        <ul class="checklist">
+          <li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>No facility PCC credentials required</li>
+          <li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>No manual exports, downloads, or file imports</li>
+          <li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Works across all your facility contracts simultaneously</li>
+          <li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Complete change history and delivery audit trail</li>
+        </ul>
+      </div>
+      <div class="mockup">
+        <div class="mtbar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><div class="mtab">Before vs. After PCC Feed</div></div>
+        <div class="mbody">
+          <div class="ba-grid">
+            <div class="ba-col before">
+              <div class="ba-label">Before</div>
+              <div class="ba-item"><span class="ba-ico">🔑</span>Log into PCC at each facility</div>
+              <div class="ba-item"><span class="ba-ico">📋</span>Manually pull census reports</div>
+              <div class="ba-item"><span class="ba-ico">📂</span>Download and import files</div>
+              <div class="ba-item"><span class="ba-ico">⏰</span>Done 1–2× daily, if remembered</div>
+              <div class="ba-item"><span class="ba-ico">❌</span>Claims sent with wrong payor</div>
+            </div>
+            <div class="ba-col after">
+              <div class="ba-label">With PCC Feed</div>
+              <div class="ba-item"><span class="ba-ico">✅</span>No facility login needed</div>
+              <div class="ba-item"><span class="ba-ico">✅</span>Changes pushed automatically</div>
+              <div class="ba-item"><span class="ba-ico">✅</span>Lands in your doc mgmt system</div>
+              <div class="ba-item"><span class="ba-ico">✅</span>Real-time, all day, every facility</div>
+              <div class="ba-item"><span class="ba-ico">✅</span>Right payor, right claim, first try</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════ HOW IT WORKS ══════════════════ -->
+<section class="section pale" id="how">
+  <div class="section-inner">
+    <div class="sec-head" style="text-align:center;">
+      <div class="sec-tag" style="margin:0 auto 14px;">How It Works</div>
+      <h2 class="sec-title">From connection to continuous delivery</h2>
+      <p class="sec-desc" style="margin:0 auto;">Most pharmacies are receiving real-time data within days of kick-off — no lengthy IT project on your side.</p>
+    </div>
+    <div class="hiw">
+      <div class="hiw-step">
+        <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(106,191,94,0.12);">🔗</div><div class="hiw-n">01</div></div>
+        <h4>Connect to PCC</h4>
+        <p>We configure the feed using your PointClickCare credentials and map your facility list. Setup is handled by our team.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(59,130,246,0.12);">👁️</div><div class="hiw-n">02</div></div>
+        <h4>Platform monitors 24/7</h4>
+        <p>Our platform watches PointClickCare continuously — payor updates, census events, coverage changes — as they happen in real time.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(245,158,11,0.12);">⚡</div><div class="hiw-n">03</div></div>
+        <h4>Changes pushed instantly</h4>
+        <p>Each detected change is packaged and delivered directly into your pharmacy's document management system — automatically.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(106,191,94,0.12);">✅</div><div class="hiw-n">04</div></div>
+        <h4>Your team acts on it</h4>
+        <p>Billing and ops staff see accurate payor and census data in time to act — before the next claim cycle, not after a denial.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ USE CASES ══════════════════ -->
+<section class="section dark">
+  <div class="section-inner">
+    <div class="sec-head">
+      <div class="sec-tag wt">Who It's For</div>
+      <h2 class="sec-title wh">Built for real LTC pharmacy scenarios</h2>
+      <p class="sec-desc wh">Whether you serve 5 facilities or 150, the operational problem is the same — and the feed solves it at any scale.</p>
+    </div>
+    <div class="uc-grid">
+
+      <div class="uc">
+        <div class="uc-iw" style="background:rgba(106,191,94,0.12);">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+            <rect x="3" y="7" width="24" height="16" rx="3" stroke="#6abf5e" stroke-width="1.8"/>
+            <path d="M3 12h24" stroke="#6abf5e" stroke-width="1.8"/>
+            <path d="M9 17h4M9 20h6" stroke="#6abf5e" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="22" cy="18.5" r="3" fill="rgba(106,191,94,0.2)" stroke="#6abf5e" stroke-width="1.5"/>
+            <path d="M21 18.5l.8.8 1.6-1.6" stroke="#6abf5e" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h4>Billing to the right payor, every time</h4>
+          <p>Payor source changes are the most common cause of LTC pharmacy claim rejections. The feed delivers those changes before your next claim cycle — not after a denial that requires rework and resubmission.</p>
+          <div class="uc-res">→ Fewer rejections, faster reimbursement</div>
+        </div>
+      </div>
+
+      <div class="uc">
+        <div class="uc-iw" style="background:rgba(59,130,246,0.12);">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+            <rect x="5" y="4" width="20" height="22" rx="3" stroke="#7eb8f7" stroke-width="1.8"/>
+            <path d="M9 10h12M9 14h12M9 18h8" stroke="#7eb8f7" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="22" cy="22" r="5" fill="var(--navy)" stroke="#7eb8f7" stroke-width="1.5"/>
+            <path d="M22 19.5v3l1.5 1.5" stroke="#7eb8f7" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h4>Eliminating the manual PCC report run</h4>
+          <p>Many pharmacies have staff running manual census and payor reports from PCC multiple times daily. The feed replaces that entirely. Data arrives automatically — your staff focuses on pharmacy work instead.</p>
+          <div class="uc-res">→ Hours recovered every week, per facility</div>
+        </div>
+      </div>
+
+      <div class="uc">
+        <div class="uc-iw" style="background:rgba(245,158,11,0.12);">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+            <circle cx="11" cy="11" r="5" stroke="#f5c96a" stroke-width="1.8"/>
+            <path d="M5 26c0-4 2.686-7 6-7" stroke="#f5c96a" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M20 14l-2 2.5 4.5 4.5-4.5 4.5 2 2.5 7-7-7-7.5z" fill="rgba(245,158,11,0.15)" stroke="#f5c96a" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h4>No dependency on facility login access</h4>
+          <p>Relying on facilities to provide and maintain PCC credentials creates operational risk — when logins expire or change, your workflow breaks. With the feed, you never need facility-level access to stay current.</p>
+          <div class="uc-res">→ Operational continuity, zero access gaps</div>
+        </div>
+      </div>
+
+      <div class="uc">
+        <div class="uc-iw" style="background:rgba(168,85,247,0.12);">
+          <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+            <rect x="3" y="3" width="10" height="10" rx="2" stroke="#c79cf7" stroke-width="1.8"/>
+            <rect x="17" y="3" width="10" height="10" rx="2" stroke="#c79cf7" stroke-width="1.8"/>
+            <rect x="3" y="17" width="10" height="10" rx="2" stroke="#c79cf7" stroke-width="1.8"/>
+            <rect x="17" y="17" width="10" height="10" rx="2" stroke="#c79cf7" stroke-width="1.8"/>
+            <circle cx="15" cy="15" r="2.5" fill="rgba(168,85,247,0.3)" stroke="#c79cf7" stroke-width="1.3"/>
+          </svg>
+        </div>
+        <div>
+          <h4>Managing high census volumes at scale</h4>
+          <p>For pharmacies serving 20, 40, or 100+ facilities, manually tracking payor and census changes across all of them is impossible. The feed handles it systematically — every facility, every change, automatically delivered.</p>
+          <div class="uc-res">→ Scales to any number of facilities</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ COMPLIANCE ══════════════════ -->
+<section class="section dark" style="padding-top:0;">
+  <div class="section-inner">
+    <div style="border-top:1px solid var(--bd-dark);padding-top:64px;">
+      <div class="sec-head">
+        <div class="sec-tag wt">Security &amp; Compliance</div>
+        <h2 class="sec-title wh">Built to handle protected health information the right way</h2>
+        <p class="sec-desc wh">All data received from PointClickCare and delivered to your document management system is encrypted in transit and at rest. Every change event is logged with full provenance.</p>
+      </div>
+      <div class="comp-grid">
+        <div class="comp-item"><div class="comp-dot"></div><div><strong>HIPAA Compliant</strong><span>PHI handled under full HIPAA requirements</span></div></div>
+        <div class="comp-item"><div class="comp-dot"></div><div><strong>HIPAA BAA Included</strong><span>Business Associate Agreement with every deployment</span></div></div>
+        <div class="comp-item"><div class="comp-dot"></div><div><strong>Encrypted in Transit &amp; at Rest</strong><span>TLS 1.3 in transit · AES-256 at rest</span></div></div>
+        <div class="comp-item"><div class="comp-dot"></div><div><strong>Full Change Audit Log</strong><span>Every event logged with timestamp and delivery status</span></div></div>
+        <div class="comp-item"><div class="comp-dot"></div><div><strong>Role-Based Access Controls</strong><span>Granular permissions on who can see what</span></div></div>
+        <div class="comp-item"><div class="comp-dot"></div><div><strong>SOC 2 Type II</strong><span>Independently audited security controls</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ RELATED ══════════════════ -->
+<section class="section light">
+  <div class="section-inner">
+    <div class="sec-head">
+      <div class="sec-tag">Related Products</div>
+      <h2 class="sec-title">Works well with</h2>
+    </div>
+    <div class="rel-grid">
+      <div class="rel"><div class="rel-ico">⚡</div><h4>Document Automation</h4><p>PCC feed changes land in your document management system — Document Automation triggers the right workflows from those updates automatically.</p><a href="../document-automation.html" class="rel-lnk">Learn more →</a></div>
+      <div class="rel"><div class="rel-ico">📊</div><h4>LTC Analytics</h4><p>Layer PCC census and payor data on top of your pharmacy metrics for a complete operational and financial picture across all facilities.</p><a href="../ltc-analytics.html" class="rel-lnk">Learn more →</a></div>
+      <div class="rel"><div class="rel-ico">📋</div><h4>DEA Compliance Reporting</h4><p>Keep compliance workflows informed by the same real-time census and payor data flowing through the PCC feed.</p><a href="../dea-compliance-reporting.html" class="rel-lnk">Learn more →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CTA ══════════════════ -->
+<section class="cta-band">
+  <div class="cta-inner">
+    <div>
+      <h2>See the PCC feed in action</h2>
+      <p>We'll show you exactly how a payor source change in PointClickCare reaches your document management system in real time — live demo, not a slide deck.</p>
+    </div>
+    <div class="cta-btns">
+      <a href="#" class="btn-green" style="justify-content:center;">Schedule a Demo →</a>
+      <a href="#" class="btn-outline" style="justify-content:center;">Talk to Sales</a>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

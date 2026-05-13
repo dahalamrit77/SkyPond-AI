@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEA Lookup Tool — Skypond Tech</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Fraunces:opsz,wght@9..144,700;9..144,800;9..144,900&display=swap');
+:root{
+  --navy:#0d1f3c;--navy-mid:#132a52;--navy-light:#1c3a6e;
+  --green:#6abf5e;--green-dk:#4a9e40;--green-pale:#e8f7e6;
+  --green-glow:rgba(106,191,94,0.10);
+  --white:#ffffff;--off-white:#f0f4f8;
+  --text-navy:#0d1f3c;--text-mid:#3d5a78;--text-muted:#8fa3be;
+  --text-pale:#c8d8ea;--text-light:#e4edf7;
+  --bd-dark:rgba(255,255,255,0.08);--bd-mid:rgba(255,255,255,0.14);
+  --bd-lite:rgba(255,255,255,0.22);--bd-light:#d8e3ef;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--off-white);color:var(--text-navy);overflow-x:hidden;}
+a{text-decoration:none;}
+/* NAV */
+nav{background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 56px;height:66px;position:sticky;top:0;z-index:200;border-bottom:1px solid var(--bd-dark);}
+.nav-logo{display:flex;align-items:center;gap:10px;color:var(--white);font-weight:600;font-size:14px;letter-spacing:.04em;}
+.logo-sq{width:30px;height:30px;background:var(--green);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:var(--navy);}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{color:var(--text-muted);font-size:14px;font-weight:400;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--white);}
+.nav-cta{background:var(--white);color:var(--navy);padding:8px 18px;border-radius:6px;font-size:13px;font-weight:600;transition:background .2s,color .2s;}
+.nav-cta:hover{background:var(--green);color:var(--white);}
+/* BREADCRUMB */
+.bc{background:var(--navy-mid);border-bottom:1px solid var(--bd-dark);padding:10px 56px;display:flex;align-items:center;gap:8px;}
+.bc a,.bc span{font-size:12px;color:var(--text-muted);}
+.bc a:hover{color:var(--green);}
+.bc .sep{color:var(--bd-mid);}
+.bc .cur{color:var(--text-pale);}
+/* HERO */
+.hero{background:var(--navy);padding:72px 56px 0;position:relative;overflow:hidden;}
+.hero-glow{position:absolute;pointer-events:none;border-radius:50%;}
+.glow-tr{top:-140px;right:-100px;width:560px;height:560px;background:radial-gradient(circle,rgba(106,191,94,0.09) 0%,transparent 68%);}
+.glow-bl{bottom:0;left:-80px;width:420px;height:420px;background:radial-gradient(circle,rgba(59,130,246,0.06) 0%,transparent 68%);}
+.hero-top{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 460px;gap:60px;align-items:center;padding-bottom:60px;}
+.hero-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(106,191,94,0.12);border:1px solid rgba(106,191,94,0.28);color:var(--green);padding:5px 14px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:22px;}
+.hero-title{font-family:'Fraunces',serif;font-size:46px;font-weight:900;color:var(--white);line-height:1.08;margin-bottom:22px;}
+.hero-title em{font-style:normal;color:var(--green);}
+.hero-sub{font-size:16px;color:var(--text-pale);font-weight:300;line-height:1.75;margin-bottom:36px;max-width:460px;}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-green{background:var(--green);color:var(--navy);border:none;border-radius:8px;padding:13px 26px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-green:hover{background:#7dcf71;}
+.btn-outline{background:none;border:1px solid var(--bd-lite);border-radius:8px;padding:13px 26px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-outline:hover{background:rgba(255,255,255,0.06);}
+.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.hstat{background:rgba(255,255,255,0.05);border:1px solid var(--bd-dark);border-radius:14px;padding:22px 20px;transition:background .25s;}
+.hstat:hover{background:rgba(255,255,255,0.08);}
+.hstat-num{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--green);line-height:1;margin-bottom:6px;}
+.hstat-label{font-size:12px;color:var(--text-muted);line-height:1.45;font-weight:400;}
+/* DIAGRAM STRIP */
+.diag-strip{background:rgba(255,255,255,0.03);border-top:1px solid var(--bd-dark);padding:44px 56px 48px;}
+.diag-inner{max-width:1100px;margin:0 auto;}
+.diag-eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:32px;text-align:center;}
+.diag-track{display:grid;align-items:center;}
+.dnode{background:rgba(255,255,255,0.06);border:1px solid var(--bd-mid);border-radius:16px;padding:22px 18px;text-align:center;}
+.dnode.sp{background:rgba(106,191,94,0.12);border-color:rgba(106,191,94,0.35);}
+.dnode-icon{font-size:28px;margin-bottom:10px;display:block;}
+.dnode-title{font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px;}
+.dnode-sub{font-size:11px;color:var(--text-muted);line-height:1.4;}
+.dpills{margin-top:12px;display:flex;flex-direction:column;gap:5px;}
+.dpill{font-size:10px;background:rgba(255,255,255,0.07);border:1px solid var(--bd-dark);color:var(--text-pale);border-radius:6px;padding:4px 8px;animation:ppulse 3s ease-in-out infinite;}
+.dpill:nth-child(2){animation-delay:.7s;}.dpill:nth-child(3){animation-delay:1.4s;}
+@keyframes ppulse{0%,100%{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1);}50%{background:rgba(106,191,94,0.14);border-color:rgba(106,191,94,0.3);color:var(--green);}}
+.dconn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:0 6px;}
+.dconn-tag{font-size:10px;font-weight:600;color:var(--green);background:rgba(106,191,94,0.1);border:1px solid rgba(106,191,94,0.2);padding:3px 10px;border-radius:100px;white-space:nowrap;}
+.dconn-line{width:100%;height:2px;background:linear-gradient(90deg,var(--bd-mid),var(--green) 50%,var(--bd-mid));position:relative;}
+.dconn-line::after{content:'';position:absolute;right:-1px;top:-4px;border-left:8px solid var(--green);border-top:5px solid transparent;border-bottom:5px solid transparent;}
+/* SECTIONS */
+.section{padding:80px 56px;}
+.section.light{background:var(--white);}
+.section.pale{background:var(--off-white);}
+.section.dark{background:var(--navy);}
+.sec-inner{max-width:1100px;margin:0 auto;}
+.sec-tag{display:inline-block;background:rgba(106,191,94,0.10);border:1px solid rgba(106,191,94,0.22);color:var(--green-dk);padding:4px 12px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
+.sec-tag.wt{background:rgba(106,191,94,0.12);color:var(--green);border-color:rgba(106,191,94,0.25);}
+.sec-title{font-family:'Fraunces',serif;font-size:34px;font-weight:800;color:var(--text-navy);line-height:1.15;margin-bottom:12px;}
+.sec-title.wh{color:var(--white);}
+.sec-desc{font-size:16px;color:var(--text-mid);font-weight:300;line-height:1.7;max-width:580px;}
+.sec-desc.wh{color:var(--text-pale);}
+.sec-head{margin-bottom:52px;}
+/* FEATURE SPLIT */
+.feat-split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-bottom:72px;}
+.feat-split:last-child{margin-bottom:0;}
+.feat-split.rev{direction:rtl;}
+.feat-split.rev>*{direction:ltr;}
+.fst-text h3{font-family:'Fraunces',serif;font-size:26px;font-weight:800;color:var(--text-navy);margin-bottom:12px;line-height:1.2;}
+.fst-text p{font-size:15px;color:var(--text-mid);line-height:1.72;font-weight:300;margin-bottom:16px;}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.checklist li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-navy);font-weight:400;}
+.chk{width:20px;height:20px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.chk svg{width:11px;height:11px;}
+/* MOCKUP */
+.mockup{background:var(--navy);border-radius:18px;border:1px solid rgba(255,255,255,0.1);overflow:hidden;box-shadow:0 24px 56px rgba(13,31,60,.22);}
+.mtbar{background:rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.08);padding:10px 16px;display:flex;align-items:center;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot.r{background:#ff5f57;}.dot.y{background:#febc2e;}.dot.g{background:#28c840;}
+.mtab{margin-left:10px;font-size:11px;color:var(--text-muted);background:rgba(255,255,255,0.06);border-radius:4px;padding:3px 10px;}
+.mbody{padding:20px;}
+/* HOW IT WORKS */
+.hiw{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+.hiw::before{content:'';position:absolute;top:44px;left:12%;right:12%;height:2px;background:repeating-linear-gradient(90deg,var(--bd-light) 0,var(--bd-light) 6px,transparent 6px,transparent 14px);z-index:0;}
+.hiw-step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px;position:relative;z-index:1;}
+.hiw-circ{width:88px;height:88px;border-radius:50%;background:var(--white);border:2px solid var(--bd-light);display:flex;align-items:center;justify-content:center;margin-bottom:20px;position:relative;transition:border-color .3s,box-shadow .3s;}
+.hiw-step:hover .hiw-circ{border-color:var(--green);box-shadow:0 0 0 6px rgba(106,191,94,0.1);}
+.hiw-ico{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;}
+.hiw-n{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--green);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--bd-light);}
+.hiw-step h4{font-size:14px;font-weight:600;color:var(--text-navy);margin-bottom:8px;}
+.hiw-step p{font-size:13px;color:var(--text-mid);line-height:1.6;font-weight:300;}
+/* USE CASES */
+.uc-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.uc{background:rgba(255,255,255,0.04);border:1px solid var(--bd-dark);border-radius:18px;padding:32px;display:grid;grid-template-columns:64px 1fr;gap:20px;align-items:start;transition:background .25s,border-color .25s;}
+.uc:hover{background:rgba(255,255,255,0.07);border-color:rgba(106,191,94,0.25);}
+.uc-iw{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.uc h4{font-size:16px;font-weight:600;color:var(--white);margin-bottom:8px;line-height:1.3;}
+.uc p{font-size:13.5px;color:var(--text-muted);line-height:1.65;font-weight:300;}
+.uc-res{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12px;font-weight:600;color:var(--green);}
+/* COMPLIANCE */
+.comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.comp-item{background:rgba(255,255,255,0.04);border:1px solid var(--bd-dark);border-radius:14px;padding:20px;display:flex;align-items:center;gap:14px;}
+.comp-dot{width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;}
+.comp-item strong{display:block;font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px;}
+.comp-item span{font-size:12px;color:var(--text-muted);}
+/* RELATED */
+.rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.rel{background:var(--white);border:1px solid var(--bd-light);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:10px;transition:transform .2s,box-shadow .2s;}
+.rel:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(13,31,60,.08);}
+.rel-ico{font-size:20px;}
+.rel h4{font-size:14px;font-weight:600;color:var(--text-navy);}
+.rel p{font-size:13px;color:var(--text-mid);line-height:1.55;flex:1;font-weight:300;}
+.rel-lnk{font-size:12px;font-weight:600;color:var(--green-dk);display:inline-flex;align-items:center;gap:4px;}
+/* CTA */
+.cta-band{background:var(--navy-mid);border-top:1px solid var(--bd-dark);padding:80px 56px;}
+.cta-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;}
+.cta-inner h2{font-family:'Fraunces',serif;font-size:38px;font-weight:800;color:var(--white);margin-bottom:12px;}
+.cta-inner p{font-size:16px;color:var(--text-muted);font-weight:300;max-width:520px;}
+.cta-btns{display:flex;flex-direction:column;gap:12px;flex-shrink:0;}
+/* ANIMS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+@keyframes sin{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+@keyframes ppulse{0%,100%{opacity:.6;}50%{opacity:1;}}
+.au{animation:fadeUp .5s ease both;}
+.au1{animation-delay:.05s}.au2{animation-delay:.12s}.au3{animation-delay:.19s}.au4{animation-delay:.26s}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo"><div class="logo-sq">SP</div>SKYPOND TECH</a>
+  <ul class="nav-links">
+    <li><a href="#">Services</a></li>
+    <li><a href="index.html" class="active">Products</a></li>
+    <li><a href="#">Industries</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <a href="#" class="nav-cta">Schedule a Demo →</a>
+</nav><div class="bc">
+  <a href="#">Home</a><span class="sep">/</span>
+  <a href="index.html">Products</a><span class="sep">/</span>
+  <span class="cur">DEA Lookup Tool</span>
+</div><section class="hero">
+  <div class="hero-glow glow-tr"></div><div class="hero-glow glow-bl"></div>
+  <div class="hero-top">
+    <div class="au au1">
+      <div class="hero-pill">🔍 Compliance Tool</div>
+      <h1 class="hero-title">Instant <em>DEA registrant</em> verification, every time</h1>
+      <p class="hero-sub">Validate prescriber DEA numbers against live federal databases in under a second. Stop relying on outdated printouts or manual phone calls — get a definitive answer before every controlled substance fill.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-green">Schedule a Demo →</a>
+        <a href="#how" class="btn-outline">See How It Works ↓</a>
+      </div>
+    </div>
+    <div class="hero-stats au au2"><div class="hstat"><div class="hstat-num"><1s</div><div class="hstat-label">Average lookup response time</div></div><div class="hstat"><div class="hstat-num">100%</div><div class="hstat-label">Federal database accuracy</div></div><div class="hstat"><div class="hstat-num">10K+</div><div class="hstat-label">Monthly lookups processed</div></div><div class="hstat"><div class="hstat-num">HIPAA</div><div class="hstat-label">Compliant by design</div></div></div>
+  </div><div class="diag-strip">
+  <div class="diag-inner">
+    <div class="diag-eyebrow">How a lookup works</div>
+    <div class="diag-track" style="grid-template-columns:200px 1fr 200px 1fr 200px;"><div class="dnode"><span class="dnode-icon">🧑‍💼</span><div class="dnode-title">Pharmacy Staff</div><div class="dnode-sub">Enters DEA number or uploads CSV</div><div class="dpills"><div class="dpill">Single lookup</div><div class="dpill">Bulk CSV upload</div></div></div><div class="dconn"><div class="dconn-tag">submits query</div><div class="dconn-line"></div></div><div class="dnode sp"><span class="dnode-icon">⚡</span><div class="dnode-title">Skypond Platform</div><div class="dnode-sub">Queries DEA federal database live — no cache</div></div><div class="dconn"><div class="dconn-tag">returns in <1s</div><div class="dconn-line"></div></div><div class="dnode"><span class="dnode-icon">📋</span><div class="dnode-title">Verified Result</div><div class="dnode-sub">Name, schedules, expiry — logged to audit trail</div><div class="dpills"><div class="dpill">✓ Valid</div><div class="dpill">⚠ Expiring</div><div class="dpill">✗ Invalid</div></div></div></div>
+  </div>
+</div>
+</section><section class="section light" id="features">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-tag">Capabilities</div>
+      <h2 class="sec-title">Verification that keeps pace with your dispense volume</h2>
+      <p class="sec-desc">Built for the speed and scale of LTC pharmacy — not a once-a-day manual lookup process.</p>
+    </div>
+    <div class="feat-split">
+  <div class="fst-text"><h3>Live DEA validation — results in under a second</h3><p>Query the DEA registrant database live on every lookup — no cached records, no stale data. Every result reflects the current federal record at the moment you check.</p><ul class="checklist"><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Real-time federal database query, not cached data</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Registrant name, address, schedules, and expiry returned</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Instant flag on expired, invalid, or inactive registrations</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Results saved automatically to timestamped audit log</li></ul></div>
+  <div class="mockup"><div class="mtbar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><div class="mtab">DEA Lookup — Verification Result</div></div><div class="mbody">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+  <div style="font-size:12px;font-weight:600;color:var(--text-pale);text-transform:uppercase;letter-spacing:.06em;">Registrant Record</div>
+  <div style="display:flex;align-items:center;gap:6px;font-size:11px;background:rgba(106,191,94,0.15);color:var(--green);border-radius:6px;padding:4px 10px;font-weight:600;">✓ Valid Registration</div>
+</div>
+<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;margin-bottom:12px;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Registrant Name</div><div style="font-size:13px;color:var(--white);font-weight:500;">Dr. Patricia Reeves, MD</div></div>
+    <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">DEA Number</div><div style="font-size:13px;color:var(--white);font-weight:500;">BR4921047</div></div>
+    <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Business Activity</div><div style="font-size:13px;color:var(--white);font-weight:500;">Practitioner</div></div>
+    <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Expiration Date</div><div style="font-size:13px;color:#f5c96a;font-weight:600;">03/31/2026</div></div>
+  </div>
+</div>
+<div style="margin-bottom:12px;"><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Authorized Schedules</div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;">
+    <span style="background:rgba(106,191,94,0.15);color:var(--green);border:1px solid rgba(106,191,94,0.25);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;">Schedule II</span>
+    <span style="background:rgba(106,191,94,0.15);color:var(--green);border:1px solid rgba(106,191,94,0.25);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;">Schedule III</span>
+    <span style="background:rgba(106,191,94,0.15);color:var(--green);border:1px solid rgba(106,191,94,0.25);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;">Schedule IV</span>
+    <span style="background:rgba(106,191,94,0.15);color:var(--green);border:1px solid rgba(106,191,94,0.25);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;">Schedule V</span>
+  </div>
+</div>
+<div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-muted);background:rgba(255,255,255,0.03);border-radius:8px;padding:10px 12px;">
+  <span>🕐</span><span>Verified <strong style="color:var(--text-pale);">just now</strong> by <strong style="color:var(--text-pale);">J. Williams, CPhT</strong> · Saved to audit log</span>
+</div></div></div>
+</div>
+    <div class="feat-split rev">
+  <div class="fst-text"><h3>Bulk validation — run your entire prescriber list at once</h3><p>Upload a CSV of DEA numbers from your pharmacy system and validate hundreds of prescribers in a single pass. Results come back with a clear status on every record — valid, expiring soon, or requiring action.</p><p>Ideal for quarterly compliance audits, new facility onboarding, or any time you need to clear a large prescriber list without running individual lookups.</p><ul class="checklist"><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>CSV upload — no reformatting required</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Clear valid / expiring / expired status per record</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Downloadable results for compliance documentation</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Runs in seconds regardless of list size</li></ul></div>
+  <div class="mockup"><div class="mtbar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><div class="mtab">Bulk Lookup — Upload Results</div></div><div class="mbody">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+  <div style="font-size:12px;font-weight:600;color:var(--text-pale);text-transform:uppercase;letter-spacing:.06em;">prescribers_q2.csv · 47 records</div>
+  <div style="font-size:11px;color:var(--text-muted);">Complete</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+  <div style="background:rgba(106,191,94,0.1);border:1px solid rgba(106,191,94,0.25);border-radius:10px;padding:14px;text-align:center;">
+    <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:900;color:var(--green);">43</div>
+    <div style="font-size:11px;color:var(--text-muted);">Valid</div>
+  </div>
+  <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);border-radius:10px;padding:14px;text-align:center;">
+    <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:900;color:#f5c96a;">3</div>
+    <div style="font-size:11px;color:var(--text-muted);">Expiring Soon</div>
+  </div>
+  <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);border-radius:10px;padding:14px;text-align:center;">
+    <div style="font-family:'Fraunces',serif;font-size:26px;font-weight:900;color:#f87171;">1</div>
+    <div style="font-size:11px;color:var(--text-muted);">Action Required</div>
+  </div>
+</div>
+<div style="display:flex;flex-direction:column;gap:7px;">
+  <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
+    <div><div style="font-size:12px;color:#f87171;font-weight:600;">⚠ Expired — Action Required</div><div style="font-size:11px;color:var(--text-muted);">Dr. M. Torres · BT1920384 · Expired 01/2025</div></div>
+    <div style="font-size:10px;background:rgba(239,68,68,0.15);color:#f87171;padding:3px 8px;border-radius:6px;font-weight:600;">Review</div>
+  </div>
+  <div style="background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
+    <div><div style="font-size:12px;color:#f5c96a;font-weight:600;">⏰ Expiring in 60 days</div><div style="font-size:11px;color:var(--text-muted);">Dr. A. Patel · AP3847291 · Exp 06/2026</div></div>
+    <div style="font-size:10px;background:rgba(245,158,11,0.12);color:#f5c96a;padding:3px 8px;border-radius:6px;font-weight:600;">Alert</div>
+  </div>
+  <div style="background:rgba(106,191,94,0.06);border:1px solid rgba(106,191,94,0.15);border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
+    <div><div style="font-size:12px;color:var(--green);font-weight:600;">✓ 43 registrants verified valid</div><div style="font-size:11px;color:var(--text-muted);">All saved to audit log with timestamp</div></div>
+    <div style="font-size:10px;background:rgba(106,191,94,0.12);color:var(--green);padding:3px 8px;border-radius:6px;font-weight:600;">Export CSV</div>
+  </div>
+</div></div></div>
+</div>
+    <div class="feat-split">
+  <div class="fst-text"><h3>Expiration monitoring — catch issues before they cause violations</h3><p>Set up automatic alerts for prescribers whose DEA registrations are approaching expiration. Catch the issue 90, 60, or 30 days out — not the day a controlled substance order comes in.</p><ul class="checklist"><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Configurable alert thresholds per prescriber</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Alerts to pharmacist-in-charge and compliance staff</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Full prescriber expiration calendar view</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Never caught off guard by an expired registration again</li></ul></div>
+  <div class="mockup"><div class="mtbar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><div class="mtab">Expiration Monitor — Active Prescribers</div></div><div class="mbody">
+<div style="font-size:12px;font-weight:600;color:var(--text-pale);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;">Upcoming Expirations</div>
+<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+  <div style="background:rgba(239,68,68,0.08);border-left:3px solid #f87171;border-radius:0 8px 8px 0;padding:10px 14px;"><div style="font-size:12px;color:#f87171;font-weight:600;">Expires in 14 days</div><div style="font-size:11px;color:var(--text-muted);">Dr. K. Nguyen · KN2910483</div></div>
+  <div style="background:rgba(245,158,11,0.08);border-left:3px solid #f5c96a;border-radius:0 8px 8px 0;padding:10px 14px;"><div style="font-size:12px;color:#f5c96a;font-weight:600;">Expires in 32 days</div><div style="font-size:11px;color:var(--text-muted);">Dr. R. Singh · RS1847362</div></div>
+  <div style="background:rgba(245,158,11,0.06);border-left:3px solid rgba(245,158,11,0.4);border-radius:0 8px 8px 0;padding:10px 14px;"><div style="font-size:12px;color:#f5c96a;font-weight:600;">Expires in 58 days</div><div style="font-size:11px;color:var(--text-muted);">Dr. L. Chen · LC9283710</div></div>
+</div>
+<div style="background:rgba(106,191,94,0.08);border:1px solid rgba(106,191,94,0.2);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;">
+  <span style="font-size:16px;">🔔</span>
+  <div><div style="font-size:12px;color:var(--green);font-weight:600;">Automatic alerts enabled</div><div style="font-size:11px;color:var(--text-muted);">Notify at 90, 60, 30, and 14 days before expiry</div></div>
+</div></div></div>
+</div>
+  </div>
+</section><section class="section pale" id="how">
+  <div class="sec-inner">
+    <div class="sec-head" style="text-align:center;">
+      <div class="sec-tag" style="margin:0 auto 14px;">How It Works</div>
+      <h2 class="sec-title">Simple to use. Impossible to get wrong.</h2>
+      <p class="sec-desc" style="margin:0 auto;">Designed for pharmacists and technicians — not IT staff. Up and running in minutes.</p>
+    </div>
+    <div class="hiw"><div class="hiw-step">
+      <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(106,191,94,0.12);">🔍</div><div class="hiw-n">01</div></div>
+      <h4>Enter or upload</h4><p>Paste a single DEA number or upload a CSV export from your pharmacy system. No reformatting required.</p>
+    </div><div class="hiw-step">
+      <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(59,130,246,0.12);">⚡</div><div class="hiw-n">02</div></div>
+      <h4>Live query executes</h4><p>Skypond queries the DEA registrant database in real time and retrieves the current registrant record instantly.</p>
+    </div><div class="hiw-step">
+      <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(245,158,11,0.12);">📋</div><div class="hiw-n">03</div></div>
+      <h4>Review results</h4><p>Name, business activity, authorized schedules, expiration date, and status — valid, expiring, or flagged — returned clearly.</p>
+    </div><div class="hiw-step">
+      <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(106,191,94,0.12);">🗂️</div><div class="hiw-n">04</div></div>
+      <h4>Logged automatically</h4><p>Every lookup is timestamped, attributed to the staff member who ran it, and saved to the audit log without any extra steps.</p>
+    </div></div>
+  </div>
+</section><section class="section dark">
+  <div class="sec-inner">
+    <div class="sec-head">
+      <div class="sec-tag wt">Who It's For</div>
+      <h2 class="sec-title wh">Real scenarios where DEA verification matters</h2>
+      <p class="sec-desc wh">From daily dispense workflows to quarterly audits — verification needs come up constantly in LTC pharmacy.</p>
+    </div>
+    <div class="uc-grid"><div class="uc">
+      <div class="uc-iw" style="background:rgba(106,191,94,0.12);">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><rect x="4" y="4" width="22" height="22" rx="3" stroke="#6abf5e" stroke-width="1.8"/><path d="M9 15l4 4 8-8" stroke="#6abf5e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div><h4>Pre-dispense verification at the point of fill</h4><p>Build DEA lookup into your CII dispense workflow so technicians confirm prescriber authorization before every controlled substance fill — not after a compliance question arises.</p><div class="uc-res">→ Verification at the point of dispensing</div></div>
+    </div><div class="uc">
+      <div class="uc-iw" style="background:rgba(59,130,246,0.12);">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><circle cx="15" cy="10" r="5" stroke="#7eb8f7" stroke-width="1.8"/><path d="M7 26c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="#7eb8f7" stroke-width="1.8" stroke-linecap="round"/><path d="M21 14l3 3-3 3" stroke="#7eb8f7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div><h4>New prescriber onboarding</h4><p>When a facility sends over a new attending physician or NP, verify their DEA number instantly — before their first controlled substance order reaches your queue.</p><div class="uc-res">→ Zero delay on new prescriber activation</div></div>
+    </div><div class="uc">
+      <div class="uc-iw" style="background:rgba(245,158,11,0.12);">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><rect x="4" y="3" width="22" height="24" rx="3" stroke="#f5c96a" stroke-width="1.8"/><path d="M9 9h12M9 13h12M9 17h8" stroke="#f5c96a" stroke-width="1.6" stroke-linecap="round"/><circle cx="22" cy="22" r="5" fill="var(--navy)" stroke="#f5c96a" stroke-width="1.5"/><path d="M20 22l1.5 1.5 3-3" stroke="#f5c96a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div><h4>Periodic compliance audits</h4><p>Run your entire active prescriber list through bulk lookup monthly to surface any expired or revoked registrations before they create a dispensing violation or inspection issue.</p><div class="uc-res">→ Proactive compliance, not reactive cleanup</div></div>
+    </div><div class="uc">
+      <div class="uc-iw" style="background:rgba(168,85,247,0.12);">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><rect x="3" y="5" width="24" height="20" rx="3" stroke="#c79cf7" stroke-width="1.8"/><path d="M3 11h24" stroke="#c79cf7" stroke-width="1.5"/><path d="M9 17h5M9 20h8" stroke="#c79cf7" stroke-width="1.5" stroke-linecap="round"/><path d="M21 15l4 4-4 4" stroke="#c79cf7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div><h4>DEA inspection preparation</h4><p>Pull a complete verification history for any prescriber or time period to demonstrate due-diligence practices. Every lookup logged with user, timestamp, and result — ready in minutes.</p><div class="uc-res">→ Inspection-ready documentation always on hand</div></div>
+    </div></div>
+  </div>
+</section><section class="section dark" style="padding-top:0;">
+  <div class="sec-inner">
+    <div style="border-top:1px solid var(--bd-dark);padding-top:64px;">
+      <div class="sec-head">
+        <div class="sec-tag wt">Security &amp; Compliance</div>
+        <h2 class="sec-title wh">Secure. Auditable. HIPAA-compliant.</h2>
+        <p class="sec-desc wh">Every lookup is encrypted in transit and at rest. Access is role-controlled, every action is logged, and no PHI leaves your environment.</p>
+      </div>
+      <div class="comp-grid"><div class="comp-item"><div class="comp-dot"></div><div><strong>HIPAA Compliant</strong><span>PHI handled under full HIPAA requirements</span></div></div><div class="comp-item"><div class="comp-dot"></div><div><strong>DEA Database Direct</strong><span>Live federal database, not a third-party copy</span></div></div><div class="comp-item"><div class="comp-dot"></div><div><strong>SOC 2 Type II</strong><span>Independently audited security controls</span></div></div><div class="comp-item"><div class="comp-dot"></div><div><strong>Role-Based Access</strong><span>Control who can run lookups and see results</span></div></div><div class="comp-item"><div class="comp-dot"></div><div><strong>Encrypted Audit Logs</strong><span>Every lookup stored securely with full attribution</span></div></div><div class="comp-item"><div class="comp-dot"></div><div><strong>No PHI Stored</strong><span>Lookup results are logged, not retained as PHI</span></div></div></div>
+    </div>
+  </div>
+</section><section class="section light">
+  <div class="sec-inner">
+    <div class="sec-head"><div class="sec-tag">Related Products</div><h2 class="sec-title">Works well with</h2></div>
+    <div class="rel-grid"><div class="rel"><div class="rel-ico">📋</div><h4>DEA Compliance Reporting</h4><p>Automate CSOS, ARCOS, and Form 222 filing workflows.</p><a href="dea-compliance-reporting.html" class="rel-lnk">Learn more →</a></div><div class="rel"><div class="rel-ico">📦</div><h4>CS Inventory</h4><p>Real-time controlled substance inventory management.</p><a href="cs-inventory.html" class="rel-lnk">Learn more →</a></div><div class="rel"><div class="rel-ico">⚡</div><h4>Document Automation</h4><p>Auto-generate and route compliance documentation.</p><a href="document-automation.html" class="rel-lnk">Learn more →</a></div></div>
+  </div>
+</section><section class="cta-band">
+  <div class="cta-inner">
+    <div><h2>See DEA Lookup in action</h2><p>Walk through a live demo with someone who has built compliance tools inside real LTC operations.</p></div>
+    <div class="cta-btns">
+      <a href="#" class="btn-green" style="justify-content:center;">Schedule a Demo →</a>
+      <a href="#" class="btn-outline" style="justify-content:center;">Talk to Sales</a>
+    </div>
+  </div>
+</section>
+</body>
+</html>

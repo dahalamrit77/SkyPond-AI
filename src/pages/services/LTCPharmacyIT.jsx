@@ -403,7 +403,7 @@ function CTA() {
         </H>
         <P style={{ color:C.body, marginBottom:32, fontSize:16,
           fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:400 }}>
-          Schedule a conversation with Ramesh KC. We'll review your current systems, identify the highest-impact opportunities, and give you a clear, honest plan — no fluff, no upsell.
+          Schedule a conversation. We'll review your current systems, identify the highest-impact opportunities, and give you a clear, honest plan — no fluff, no upsell.
         </P>
         <div style={{ display:"flex", gap:12, justifyContent:"center", flexWrap:"wrap" }}>
           <Button variant="primary" size="md" to="/schedule-demo">Schedule a Consultation →</Button>

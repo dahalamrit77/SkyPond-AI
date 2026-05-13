@@ -1,5 +1,8 @@
+
+import { client } from '.././sanityClient';
 import C from '../tokens.js'
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useLocation } from 'react-router-dom';
 import { Button } from '../components/ui/Button.jsx'
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
@@ -650,48 +653,101 @@ function IndustriesSection() {
 
 function Testimonials() {
   const [active, setActive] = useState(0);
+  const [data, setData] = useState([]); // This replaces the hardcoded TESTIMONIALS array
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const t = setInterval(() => setActive(a => (a+1) % TESTIMONIALS.length), 6000);
-    return () => clearInterval(t);
+    // 1. Fetch Data from Sanity
+    const query = `*[_type == "testimonial"]{
+      "a": author,
+      "r": role,
+      "co": company,
+      "q": quote,
+      "avatar": avatar.asset->url
+    }`;
+
+    client.fetch(query).then((res) => {
+      setData(res);
+      setLoading(false);
+    });
   }, []);
+
+  useEffect(() => {
+    // 2. Only start the interval if we actually have data
+    if (data.length === 0) return;
+
+    const t = setInterval(() => {
+      setActive((a) => (a + 1) % data.length);
+    }, 6000);
+
+    return () => clearInterval(t);
+  }, [data.length]);
+
+  // Helper to generate initials if there's no photo
+  const getInitials = (name) => {
+    return name ? name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2) : "??";
+  };
+
+  if (loading) return null; // Or a simple spinner/placeholder
+  if (data.length === 0) return null; // Hide section if no testimonials are published
+
   return (
-    <section id="about" style={{ padding:"92px 5vw", background:C.surface }}>
-      <div style={{ maxWidth:820, margin:"0 auto", textAlign:"center" }}>
-        <div style={{ marginBottom:12 }}><Badge c={C.p}>💬 Named Clients. Real Results.</Badge></div>
-        <H size="h2" style={{ marginBottom:10 }}>Our Clients Put Their Names on It</H>
-        <P style={{ maxWidth:440, margin:"0 auto 44px", color:C.muted }}>
-          TJM Labs has named testimonials. PillSpark doesn't. We do — from real LTC pharmacy leaders who stand behind the results.
-        </P>
-        <div style={{ position:"relative", minHeight:260 }}>
-          {TESTIMONIALS.map((t,i) => (
-            <div key={i} style={{ position:i===0?"relative":"absolute", top:0, left:0, right:0,
-              opacity:active===i?1:0, transform:active===i?"translateY(0)":"translateY(12px)",
-              transition:"opacity 0.5s,transform 0.5s", pointerEvents:active===i?"auto":"none" }}>
-              <Card hover={false} style={{ padding:"32px 36px", textAlign:"left" }}>
-                <div style={{ fontSize:38, lineHeight:1, color:t.c, marginBottom:10,
-                  fontFamily:"Georgia,serif", opacity:0.5 }}>"</div>
-                <p style={{ fontSize:"clamp(0.94rem,1.15vw,1.04rem)", color:C.body,
-                  lineHeight:1.78, fontStyle:"italic", marginBottom:22 }}>{t.q}</p>
-                <div style={{ display:"flex", alignItems:"center", gap:13 }}>
-                  <div style={{ width:42, height:42, borderRadius:"50%",
-                    background:`linear-gradient(135deg,${t.c},${t.c}88)`,
-                    display:"flex", alignItems:"center", justifyContent:"center",
-                    fontWeight:800, color:"#fff", fontSize:13 }}>{t.i}</div>
+    <section id="about" style={{ padding: "92px 5vw", background: C.surface }}>
+      <div style={{ maxWidth: 820, margin: "0 auto", textAlign: "center" }}>
+        <div style={{ marginBottom: 12 }}>
+          <Badge c={C.p}>💬 Named Clients. Real Results.</Badge>
+        </div>
+        <H size="h2" style={{ marginBottom: 10 }}>Our Clients Put Their Names on It</H>
+
+        <div style={{ position: "relative", minHeight: 260 }}>
+          {data.map((t, i) => (
+            <div key={i} style={{
+              position: i === 0 ? "relative" : "absolute", top: 0, left: 0, right: 0,
+              opacity: active === i ? 1 : 0, transform: active === i ? "translateY(0)" : "translateY(12px)",
+              transition: "opacity 0.5s,transform 0.5s", pointerEvents: active === i ? "auto" : "none"
+            }}>
+              <Card hover={false} style={{ padding: "32px 36px", textAlign: "left" }}>
+                <div style={{
+                  fontSize: 38, lineHeight: 1, color: C.p, marginBottom: 10,
+                  fontFamily: "Georgia,serif", opacity: 0.5
+                }}>"</div>
+                <p style={{
+                  fontSize: "clamp(0.94rem,1.15vw,1.04rem)", color: C.body,
+                  lineHeight: 1.78, fontStyle: "italic", marginBottom: 22
+                }}>{t.q}</p>
+                
+                <div style={{ display: "flex", alignItems: "center", gap: 13 }}>
+                  {/* Avatar handling: Show photo if exists, otherwise show Initials bubble */}
+                  {t.avatar ? (
+                    <img src={t.avatar} alt={t.a} style={{ width: 42, height: 42, borderRadius: "50%", objectFit: "cover" }} />
+                  ) : (
+                    <div style={{
+                      width: 42, height: 42, borderRadius: "50%",
+                      background: `linear-gradient(135deg, ${C.p}, ${C.p}88)`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      fontWeight: 800, color: "#fff", fontSize: 13
+                    }}>{getInitials(t.a)}</div>
+                  )}
+
                   <div>
-                    <div style={{ color:C.head, fontWeight:700, fontSize:14.5 }}>{t.a}</div>
-                    <div style={{ color:C.muted, fontSize:12.5 }}>{t.r} · {t.co}</div>
+                    <div style={{ color: C.head, fontWeight: 700, fontSize: 14.5 }}>{t.a}</div>
+                    <div style={{ color: C.muted, fontSize: 12.5 }}>{t.r} · {t.co}</div>
                   </div>
                 </div>
               </Card>
             </div>
           ))}
         </div>
-        <div style={{ display:"flex", gap:7, justifyContent:"center", marginTop:20 }}>
-          {TESTIMONIALS.map((_,i) => (
+
+        {/* Dynamic Dots Navigation */}
+        <div style={{ display: "flex", gap: 7, justifyContent: "center", marginTop: 20 }}>
+          {data.map((_, i) => (
             <button key={i} onClick={() => setActive(i)}
-              style={{ width:active===i?26:7, height:7, borderRadius:4,
-                background:active===i?C.p:C.border, border:"none", cursor:"pointer",
-                transition:"all 0.3s" }} />
+              style={{
+                width: active === i ? 26 : 7, height: 7, borderRadius: 4,
+                background: active === i ? C.p : C.border, border: "none", cursor: "pointer",
+                transition: "all 0.3s"
+              }} />
           ))}
         </div>
       </div>
@@ -737,7 +793,11 @@ function Contact() {
   const lbl = { color:C.muted, fontSize:12.5, display:"block", marginBottom:5, fontWeight:500,
     fontFamily:"'Akshar', sans-serif" };
   return (
-    <section id="contact" style={{ padding:"92px 5vw", background:C.surface }}>
+    <section id="contact" style={{
+      padding:"92px 5vw",
+      background:C.surface,
+      scrollMarginTop: 96,
+    }}>
       <div style={{ maxWidth:640, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:44 }}>
           <div style={{ marginBottom:12 }}><Badge c={C.p}>✉ Get In Touch</Badge></div>
@@ -807,6 +867,41 @@ function Contact() {
 
 /* ─── ROOT ────────────────────────────────────────────────────────────────── */
 export default function Home() {
+  const location = useLocation()
+
+  /**
+   * Deep-link `/#contact`: scroll to the real contact block (not the CTA above it).
+   * Testimonials load async — layout height changes — use ResizeObserver + timed retries
+   * so the viewport catches up after shift. Corrections use `auto` to avoid stacked smooth scrolls.
+   */
+  useEffect(() => {
+    if (location.pathname !== '/' || location.hash !== '#contact') return
+
+    const scrollContact = (behavior = 'smooth') => {
+      document.getElementById('contact')?.scrollIntoView({ behavior, block: 'start' })
+    }
+
+    scrollContact('smooth')
+
+    let debounceTimer
+    const onLayoutShift = () => {
+      clearTimeout(debounceTimer)
+      debounceTimer = window.setTimeout(() => scrollContact('auto'), 72)
+    }
+
+    const ro = new ResizeObserver(onLayoutShift)
+    ro.observe(document.documentElement)
+
+    const delays = [80, 180, 380, 700, 1200, 2000, 3200, 5000]
+    const ids = delays.map((ms) => window.setTimeout(() => scrollContact('auto'), ms))
+
+    return () => {
+      ro.disconnect()
+      clearTimeout(debounceTimer)
+      ids.forEach(clearTimeout)
+    }
+  }, [location.pathname, location.hash])
+
   return (
     <>
       <Navbar />
