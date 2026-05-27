@@ -5,6 +5,7 @@ import { Button } from '../../components/ui/Button.jsx'
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
+import { ProductHero } from '../../components/ProductHero.jsx'
 import {
   Rss, Hospital, Zap, Pill, CreditCard, LogOut, Shield,
   Plug, Eye, CheckCircle, FileText, KeyRound, LayoutGrid,
@@ -193,71 +194,25 @@ function FlowStrip() {
 // ── Hero ─────────────────────────────────────────────────────────────────────
 
 function Hero() {
-  const stats = [
-    { num: "Real-time", label: "PCC change detection as it happens" },
-    { num: "Auto", label: "Pushed to your doc management system" },
-    { num: "Zero", label: "Manual report runs needed" },
-    { num: "HIPAA", label: "Compliant by design" },
-  ]
-
   return (
-    <>
-      <section style={{ minHeight: "88vh", padding: "120px 5vw 80px", background: C.bg, position: "relative", overflow: "hidden" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%", position: "relative", zIndex: 1 }}>
-          <div style={{
-            display: "grid", gridTemplateColumns: "minmax(0, 1.32fr) minmax(0, 0.82fr)", gap: 56, alignItems: "center",
-          }}>
-            <div style={{ minWidth: 0, animation: "fadeUp 0.6s ease both" }}>
-              <div style={{ marginBottom: 22 }}><Badge c={C.p}>Real-Time Data Feed</Badge></div>
-
-              <H size="hero" style={{ marginBottom: 22, textWrap: "balance" }}>
-                Every{" "}
-                <span style={{ color: C.green }}>PointClickCare</span>
-                {" "}change, delivered to your pharmacy instantly
-              </H>
-
-              <P style={{ marginBottom: 36, fontSize: "1rem", maxWidth: "100%" }}>
-                Our platform monitors PointClickCare in real time and pushes every relevant change — payor updates, census shifts, coverage modifications — directly into your pharmacy's document management system. No manual reports. No facility logins. No billing on the wrong payor.
-              </P>
-
-              <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-                <Button variant="primary" size="lg" to="/schedule-demo">Schedule a Demo →</Button>
-                <Button variant="secondary" size="lg" onClick={() => document.getElementById("how")?.scrollIntoView({ behavior: "smooth" })}>
-                  See How It Works ↓
-                </Button>
-              </div>
-            </div>
-
-            <div style={{
-              display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, minWidth: 0,
-              animation: "fadeUp 0.7s 0.1s ease both",
-            }}>
-              {stats.map((s, i) => (
-                <div key={i}
-                  style={{
-                    background: C.surface,
-                    border: `1px solid ${C.border}`,
-                    borderRadius: 12,
-                    padding: "22px 20px",
-                  }}
-                >
-                  <div style={{
-                    fontFamily: "'Akshar', sans-serif",
-                    fontSize: 28,
-                    fontWeight: 900,
-                    color: i % 2 === 1 ? C.green : C.p,
-                    lineHeight: 1,
-                    marginBottom: 6,
-                  }}>{s.num}</div>
-                  <div style={{ fontSize: 12.5, color: C.muted, lineHeight: 1.45, fontWeight: 500 }}>{s.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-      <FlowStrip />
-    </>
+    <ProductHero
+      badge="Real-Time Data Feed"
+      title={(
+        <>
+          Every <span style={{ color: C.p }}>PointClickCare</span> change
+          <br />
+          delivered to your pharmacy instantly
+        </>
+      )}
+      description="Our platform monitors PointClickCare in real time and pushes every relevant change — payor updates, census shifts, coverage modifications — directly into your pharmacy's document management system. No manual reports. No facility logins. No billing on the wrong payor."
+      stats={[
+        { num: 'Real-time', label: 'PCC change detection as it happens' },
+        { num: 'Auto', label: 'Pushed to your doc management system' },
+        { num: 'Zero', label: 'Manual report runs needed' },
+        { num: 'HIPAA', label: 'Compliant by design' },
+      ]}
+      after={<FlowStrip />}
+    />
   )
 }
 

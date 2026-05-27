@@ -4,6 +4,7 @@ import { Button } from '../../components/ui/Button.jsx'
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
+import { ProductHero } from '../../components/ProductHero.jsx'
 import { Shuffle, Timer, HelpCircle, AlertTriangle, TrendingDown, FolderArchive, Pill, Hospital, ClipboardList, TrendingUp, BarChart3, Settings } from 'lucide-react'
 import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../config/constants.js'
 
@@ -171,53 +172,23 @@ function DashboardWidget() {
 
 function Hero() {
   return (
-    <section style={{ minHeight:"88vh", display:"flex", alignItems:"center",
-      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.bg }}>
-
-      <div style={{ maxWidth:1100, margin:"0 auto", width:"100%", position:"relative", zIndex:1 }}>
-        <div style={{ display:"grid", gridTemplateColumns:"1.05fr 1fr", gap:64, alignItems:"center" }}>
-          <div>
-            <div style={{ display:"flex", gap:10, marginBottom:20, animation:"fadeUp 0.6s ease both" }}>
-              <Badge c={C.p}>📊 Service</Badge>
-              <Badge c={C.p}>Data Analytics & Power BI</Badge>
-            </div>
-            <H size="hero" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
-              Your Pharmacy Data Should{" "}
-              <span style={{ color:C.p }}>
-                Tell You Something
-              </span>
-            </H>
-            <P style={{ maxWidth:520, marginBottom:32, fontSize:"1.08rem", animation:"fadeUp 0.6s 0.18s ease both" }}>
-              Most LTC pharmacies are sitting on data they can't act on — scattered across PMS exports, spreadsheets, and facility reports.
-              We build the dashboards, pipelines, and automated reports that turn that data into decisions.
-            </P>
-            <div style={{ display:"flex", gap:12, flexWrap:"wrap", animation:"fadeUp 0.6s 0.25s ease both" }}>
-              <Button variant="primary" size="lg" to="/schedule-demo">Request a Demo Dashboard →</Button>
-              <Button variant="secondary" size="lg" onClick={() => document.getElementById("dashboards")?.scrollIntoView({ behavior:"smooth" })}>
-                See What We Build ↓
-              </Button>
-            </div>
-
-            <div style={{ display:"flex", gap:0, marginTop:52,
-              borderTop:`1px solid ${C.border}`, paddingTop:30,
-              animation:"fadeUp 0.6s 0.4s ease both" }}>
-              {[["Power BI","Microsoft-certified"],["Real-time","Live data pipelines"],["LTC-specific","Built for your metrics"],["Automated","Scheduled delivery"]].map(([v,l],i,a) => (
-                <div key={i} style={{ flex:1, paddingRight:18,
-                  borderRight:i<a.length-1?`1px solid ${C.border}`:"none",
-                  marginRight:i<a.length-1?18:0 }}>
-                  <div style={{ fontSize:"clamp(1rem,1.5vw,1.2rem)", fontWeight:900, color:C.p,
-                    letterSpacing:"-0.02em", fontFamily:"'Akshar', sans-serif" }}>{v}</div>
-                  <div style={{ color:C.p, fontSize:11.5, marginTop:2, fontWeight:500 }}>{l}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div style={{ animation:"fadeUp 0.7s 0.2s ease both" }}>
-            <DashboardWidget />
-          </div>
-        </div>
-      </div>
-    </section>
+    <ProductHero
+      badge="Data Analytics & Power BI"
+      title={(
+        <>
+          Your pharmacy data should
+          <br />
+          <span style={{ color: C.p }}>tell you something</span>
+        </>
+      )}
+      description="Most LTC pharmacies are sitting on data they can't act on — scattered across PMS exports, spreadsheets, and facility reports. We build the dashboards, pipelines, and automated reports that turn that data into decisions."
+      stats={[
+        { num: 'Power BI', label: 'Microsoft-certified' },
+        { num: 'Real-time', label: 'Live data pipelines' },
+        { num: 'LTC-specific', label: 'Built for your metrics' },
+        { num: 'Automated', label: 'Scheduled delivery' },
+      ]}
+    />
   );
 }
 
@@ -304,7 +275,7 @@ function Dashboards() {
   ];
   const b = boards[active];
   return (
-    <section id="dashboards" style={{ padding:"88px 5vw", background:C.alt }}>
+    <section id="how" style={{ padding:"88px 5vw", background:C.alt }}>
       <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:52 }}>
           <div style={{ marginBottom:14 }}><Badge c={C.p}>📊 Dashboards</Badge></div>

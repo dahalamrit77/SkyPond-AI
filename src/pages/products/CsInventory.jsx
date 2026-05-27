@@ -5,6 +5,7 @@ import { Button } from '../../components/ui/Button.jsx'
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
+import { ProductHero } from '../../components/ProductHero.jsx'
 import {
   Package, Pill, Zap, ClipboardList, CheckCircle,
   PenLine, AlertTriangle, CheckSquare, BarChart3,
@@ -336,50 +337,25 @@ function DiagramStrip() {
 
 /* ── Page sections ── */
 function Hero() {
-  const stats = [
-    { num: 'Real-time', label: 'Perpetual inventory tracking' },
-    { num: 'CII–CV', label: 'All schedule coverage' },
-    { num: '100%', label: 'Transaction auditability' },
-    { num: 'Auto', label: 'Discrepancy detection' },
-  ]
   return (
-    <>
-      <section style={{ minHeight: '88vh', padding: '120px 5vw 80px', background: C.bg }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.32fr) minmax(0, 0.82fr)', gap: 56, alignItems: 'center' }}>
-          <div style={{ minWidth: 0, animation: 'fadeUp 0.6s ease both' }}>
-            <div style={{ marginBottom: 22 }}><Badge c={C.p}><Package size={12} /> Inventory Management</Badge></div>
-            <H size="hero" style={{ marginBottom: 22, textWrap: 'balance' }}>
-              Real-time{' '}
-              <span style={{ color: C.p }}>controlled substance</span>
-              {' '}inventory built for LTC volume
-            </H>
-            <P style={{ marginBottom: 36, fontSize: '1rem', maxWidth: '100%' }}>
-              Track every dispense, receive, return, and waste transaction against a perpetual running balance. Surface discrepancies instantly — before they become compliance events that demand your attention during an inspection.
-            </P>
-            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-              <Button variant="primary" size="lg" to="/schedule-demo">Schedule a Demo →</Button>
-              <Button variant="secondary" size="lg" onClick={() => document.getElementById('how')?.scrollIntoView({ behavior: 'smooth' })}>
-                See How It Works ↓
-              </Button>
-            </div>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, minWidth: 0, animation: 'fadeUp 0.7s 0.1s ease both' }}>
-            {stats.map((s, i) => (
-              <div key={i}
-                style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 12, padding: '22px 20px' }}>
-                <div style={{ fontFamily: "'Akshar', sans-serif", fontSize: 28, fontWeight: 900, color: i % 2 === 1 ? C.green : C.p, lineHeight: 1, marginBottom: 6 }}>{s.num}</div>
-                <div style={{ fontSize: 12.5, color: C.muted, lineHeight: 1.45, fontWeight: 500 }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      </section>
-      <DiagramStrip />
-    </>
+    <ProductHero
+      badge="Inventory Management"
+      title={(
+        <>
+          Real-time <span style={{ color: C.p }}>controlled substance</span>
+          <br />
+          inventory built for LTC volume
+        </>
+      )}
+      description="Track every dispense, receive, return, and waste transaction against a perpetual running balance. Surface discrepancies instantly — before they become compliance events that demand your attention during an inspection."
+      stats={[
+        { num: 'Real-time', label: 'Perpetual inventory tracking' },
+        { num: 'CII–CV', label: 'All schedule coverage' },
+        { num: '100%', label: 'Transaction auditability' },
+        { num: 'Auto', label: 'Discrepancy detection' },
+      ]}
+      after={<DiagramStrip />}
+    />
   )
 }
 

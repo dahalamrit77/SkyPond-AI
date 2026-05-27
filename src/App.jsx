@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import Home from './pages/Home.jsx'
 import About from './pages/About.jsx'
 import OurValues from './pages/OurValues.jsx'
+import PrivacyPolicy from './pages/PrivacyPolicy.jsx'
 import Industries from './pages/Industries.jsx'
 import ScheduleDemo from './pages/ScheduleDemo.jsx'
 import ServicesIndex from './pages/ServicesIndex.jsx'
@@ -70,6 +71,7 @@ body {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/our-values" element={<OurValues />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/industries" element={<Industries />} />
         <Route path="/schedule-demo" element={<ScheduleDemo />} />
         <Route path="/services" element={<ServicesIndex />} />

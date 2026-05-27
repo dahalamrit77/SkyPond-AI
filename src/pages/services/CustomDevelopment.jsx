@@ -4,6 +4,7 @@ import { Button } from '../../components/ui/Button.jsx'
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
+import { ProductHero } from '../../components/ProductHero.jsx'
 import { ShieldCheck, Smartphone, Link as LinkIcon, Settings, BarChart3, Hospital, Cloud, Wrench } from 'lucide-react'
 import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../config/constants.js'
 
@@ -74,49 +75,23 @@ function TechStack() {
 
 function Hero() {
   return (
-    <section style={{ minHeight:"88vh", display:"flex", alignItems:"center",
-      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.bg }}>
-
-      <div style={{ maxWidth:1100, margin:"0 auto", width:"100%", position:"relative", zIndex:1 }}>
-        <div style={{ display:"grid", gridTemplateColumns:"1.05fr 1fr", gap:64, alignItems:"center" }}>
-          <div>
-            <div style={{ display:"flex", gap:10, marginBottom:20, animation:"fadeUp 0.6s ease both" }}>
-              <Badge c={C.p}>💻 Service</Badge>
-              <Badge c={C.p}>Custom Development</Badge>
-            </div>
-            <H size="hero" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
-              Software Built Around{" "}
-              <span style={{ color:C.p }}>
-                Your LTC Workflows
-              </span>
-            </H>
-            <P style={{ maxWidth:520, marginBottom:32, fontSize:"1.08rem", animation:"fadeUp 0.6s 0.18s ease both" }}>
-              Off-the-shelf software wasn't designed for LTC pharmacy. We build the custom applications, internal tools, and system integrations that match exactly how your pharmacy actually operates — with LTC domain knowledge built in from day one.
-            </P>
-            <div style={{ display:"flex", gap:12, flexWrap:"wrap", animation:"fadeUp 0.6s 0.25s ease both" }}>
-              <Button variant="primary" size="lg" to="/schedule-demo">Discuss Your Project →</Button>
-              <Button variant="secondary" size="lg" onClick={() => document.getElementById("whatwebuild")?.scrollIntoView({ behavior:"smooth" })}>
-                See What We Build ↓
-              </Button>
-            </div>
-            <div style={{ display:"flex", gap:0, marginTop:52, borderTop:`1px solid ${C.border}`, paddingTop:30,
-              animation:"fadeUp 0.6s 0.4s ease both" }}>
-              {[["LTC","Domain expertise"],["Full-stack","React · Node · Azure"],["HIPAA","Compliant builds"],["50+","Projects delivered"]].map(([v,l],i,a) => (
-                <div key={i} style={{ flex:1, paddingRight:16,
-                  borderRight:i<a.length-1?`1px solid ${C.p}`:"none", marginRight:i<a.length-1?16:0 }}>
-                  <div style={{ fontSize:"clamp(1rem,1.5vw,1.3rem)", fontWeight:900, color:C.p,
-                    letterSpacing:"-0.02em", fontFamily:"'Akshar', sans-serif" }}>{v}</div>
-                  <div style={{ color:C.p, fontSize:11.5, marginTop:2, fontWeight:500 }}>{l}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div style={{ animation:"fadeUp 0.7s 0.2s ease both" }}>
-            <TechStack />
-          </div>
-        </div>
-      </div>
-    </section>
+    <ProductHero
+      badge="Custom Development"
+      title={(
+        <>
+          Software built around
+          <br />
+          <span style={{ color: C.p }}>your LTC workflows</span>
+        </>
+      )}
+      description="Off-the-shelf software wasn't designed for LTC pharmacy. We build the custom applications, internal tools, and system integrations that match exactly how your pharmacy actually operates — with LTC domain knowledge built in from day one."
+      stats={[
+        { num: 'LTC', label: 'Domain expertise' },
+        { num: 'Full-stack', label: 'React · Node · Azure' },
+        { num: 'HIPAA', label: 'Compliant builds' },
+        { num: '50+', label: 'Projects delivered' },
+      ]}
+    />
   );
 }
 
@@ -141,7 +116,7 @@ function WhatWeBuild() {
   ];
   const b = builds[active];
   return (
-    <section id="whatwebuild" style={{ padding:"88px 5vw", background:C.alt }}>
+    <section id="how" style={{ padding:"88px 5vw", background:C.alt }}>
       <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:52 }}>
           <div style={{ marginBottom:14 }}><Badge c={C.p}>🔨 What We Build</Badge></div>

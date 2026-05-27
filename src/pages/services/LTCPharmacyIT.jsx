@@ -4,6 +4,7 @@ import { Button } from '../../components/ui/Button.jsx'
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
+import { ProductHero } from '../../components/ProductHero.jsx'
 import { Hospital, CheckCircle2, Zap, Lock, Frown, Timer, ClipboardList, DollarSign, Smartphone, Link as LinkIcon, RefreshCw, ShieldCheck, BarChart3, Wrench, Settings } from 'lucide-react'
 import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../config/constants.js'
 
@@ -39,50 +40,23 @@ function Card({ children, style={}, ac, hover=true }) {
 /* ── Navbar ── */
 function Hero() {
   return (
-    <section style={{ minHeight:"88vh", display:"flex", alignItems:"center",
-      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.bg }}>
-
-      <div style={{ maxWidth:1100, margin:"0 auto", width:"100%", position:"relative", zIndex:1 }}>
-        <div style={{ display:"grid", gridTemplateColumns:"1.1fr 1fr", gap:72, alignItems:"center" }}>
-          <div>
-            <div style={{ display:"flex", gap:10, marginBottom:20, animation:"fadeUp 0.6s ease both" }}>
-              <Badge c={C.p}>🏥 Service</Badge>
-              <Badge c={C.p}>LTC Pharmacy IT</Badge>
-            </div>
-            <H size="hero" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
-              LTC Pharmacy IT Built by People Who Know the Industry
-            </H>
-            <P style={{ maxWidth:520, marginBottom:32, fontSize:"1.08rem", animation:"fadeUp 0.6s 0.18s ease both" }}>
-              We don't learn LTC pharmacy on your project. Our team has built telepharmacy platforms, DEA compliance systems, and pharmacy-facility integrations inside real LTC operations — and we bring that depth to every engagement.
-            </P>
-            <div style={{ display:"flex", gap:12, flexWrap:"wrap", animation:"fadeUp 0.6s 0.25s ease both" }}>
-              <Button variant="primary" size="lg" to="/schedule-demo">Schedule a Consultation →</Button>
-              <Button variant="secondary" size="lg" onClick={() => document.getElementById("capabilities")?.scrollIntoView({ behavior:"smooth" })}>
-                See Capabilities ↓
-              </Button>
-            </div>
-          </div>
-
-          {/* Stat cards */}
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:14, animation:"fadeUp 0.7s 0.2s ease both" }}>
-            {[
-              { icon:<Hospital size={26} />, val:"50+", label:"LTC projects delivered", color:C.p },
-              { icon:<CheckCircle2 size={26} />, val:"100%", label:"Client satisfaction rate", color:C.green },
-              { icon:<Zap size={26} />, val:"LTC", label:"Exclusive industry focus", color:C.green },
-              { icon:<Lock size={26} />, val:"HIPAA", label:"Compliant by design", color:C.p },
-            ].map((s,i) => (
-              <div key={i} style={{ padding:"22px 20px", borderRadius:12,
-                background:C.surface, border:`1px solid ${C.border}` }}>
-                <div style={{ fontSize:26, marginBottom:10, color:C.head }}>{s.icon}</div>
-                <div style={{ fontSize:"clamp(1.6rem,2.5vw,2rem)", fontWeight:900, color:s.color,
-                  letterSpacing:"-0.03em", fontFamily:"'Akshar', sans-serif", lineHeight:1 }}>{s.val}</div>
-                <div style={{ color:C.muted, fontSize:12.5, marginTop:5, fontWeight:500 }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
+    <ProductHero
+      badge="LTC Pharmacy IT"
+      title={(
+        <>
+          LTC pharmacy IT built by
+          <br />
+          <span style={{ color: C.p }}>people who know the industry</span>
+        </>
+      )}
+      description="We don't learn LTC pharmacy on your project. Our team has built telepharmacy platforms, DEA compliance systems, and pharmacy-facility integrations inside real LTC operations — and we bring that depth to every engagement."
+      stats={[
+        { num: '50+', label: 'LTC projects delivered' },
+        { num: '100%', label: 'Client satisfaction rate' },
+        { num: 'LTC', label: 'Exclusive industry focus' },
+        { num: 'HIPAA', label: 'Compliant by design' },
+      ]}
+    />
   );
 }
 
@@ -165,7 +139,7 @@ function Capabilities() {
   ];
   const cap = caps[active];
   return (
-    <section id="capabilities" style={{ padding:"88px 5vw", background:C.alt }}>
+    <section id="how" style={{ padding:"88px 5vw", background:C.alt }}>
       <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:52 }}>
           <div style={{ marginBottom:14 }}><Badge c={C.p}>⚙ Capabilities</Badge></div>

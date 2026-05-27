@@ -5,6 +5,7 @@ import { Button } from '../../components/ui/Button.jsx'
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
+import { ProductHero } from '../../components/ProductHero.jsx'
 import { Printer, ClipboardList, Search, Pill, FolderArchive, Hourglass, BarChart3, Hospital, FileText } from 'lucide-react'
 import { CONTACT_PHONE, CONTACT_PHONE_DISPLAY } from '../../config/constants.js'
 
@@ -118,54 +119,23 @@ function AutoWidget() {
 
 function Hero() {
   return (
-    <section style={{ minHeight:"88vh", display:"flex", alignItems:"center",
-      padding:"120px 5vw 80px", position:"relative", overflow:"hidden", background:C.bg }}>
-
-      <div style={{ maxWidth:1100, margin:"0 auto", width:"100%", position:"relative", zIndex:1 }}>
-        <div style={{ display:"grid", gridTemplateColumns:"1.05fr 1fr", gap:64, alignItems:"center" }}>
-          <div>
-            <div style={{ display:"flex", gap:10, marginBottom:20, animation:"fadeUp 0.6s ease both" }}>
-              <Badge c={C.p}>⚙ Service</Badge>
-              <Badge c={C.p}>AI Automation</Badge>
-            </div>
-            <H size="hero" style={{ marginBottom:22, animation:"fadeUp 0.6s 0.1s ease both" }}>
-              Replace Manual Bottlenecks with{" "}
-              <span style={{ color:C.p }}>
-                Intelligent Automation
-              </span>
-            </H>
-            <P style={{ maxWidth:520, marginBottom:32,
-              fontSize:"1.08rem", animation:"fadeUp 0.6s 0.18s ease both" }}>
-              We build AI workflows purpose-designed for LTC pharmacy — not repurposed from generic automation tools.
-              Prior auth, DEA compliance reporting, order triage, fax processing — automated end-to-end, with full audit trails.
-            </P>
-            <div style={{ display:"flex", gap:12, flexWrap:"wrap", animation:"fadeUp 0.6s 0.25s ease both" }}>
-              <Button variant="primary" size="lg" to="/schedule-demo">See It in Action →</Button>
-              <Button variant="secondary" size="lg" onClick={() => document.getElementById("automations")?.scrollIntoView({ behavior:"smooth" })}>
-                See What We Automate ↓
-              </Button>
-            </div>
-
-            <div style={{ display:"flex", gap:0, marginTop:52,
-              borderTop:`1px solid ${C.border}`, paddingTop:32,
-              animation:"fadeUp 0.6s 0.4s ease both" }}>
-              {[["89%","Avg time reduction"],["Zero","Errors introduced"],["24/7","Consistent output"],["Weeks","Time to ROI"]].map(([v,l],i,a) => (
-                <div key={i} style={{ flex:1, paddingRight:18,
-                  borderRight:i<a.length-1?`1px solid ${C.border}`:"none",
-                  marginRight:i<a.length-1?18:0 }}>
-                  <div style={{ fontSize:"clamp(1.4rem,2.2vw,1.9rem)", fontWeight:900, color:C.head,
-                    letterSpacing:"-0.03em", fontFamily:"'Akshar', sans-serif" }}>{v}</div>
-                  <div style={{ color:C.body, fontSize:12.5, marginTop:6, fontWeight:600, lineHeight:1.35 }}>{l}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div style={{ animation:"fadeUp 0.7s 0.2s ease both" }}>
-            <AutoWidget />
-          </div>
-        </div>
-      </div>
-    </section>
+    <ProductHero
+      badge="AI Automation"
+      title={(
+        <>
+          Replace manual bottlenecks with
+          <br />
+          <span style={{ color: C.p }}>intelligent automation</span>
+        </>
+      )}
+      description="We build AI workflows purpose-designed for LTC pharmacy — not repurposed from generic automation tools. Prior auth, DEA compliance reporting, order triage, fax processing — automated end-to-end, with full audit trails."
+      stats={[
+        { num: '89%', label: 'Avg time reduction' },
+        { num: 'Zero', label: 'Errors introduced' },
+        { num: '24/7', label: 'Consistent output' },
+        { num: 'Weeks', label: 'Time to ROI' },
+      ]}
+    />
   );
 }
 
@@ -252,7 +222,7 @@ function Automations() {
   ];
   const a = autos[active];
   return (
-    <section id="automations" style={{ padding:"88px 5vw", background:C.alt }}>
+    <section id="how" style={{ padding:"88px 5vw", background:C.alt }}>
       <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:52 }}>
           <div style={{ marginBottom:14 }}><Badge c={C.p}>⚡ What We Automate</Badge></div>

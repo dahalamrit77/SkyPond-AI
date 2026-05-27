@@ -5,6 +5,7 @@ import { Button } from '../../components/ui/Button.jsx'
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
+import { ProductHero } from '../../components/ProductHero.jsx'
 import {
   ClipboardList, Pill, Zap, Building2, Upload, BarChart3,
   Plug, CheckCircle, Eye, Network, UserCheck, Search, Package,
@@ -184,76 +185,25 @@ function DiagramStrip() {
 // ── Hero ─────────────────────────────────────────────────────────────────────
 
 function Hero() {
-  const stats = [
-    { num: "80%", label: "Reduction in manual reporting time" },
-    { num: "0", label: "Missed filing deadlines for clients" },
-    { num: "CSOS", label: "Certified integration" },
-    { num: "Multi-site", label: "Rollup reporting" },
-  ]
-
   return (
-    <>
-      <section style={{ minHeight: "88vh", padding: "120px 5vw 80px", background: C.bg }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%", position: "relative", zIndex: 1 }}>
-        <div style={{
-          display: "grid", gridTemplateColumns: "minmax(0, 1.32fr) minmax(0, 0.82fr)",
-          gap: 56, alignItems: "center",
-        }}>
-          <div style={{ minWidth: 0, animation: "fadeUp 0.5s ease both" }}>
-            <div style={{
-              display: "inline-flex", alignItems: "center", gap: 7,
-              background: `${C.p}1E`, border: `1px solid ${C.p}47`, color: C.p,
-              padding: "5px 14px", borderRadius: 100,
-              fontSize: 11, fontWeight: 600, letterSpacing: "0.08em",
-              textTransform: "uppercase", marginBottom: 22,
-              fontFamily: "'Akshar', sans-serif",
-            }}>
-              <ClipboardList size={13} /> Compliance Reporting
-            </div>
-
-            <H size="hero" style={{ marginBottom: 22, textWrap: "balance" }}>
-              Automated{" "}
-              <span style={{ color: C.p }}>DEA reporting</span>
-              {" "}that eliminates manual filing risk
-            </H>
-
-            <P style={{ marginBottom: 36, maxWidth: "100%" }}>
-              Handle CSOS ordering, ARCOS submissions, and DEA Form 222 workflows without managing it by spreadsheet.
-              Designed for LTC pharmacies that can't afford a filing mistake or a missed deadline.
-            </P>
-
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-              <Button variant="primary" size="lg" to="/schedule-demo">Schedule a Demo →</Button>
-              <Button variant="secondary" size="lg" onClick={() => document.getElementById("how")?.scrollIntoView({ behavior: "smooth" })}>
-                See How It Works ↓
-              </Button>
-            </div>
-          </div>
-
-          <div style={{
-            display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, minWidth: 0,
-            animation: "fadeUp 0.5s 0.12s ease both",
-          }}>
-            {stats.map((s, i) => (
-              <div key={i}
-                style={{
-                  background: C.surface, border: `1px solid ${C.border}`,
-                  borderRadius: 12, padding: "22px 20px",
-                }}>
-                <div style={{
-                  fontFamily: "'Akshar', sans-serif", fontSize: 28, fontWeight: 900,
-                  color: i % 2 === 1 ? C.green : C.p, lineHeight: 1, marginBottom: 6,
-                }}>{s.num}</div>
-                <div style={{ fontSize: 12.5, color: C.muted, lineHeight: 1.45, fontWeight: 500 }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      </section>
-      <DiagramStrip />
-    </>
+    <ProductHero
+      badge="Compliance Reporting"
+      title={(
+        <>
+          Automated <span style={{ color: C.p }}>DEA reporting</span>
+          <br />
+          that eliminates manual filing risk
+        </>
+      )}
+      description="Handle CSOS ordering, ARCOS submissions, and DEA Form 222 workflows without managing it by spreadsheet. Designed for LTC pharmacies that can't afford a filing mistake or a missed deadline."
+      stats={[
+        { num: '80%', label: 'Reduction in manual reporting time' },
+        { num: '0', label: 'Missed filing deadlines for clients' },
+        { num: 'CSOS', label: 'Certified integration' },
+        { num: 'Multi-site', label: 'Rollup reporting' },
+      ]}
+      after={<DiagramStrip />}
+    />
   )
 }
 

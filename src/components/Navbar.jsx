@@ -2,7 +2,13 @@ import C from '../tokens.js'
 import { useState, useEffect, useRef } from 'react'
 import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom'
 import { Button } from './ui/Button.jsx'
-import { ChevronDown, X, Menu, Hospital, Settings, BarChart3, Link, Laptop, Cloud, Search, ClipboardList, Pill, TrendingUp, FileText } from 'lucide-react'
+import { ChevronDown, X, Menu, Hospital, Settings, BarChart3, Link, Laptop, Cloud, Search, ClipboardList, Pill, TrendingUp, FileText, Users, Star, Shield } from 'lucide-react'
+
+const ABOUT_NAV = [
+  { icon: <Users size={18} />, label: "About Us", slug: "/about", desc: "Our story and mission" },
+  { icon: <Star size={18} />, label: "Our Values", slug: "/our-values", desc: "Principles that guide our work" },
+  { icon: <Shield size={18} />, label: "Privacy Policy", slug: "/privacy-policy", desc: "How we protect your data" },
+];
 
 const SERVICES_NAV = [
   { icon:<Hospital size={18} />, label:"LTC Pharmacy IT",          slug:"/services/ltc-pharmacy-it",     desc:"Telepharmacy, integrations & migrations" },
@@ -101,6 +107,85 @@ function NavDropdown({ label, items, onAnchor, active, navDark }) {
   );
 }
 
+function AboutDropdown({ active, navDark }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handler = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const btnColor = active ? (navDark ? '#FFFFFF' : C.p) : (navDark ? 'rgba(255,255,255,0.78)' : C.body);
+  const btnWeight = active ? 600 : 500;
+  const chevronColor = navDark ? 'rgba(255,255,255,0.7)' : C.muted;
+
+  return (
+    <div ref={ref} style={{ position: "relative" }}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}>
+      <button
+        type="button"
+        style={{
+          display: "flex", alignItems: "center", gap: 5, background: "none",
+          borderLeft: "none", borderRight: "none", borderTop: "none",
+          borderBottom: active ? `2px solid ${C.p2}` : '2px solid transparent',
+          paddingBottom: 4, boxSizing: "border-box",
+          color: btnColor, fontSize: 13.5, fontWeight: btnWeight, cursor: "pointer",
+          fontFamily: "'Akshar', sans-serif", transition: "color 0.15s, border-color 0.15s",
+        }}>
+        About
+        <ChevronDown size={12} color={chevronColor} style={{ transition: "transform 0.2s", transform: open ? "rotate(180deg)" : "none" }} />
+      </button>
+
+      {open && (
+        <div style={{
+          position: "absolute", top: "calc(100% + 12px)", left: "50%",
+          transform: "translateX(-50%)", width: 300, background: C.surface,
+          borderRadius: 16, border: `1.5px solid ${C.border}`,
+          boxShadow: "0 20px 60px rgba(59,63,176,0.14)",
+          padding: "10px 10px", zIndex: 200,
+          animation: "dropIn 0.18s ease both",
+        }}>
+          <div style={{
+            position: "absolute", top: -7, left: "50%", transform: "translateX(-50%)",
+            width: 13, height: 13, background: C.surface, border: `1.5px solid ${C.border}`,
+            borderRight: "none", borderBottom: "none", rotate: "45deg",
+          }} />
+          {ABOUT_NAV.map((item, i) => (
+            <RouterLink key={i} to={item.slug}
+              style={{
+                display: "flex", alignItems: "center", gap: 11, padding: "11px 13px",
+                borderRadius: 10, textDecoration: "none", transition: "background 0.15s",
+                background: "transparent",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = C.alt; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
+              onClick={() => setOpen(false)}>
+              <span style={{
+                width: 36, height: 36, borderRadius: 9, flexShrink: 0,
+                background: C.alt, display: "flex", alignItems: "center",
+                justifyContent: "center",
+              }}>{item.icon}</span>
+              <div>
+                <div style={{
+                  color: C.head, fontWeight: 500, fontSize: 13.5,
+                  fontFamily: "'Akshar', sans-serif",
+                }}>{item.label}</div>
+                <div style={{
+                  color: C.body, fontSize: 11.5, marginTop: 2,
+                  fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight: 300,
+                }}>{item.desc}</div>
+              </div>
+            </RouterLink>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function HamburgerIcon({ open, navDark }) {
   const stroke = navDark ? '#FFFFFF' : C.p;
   if (open) {
@@ -116,10 +201,6 @@ export function Navbar() {
   const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth < 900);
   const navigate = useNavigate();
   const { pathname, hash } = useLocation();
-
-  const handleAbout = () => {
-    navigate("/about");
-  };
 
   const handleContact = () => {
     navigate({ pathname: "/", hash: "#contact" }, { replace: pathname === "/" })
@@ -174,7 +255,7 @@ export function Navbar() {
   const activeServices = pathname.startsWith("/services");
   const activeProducts = pathname.startsWith("/products");
   const activeIndustries = pathname === "/industries";
-  const activeAbout = pathname === "/about";
+  const activeAbout = pathname === "/about" || pathname === "/our-values" || pathname === "/privacy-policy";
   const activeContact = pathname === "/" && hash === "#contact";
 
   const deskLinkBase = (isActive) => ({
@@ -221,10 +302,7 @@ export function Navbar() {
             <RouterLink to="/industries" style={deskLinkBase(activeIndustries)}
               onMouseEnter={e => { if (!activeIndustries) e.currentTarget.style.color = navDark ? 'rgba(255,255,255,0.95)' : C.p; }}
               onMouseLeave={e => { if (!activeIndustries) e.currentTarget.style.color = navDark ? 'rgba(255,255,255,0.78)' : C.body; }}>Industries</RouterLink>
-            <button type="button" onClick={handleAbout}
-              style={deskLinkBase(activeAbout)}
-              onMouseEnter={e => { if (!activeAbout) e.currentTarget.style.color = navDark ? 'rgba(255,255,255,0.95)' : C.p; }}
-              onMouseLeave={e => { if (!activeAbout) e.currentTarget.style.color = navDark ? 'rgba(255,255,255,0.78)' : C.body; }}>About</button>
+            <AboutDropdown active={activeAbout} navDark={navDark} />
             <button type="button" onClick={handleContact}
               style={deskLinkBase(activeContact)}
               onMouseEnter={e => { if (!activeContact) e.currentTarget.style.color = navDark ? 'rgba(255,255,255,0.95)' : C.p; }}
@@ -382,20 +460,51 @@ export function Navbar() {
             </RouterLink>
             <button
               type="button"
-              onClick={() => { handleAbout(); closeMobile(); }}
+              onClick={() => setMobileExpanded(mobileExpanded === "about" ? null : "about")}
               style={{
-                display:"block", width:"100%", padding:"14px 5vw", fontSize:15, fontFamily:"'Akshar', sans-serif",
-                cursor:"pointer", background:"none", border:"none", borderBottom:'1px solid rgba(255,255,255,0.12)',
-                textAlign:"left",
-                color: activeAbout ? C.p2 : 'rgba(255,255,255,0.82)',
-                fontWeight: activeAbout ? 600 : 400,
-                borderLeft: activeAbout ? `3px solid ${C.p2}` : '3px solid transparent',
-                paddingLeft: activeAbout ? 13 : 16,
-                boxSizing:"border-box",
+                width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between",
+                padding:"16px 5vw", background:"none", border:"none", borderBottom:'1px solid rgba(255,255,255,0.12)',
+                cursor:"pointer", fontFamily:"inherit", textAlign:"left",
               }}
             >
-              About
+              <span style={{
+                color: activeAbout ? C.p2 : '#FFFFFF',
+                fontSize:15,
+                fontFamily:"'Akshar', sans-serif",
+                fontWeight: activeAbout ? 600 : 500,
+              }}>About</span>
+              <ChevronDown size={14} color="rgba(255,255,255,0.7)" style={{
+                transform: mobileExpanded === "about" ? "rotate(180deg)" : "none",
+                transition:"transform 0.2s",
+              }} />
             </button>
+            {mobileExpanded === "about" && (
+              <div style={{ background:'rgba(255,255,255,0.06)' }}>
+                {ABOUT_NAV.map((item, i) => {
+                  const isAct = pathname === item.slug;
+                  return (
+                    <RouterLink key={i} to={item.slug} onClick={closeMobile} style={{
+                      display:"flex", alignItems:"flex-start", gap:12, padding:"12px 5vw 12px calc(5vw + 12px)",
+                      textDecoration:"none", borderBottom:'1px solid rgba(255,255,255,0.08)',
+                      color: isAct ? C.p2 : 'rgba(255,255,255,0.82)',
+                      fontWeight: isAct ? 600 : 400,
+                      borderLeft: isAct ? `3px solid ${C.p2}` : '3px solid transparent',
+                      paddingLeft: isAct ? 13 : 16,
+                      boxSizing:"border-box",
+                    }}>
+                      <span style={{ fontSize:20, width:40, height:40, borderRadius:10, flexShrink:0,
+                        background:'rgba(255,255,255,0.1)', display:"flex", alignItems:"center", justifyContent:"center",
+                        border:'1px solid rgba(255,255,255,0.15)' }}>{item.icon}</span>
+                      <div>
+                        <div style={{ color: 'inherit', fontWeight:500, fontSize:14, fontFamily:"'Akshar', sans-serif" }}>{item.label}</div>
+                        <div style={{ color:'rgba(255,255,255,0.65)', fontSize:12, marginTop:2,
+                          fontFamily:"'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight:300 }}>{item.desc}</div>
+                      </div>
+                    </RouterLink>
+                  );
+                })}
+              </div>
+            )}
             <button
               type="button"
               onClick={() => { handleContact(); closeMobile(); }}

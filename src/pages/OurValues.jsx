@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import C from '../tokens.js'
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
 import { Button } from '../components/ui/Button.jsx'
-import { TrendingUp, Users, Lightbulb, Star, Target, Link as LinkIcon } from 'lucide-react'
+import { TrendingUp, Users, Lightbulb, Star, Target, Link as LinkIcon, Building2, Code2 } from 'lucide-react'
 
 function Hero() {
   return (
@@ -116,7 +116,7 @@ function AboutSection() {
                 key={i}
                 style={{
                   fontSize: 'clamp(0.93rem, 1.3vw, 1rem)',
-                  color: C.body,
+                  color: C.p,
                   lineHeight: 1.78,
                   marginBottom: i === 2 ? 0 : 16,
                   fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif",
@@ -182,84 +182,216 @@ function AboutSection() {
   )
 }
 
+const IDENTITY_CARD_THEME = {
+  blue: {
+    accent: '#1a6bc4',
+    iconBg: '#e8f0fc',
+    pillBg: '#e8f0fc',
+    pillColor: '#1a6bc4',
+  },
+  green: {
+    accent: '#00a07a',
+    iconBg: '#e2f7f0',
+    pillBg: '#e2f7f0',
+    pillColor: '#00a07a',
+  },
+  purple: {
+    accent: '#7c3aed',
+    iconBg: '#f0eaff',
+    pillBg: '#f0eaff',
+    pillColor: '#7c3aed',
+  },
+}
+
+function IdentityCard({ card, index, visible }) {
+  const theme = IDENTITY_CARD_THEME[card.theme]
+  const delay = index * 100
+
+  return (
+    <div
+      className={`identity-card${visible ? ' identity-card--visible' : ''}`}
+      style={{
+        '--accent': theme.accent,
+        '--delay': `${delay}ms`,
+        borderLeft: `5px solid ${theme.accent}`,
+      }}
+    >
+      <div
+        className="identity-card-icon-wrap"
+        style={{
+          width: 56,
+          height: 56,
+          borderRadius: 14,
+          background: theme.iconBg,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: theme.accent,
+        }}
+      >
+        {card.icon}
+      </div>
+
+      <div className="identity-card-content">
+        <h3 className="identity-card-title">{card.title}</h3>
+        <p className="identity-card-body">{card.body}</p>
+      </div>
+
+      <span
+        className="identity-card-pill"
+        style={{
+          background: theme.pillBg,
+          color: theme.pillColor,
+        }}
+      >
+        {card.pill}
+      </span>
+    </div>
+  )
+}
+
 function IdentityCards() {
-  const [hovered, setHovered] = useState(null)
+  const sectionRef = useRef(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return undefined
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.15 },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
   const cards = [
     {
+      theme: 'blue',
       title: 'Who We Are',
       body:
         "We are a privately owned and operated IT-managed service provider. We help clients create long-term value for all stakeholders across the nation. With over 15 years of combined long-term care pharmacy experience, 20 plus years of Azure Cloud and Microsoft 365 suite experience, and 15 plus years of data analytics experience, we are uniquely positioned to help our clients stay ahead in today's fast-changing world.",
+      pill: '15+ yrs LTC',
+      icon: <Building2 size={26} strokeWidth={2} />,
     },
     {
+      theme: 'green',
       title: 'Our Mission',
       body:
         'At SkyPond Tech, our mission is to empower organizations with innovative technology solutions that drive growth, efficiency, and insight. We specialize in delivering tailored services in Long-Term Care Pharmacy, Microsoft Power Platform, and Data Analytics to enhance decision-making, streamline operations, and create value for our clients. Our commitment is to provide exceptional support, cutting-edge tools, and a partnership that prioritizes your success.',
+      pill: '20+ yrs Azure',
+      icon: <Target size={26} strokeWidth={2} />,
     },
     {
+      theme: 'purple',
       title: 'What We Do',
       body:
         "We offer a comprehensive range of technology consulting services designed to address the specific needs and challenges of business, primarily in the long-term and financial industries. From IT strategy to planning to implementation and support, we provide end-to-end solutions that enable our clients to stay ahead of the curve and succeed in today's fast-paced digital world.",
+      pill: 'End-to-end IT',
+      icon: <Code2 size={26} strokeWidth={2} />,
     },
   ]
 
   return (
     <section
+      ref={sectionRef}
+      className="identity-cards-section"
       style={{
         width: '100%',
-        background: `linear-gradient(180deg,${C.dark} 0%, ${C.pd} 100%)`,
-        padding: '80px 5vw',
+        background: C.surface,
+        padding: '96px 5vw',
       }}
     >
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <div
-          style={{
-            fontSize: '0.72rem',
-            fontWeight: 700,
-            letterSpacing: '0.1em',
-            color: C.p2,
-            textAlign: 'center',
-          }}
-        >
-        
-        </div>
-
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: 28,
-            marginTop: 48,
-          }}
-        >
-          {cards.map((c, i) => (
-            <div
-              key={c.title}
-              onMouseEnter={() => setHovered(i)}
-              onMouseLeave={() => setHovered(null)}
-              style={{
-                background: 'rgba(255,255,255,0.07)',
-                border: `1px solid ${hovered === i ? `${C.p2}70` : 'rgba(255,255,255,0.14)'}`,
-                borderTop: `3px solid ${C.p}`,
-                borderRadius: 20,
-                padding: '36px 28px',
-                boxShadow: hovered === i ? `0 18px 50px ${C.p2}1A` : `0 10px 28px rgba(0,0,0,0.18)`,
-                transform: hovered === i ? 'translateY(-4px)' : 'translateY(0)',
-                transition: 'all 0.2s',
-                backdropFilter: 'blur(10px)',
-                textAlign: 'center',
-              }}
-            >
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 500, color: '#fff', marginBottom: 14, fontFamily: "'Akshar', sans-serif", letterSpacing: '-0.01em' }}>
-                {c.title}
-              </h3>
-              <div style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.80)', lineHeight: 1.78, textAlign: 'left',
-                fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight: 400 }}>
-                {c.body}
-              </div>
-            </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {cards.map((card, i) => (
+            <IdentityCard key={card.title} card={card} index={i} visible={visible} />
           ))}
         </div>
       </div>
+
+      <style>{`
+        .identity-card {
+          display: grid;
+          grid-template-columns: 72px 1fr auto;
+          align-items: center;
+          gap: 24px;
+          background: #f7f8fa;
+          border-radius: 16px;
+          padding: 28px 32px;
+          border-top: none;
+          border-right: none;
+          border-bottom: none;
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.5s ease-out var(--delay), transform 0.5s ease-out var(--delay), box-shadow 0.2s ease, translate 0.2s ease;
+        }
+        .identity-card--visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .identity-card--visible:hover {
+          transform: translateX(4px);
+          box-shadow: 0 4px 24px rgba(13, 27, 46, 0.08);
+        }
+        .identity-card-title {
+          font-size: 17px;
+          font-weight: 700;
+          color: #0d1b2e;
+          margin: 0 0 6px;
+          font-family: 'Akshar', sans-serif;
+          letter-spacing: -0.01em;
+        }
+        .identity-card-body {
+          font-size: 14px;
+          color: ${C.body};
+          line-height: 1.7;
+          margin: 0;
+          font-family: 'Gotham', 'Helvetica Neue', Arial, sans-serif;
+          font-weight: 400;
+        }
+        .identity-card-pill {
+          font-size: 12px;
+          font-weight: 600;
+          padding: 5px 14px;
+          border-radius: 100px;
+          white-space: nowrap;
+          align-self: flex-start;
+          font-family: 'Gotham', 'Helvetica Neue', Arial, sans-serif;
+        }
+        @media (max-width: 768px) {
+          .identity-cards-section {
+            padding: 64px 20px !important;
+          }
+          .identity-card {
+            grid-template-columns: 1fr;
+            grid-template-areas:
+              "icon"
+              "pill"
+              "content";
+            gap: 16px;
+            align-items: start;
+          }
+          .identity-card-icon-wrap {
+            grid-area: icon;
+          }
+          .identity-card-pill {
+            grid-area: pill;
+            justify-self: start;
+          }
+          .identity-card-content {
+            grid-area: content;
+          }
+          .identity-card--visible:hover {
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </section>
   )
 }
@@ -279,7 +411,7 @@ function ValuesGrid() {
   return (
     <section style={{ width: '100%', background: C.alt, padding: '80px 5vw' }}>
       <div style={{ maxWidth: 960, margin: '0 auto' }}>
-        <div style={{ fontSize: '0.72rem', fontWeight: 500, letterSpacing: '0.1em', color: C.accent, textAlign: 'center',
+        <div style={{ fontSize: '0.72rem', fontWeight: 500, letterSpacing: '0.1em', color: C.p, textAlign: 'center',
           fontFamily: "'Akshar', sans-serif" }}>
           OUR VALUES
         </div>
@@ -296,7 +428,7 @@ function ValuesGrid() {
         >
           The Principles Behind Everything We Do
         </h2>
-        <div style={{ fontSize: '1rem', color: C.muted, textAlign: 'center', maxWidth: 520, margin: '0 auto 56px', lineHeight: 1.7,
+        <div style={{ fontSize: '1rem', color: C.p, textAlign: 'center', maxWidth: 520, margin: '0 auto 56px', lineHeight: 1.7,
           fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight: 300 }}>
           These six values are not slogans. They are the decisions we make every day.
         </div>
@@ -349,29 +481,38 @@ function ValuesGrid() {
 
 function CTA() {
   return (
-    <section style={{ width: '100%', background: C.p, padding: '72px 5vw' }}>
-      <div style={{ maxWidth: 680, margin: '0 auto', textAlign: 'center' }}>
-        <h2
-          style={{
-            fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)',
-            fontWeight: 700,
-            color: '#FFFFFF',
-            marginBottom: 16,
-            letterSpacing: '-0.02em',
-            fontFamily: "'Akshar', sans-serif",
-          }}
-        >
+    <section style={{
+      width: '100%',
+      background: C.bg,
+      padding: '80px 5vw',
+      borderTop: `1px solid ${C.border}`,
+    }}>
+      <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'center' }}>
+        <h2 style={{
+          fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)',
+          fontWeight: 700,
+          color: C.head,
+          marginBottom: 14,
+          letterSpacing: '-0.02em',
+          fontFamily: "'Akshar', sans-serif",
+        }}>
           Ready to Work With a Team That Lives These Values?
         </h2>
-        <p style={{ color: 'rgba(255,255,255,0.68)', marginBottom: 32, lineHeight: 1.7, fontSize: '1rem',
-          fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight: 400 }}>
+        <p style={{
+          color: C.body,
+          marginBottom: 32,
+          lineHeight: 1.7,
+          fontSize: '1.05rem',
+          fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif",
+          fontWeight: 400,
+        }}>
           Every engagement starts with a conversation. Let&apos;s talk about your goals.
         </p>
-        <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Button variant="primaryDark" size="md" to="/schedule-demo">
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Button variant="primary" size="md" to="/schedule-demo">
             Schedule a Free Call →
           </Button>
-          <Button variant="secondaryDark" size="md" to="/services">
+          <Button variant="secondary" size="md" to="/services">
             View Our Services →
           </Button>
         </div>

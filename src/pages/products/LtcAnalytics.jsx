@@ -1,352 +1,571 @@
+// product page -> LTC Analytics Page (refactored to match service-page patterns)
 import C from '../../tokens.js'
-import { useMemo } from 'react'
+import { useState } from 'react'
+import { Button } from '../../components/ui/Button.jsx'
 import { Navbar } from '../../components/Navbar.jsx'
 import { Footer } from '../../components/Footer.jsx'
 import { Breadcrumb } from '../../components/Breadcrumb.jsx'
+import { ProductHero } from '../../components/ProductHero.jsx'
+import {
+  BarChart2, Zap, Plug, RefreshCw, LayoutDashboard,
+  LineChart, Activity, Building2, Star, Database,
+  CheckCircle, ChevronRight, ClipboardList, Package,
+} from 'lucide-react'
 
-const SOURCE_STYLE = `/* Component rules; design tokens are in the following <style> block (tokenOverride). */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:'Gotham','Helvetica Neue',Arial,sans-serif;background:var(--page-bg);color:var(--text-navy);overflow-x:hidden;}
-a{text-decoration:none;}
-/* HERO — matches other product pages: C.bg band, C.head/C.body copy, C.surface stat cards */
-.hero{background:var(--hero-bg);padding:120px 5vw 80px;position:relative;overflow:hidden;min-height:88vh;}
-.hero-glow{position:absolute;pointer-events:none;border-radius:50%;}
-.glow-tr{top:-140px;right:-100px;width:560px;height:560px;background:radial-gradient(circle,rgba(106,191,94,0.09) 0%,transparent 68%);}
-.glow-bl{bottom:0;left:-80px;width:420px;height:420px;background:radial-gradient(circle,rgba(59,130,246,0.06) 0%,transparent 68%);}
-.hero-top{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1.32fr) minmax(0,0.82fr);gap:56px;align-items:center;padding-bottom:60px;}
-.hero-top > div{min-width:0;}
-.hero-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(20,49,86,0.10);border:1px solid rgba(20,49,86,0.22);color:var(--navy);padding:5px 14px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:22px;}
-.hero-title{font-family:'Akshar',sans-serif;font-size:46px;font-weight:900;color:var(--text-navy);line-height:1.08;margin-bottom:22px;text-wrap:balance;max-width:100%;}
-.hero-title em{font-style:normal;color:var(--navy);}
-.hero-sub{font-size:16px;color:var(--text-mid);font-weight:400;line-height:1.75;margin-bottom:36px;max-width:100%;}
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
-.btn-green{background:var(--green);color:var(--navy);border:none;border-radius:8px;padding:13px 26px;font-family:'Gotham','Helvetica Neue',Arial,sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:6px;}
-.btn-green:hover{background:#7dcf71;}
-.btn-outline{background:none;border:1px solid var(--bd-light);border-radius:8px;padding:13px 26px;color:var(--text-navy);font-family:'Gotham','Helvetica Neue',Arial,sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s;display:inline-flex;align-items:center;gap:6px;}
-.btn-outline:hover{background:#f5f8fb;}
-.hero-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.hstat{background:var(--white);border:1px solid var(--bd-light);border-radius:12px;padding:22px 20px;}
-.hstat-num{font-family:'Akshar',sans-serif;font-size:28px;font-weight:900;line-height:1;margin-bottom:6px;}
-.hero-stats .hstat:nth-child(odd) .hstat-num{color:var(--navy);}
-.hero-stats .hstat:nth-child(even) .hstat-num{color:var(--green);}
-.hstat-label{font-size:12.5px;color:var(--text-muted);line-height:1.45;font-weight:500;}
-/* DIAGRAM STRIP */
-.diag-strip{background:var(--white);border-top:1px solid var(--bd-light);padding:44px 5vw 48px;}
-.diag-inner{max-width:1100px;margin:0 auto;}
-.diag-eyebrow{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:32px;text-align:center;}
-.diag-track{display:grid;align-items:center;}
-.dnode{background:var(--white);border:1px solid var(--bd-light);border-radius:16px;padding:22px 18px;text-align:center;}
-.dnode.sp{background:rgba(106,191,94,0.12);border-color:rgba(106,191,94,0.35);}
-.dnode-icon{font-size:28px;margin-bottom:10px;display:block;}
-.dnode-title{font-size:13px;font-weight:600;color:var(--text-navy);margin-bottom:4px;}
-.dnode-sub{font-size:11px;color:var(--text-mid);line-height:1.4;}
-.dpills{margin-top:12px;display:flex;flex-direction:column;gap:5px;}
-.dpill{font-size:10px;background:var(--off-white);border:1px solid var(--bd-light);color:var(--text-mid);border-radius:6px;padding:4px 8px;animation:ppulse 3s ease-in-out infinite;}
-.dpill:nth-child(2){animation-delay:.7s;}.dpill:nth-child(3){animation-delay:1.4s;}
-@keyframes ppulse{0%,100%{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.1);}50%{background:rgba(106,191,94,0.14);border-color:rgba(106,191,94,0.3);color:var(--green);}}
-.dconn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:0 6px;}
-.dconn-tag{font-size:10px;font-weight:600;color:var(--green);background:rgba(106,191,94,0.1);border:1px solid rgba(106,191,94,0.2);padding:3px 10px;border-radius:100px;white-space:nowrap;}
-.dconn-line{width:100%;height:2px;background:linear-gradient(90deg,var(--bd-light),var(--green) 50%,var(--bd-light));position:relative;}
-.dconn-line::after{content:'';position:absolute;right:-1px;top:-4px;border-left:8px solid var(--green);border-top:5px solid transparent;border-bottom:5px solid transparent;}
-/* SECTIONS */
-.section{padding:88px 5vw;}
-.section.light{background:var(--white);}
-/* How It Works — same as DeaLookupTool / other products: C.bg, 88px vertical padding */
-.section.how-it{background:var(--how-bg);padding:88px 5vw;}
-.section.dark{background:var(--navy);}
-.section.alt{background:var(--alt-bg);padding:96px 5vw 100px;}
-.section.alt .uc{background:var(--white);border:1px solid var(--bd-light);box-shadow:0 2px 12px rgba(20,49,86,0.06);}
-.section.alt .uc:hover{background:var(--white);border-color:rgba(131,183,98,0.55);box-shadow:0 10px 32px rgba(20,49,86,0.12);}
-.section.alt .uc h4{color:var(--text-navy);}
-.section.alt .uc p{color:var(--text-mid);}
-.section.alt .uc-res{color:var(--navy);font-weight:600;}
-.section.alt .sec-desc{color:var(--text-muted);}
-.sec-inner{max-width:1100px;margin:0 auto;}
-.sec-tag{display:inline-block;background:rgba(106,191,94,0.10);border:1px solid rgba(106,191,94,0.22);color:var(--green-dk);padding:4px 12px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
-.sec-tag.wt{background:rgba(106,191,94,0.12);color:var(--green);border-color:rgba(106,191,94,0.25);}
-/* Navy pill — matches <Badge c={C.p}> on other product pages (Capabilities, How It Works) */
-.sec-tag--p{background:rgba(20,49,86,0.10);border:1px solid rgba(20,49,86,0.22);color:var(--navy);}
-.sec-title{font-family:'Akshar',sans-serif;font-size:34px;font-weight:800;color:var(--text-navy);line-height:1.15;margin-bottom:12px;}
-.sec-title.wh{color:var(--white);}
-.sec-desc{font-size:16px;color:var(--text-mid);font-weight:300;line-height:1.7;max-width:580px;}
-.sec-desc.wh{color:var(--text-pale);}
-.sec-head{margin-bottom:52px;}
-/* FEATURE SPLIT */
-.feat-split{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-bottom:72px;}
-.feat-split:last-child{margin-bottom:0;}
-.feat-split.rev{direction:rtl;}
-.feat-split.rev>*{direction:ltr;}
-.fst-text h3{font-family:'Akshar',sans-serif;font-size:26px;font-weight:800;color:var(--text-navy);margin-bottom:12px;line-height:1.2;}
-.fst-text p{font-size:15px;color:var(--text-mid);line-height:1.72;font-weight:300;margin-bottom:16px;}
-.checklist{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.checklist li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text-navy);font-weight:400;}
-.chk{width:20px;height:20px;border-radius:50%;background:var(--green-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
-.chk svg{width:11px;height:11px;}
-/* MOCKUP */
-.mockup{background:var(--navy);border-radius:18px;border:1px solid rgba(255,255,255,0.1);overflow:hidden;box-shadow:0 24px 56px rgba(13,31,60,.22);}
-.mtbar{background:rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.08);padding:10px 16px;display:flex;align-items:center;gap:6px;}
-.dot{width:10px;height:10px;border-radius:50%;}
-.dot.r{background:#ff5f57;}.dot.y{background:#febc2e;}.dot.g{background:#28c840;}
-.mtab{margin-left:10px;font-size:11px;color:var(--text-muted);background:rgba(255,255,255,0.06);border-radius:4px;padding:3px 10px;}
-.mbody{padding:20px;}
-/* HOW IT WORKS */
-.hiw{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
-.hiw::before{content:'';position:absolute;top:44px;left:12%;right:12%;height:2px;background:repeating-linear-gradient(90deg,var(--bd-light) 0,var(--bd-light) 6px,transparent 6px,transparent 14px);z-index:0;}
-.hiw-step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px;position:relative;z-index:1;}
-.hiw-circ{width:88px;height:88px;border-radius:50%;background:var(--white);border:2px solid var(--bd-light);display:flex;align-items:center;justify-content:center;margin-bottom:20px;position:relative;transition:border-color .3s,box-shadow .3s;}
-.hiw-step:hover .hiw-circ{border-color:var(--green);box-shadow:0 0 0 6px var(--green-ring);}
-.hiw-ico{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;}
-.hiw-n{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:var(--navy);color:var(--green);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--bd-light);}
-.hiw-step h4{font-size:14px;font-weight:600;color:var(--text-navy);margin-bottom:8px;}
-.hiw-step p{font-size:13px;color:var(--text-mid);line-height:1.6;font-weight:300;}
-/* USE CASES */
-.uc-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
-.uc{background:rgba(255,255,255,0.04);border:1px solid var(--bd-dark);border-radius:18px;padding:32px;display:grid;grid-template-columns:64px 1fr;gap:20px;align-items:start;transition:background .25s,border-color .25s;}
-.uc:hover{background:rgba(255,255,255,0.07);border-color:rgba(106,191,94,0.25);}
-.uc-iw{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.uc h4{font-size:16px;font-weight:600;color:var(--white);margin-bottom:8px;line-height:1.3;}
-.uc p{font-size:13.5px;color:var(--text-muted);line-height:1.65;font-weight:300;}
-.uc-res{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12px;font-weight:600;color:var(--green);}
-/* COMPLIANCE */
-.comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-.comp-item{background:rgba(255,255,255,0.04);border:1px solid var(--bd-dark);border-radius:14px;padding:20px;display:flex;align-items:center;gap:14px;}
-.comp-dot{width:10px;height:10px;border-radius:50%;background:var(--green);flex-shrink:0;}
-.comp-item strong{display:block;font-size:13px;font-weight:600;color:var(--white);margin-bottom:2px;}
-.comp-item span{font-size:12px;color:var(--text-muted);}
-/* RELATED */
-.rel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
-.rel{background:var(--white);border:1px solid var(--bd-light);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:10px;transition:transform .2s,box-shadow .2s;}
-.rel:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(13,31,60,.08);}
-.rel-ico{font-size:20px;}
-.rel h4{font-size:14px;font-weight:600;color:var(--text-navy);}
-.rel p{font-size:13px;color:var(--text-mid);line-height:1.55;flex:1;font-weight:300;}
-.rel-lnk{font-size:12px;font-weight:700;color:var(--navy);display:inline-flex;align-items:center;gap:4px;}
-/* CTA — same light band as other product pages (C.bg) */
-.cta-band{background:var(--hero-bg);border-top:1px solid var(--bd-light);padding:80px 5vw;}
-.cta-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;}
-.cta-inner h2{font-family:'Akshar',sans-serif;font-size:38px;font-weight:800;color:var(--text-navy);margin-bottom:12px;}
-.cta-inner p{font-size:16px;color:var(--text-muted);font-weight:400;max-width:520px;}
-.cta-btns{display:flex;flex-direction:column;gap:12px;flex-shrink:0;}
-/* ANIMS */
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
-@keyframes sin{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
-@keyframes ppulse{0%,100%{opacity:.6;}50%{opacity:1;}}
-.au{animation:fadeUp .5s ease both;}
-.au1{animation-delay:.05s}.au2{animation-delay:.12s}.au3{animation-delay:.19s}.au4{animation-delay:.26s}`
-const SOURCE_BODY = `<section class="hero">
-  <div class="hero-glow glow-tr"></div><div class="hero-glow glow-bl"></div>
-  <div class="hero-top">
-    <div class="au au1">
-      <div class="hero-pill">📊 Analytics Platform</div>
-      <h1 class="hero-title">Pharmacy analytics built for <em>long-term care</em> — not retail</h1>
-      <p class="hero-sub">Surface the metrics that actually drive LTC pharmacy performance: utilization by facility, medication adherence rates, cost per resident day, and compliance KPIs. Built on data models that make sense for how LTC pharmacy actually works.</p>
-      <div class="hero-actions">
-        <a href="/schedule-demo" class="btn-green">Schedule a Demo →</a>
-        <a href="#how" class="btn-outline">See How It Works ↓</a>
+/* ── Primitives (service-page pattern) ── */
+const Badge = ({ c = C.p2, children }) => (
+  <span style={{
+    display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 13px',
+    borderRadius: 99, border: `1px solid ${c}28`, background: `${c}18`, color: c,
+    fontSize: 11.5, letterSpacing: '0.07em', textTransform: 'uppercase', fontWeight: 500,
+    fontFamily: "'Akshar', sans-serif",
+  }}>{children}</span>
+)
+
+const H = ({ size = 'h2', style = {}, color, children }) => {
+  const s = { hero: 'clamp(2.4rem,5vw,4rem)', h2: 'clamp(1.8rem,2.7vw,2.5rem)', h3: '1.2rem' }
+  const fw = size === 'h3' ? 500 : 700
+  return (
+    <h2 style={{
+      fontSize: s[size], fontWeight: fw, color: color || C.head,
+      letterSpacing: '-0.026em', lineHeight: 1.1,
+      fontFamily: "'Akshar', sans-serif", ...style,
+    }}>{children}</h2>
+  )
+}
+
+const P = ({ style = {}, children }) => (
+  <p style={{
+    fontSize: 'clamp(0.96rem,1.1vw,1.04rem)', color: C.body, lineHeight: 1.76,
+    fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif", fontWeight: 400, ...style,
+  }}>{children}</p>
+)
+
+function Card({ children, style = {}, ac = C.accent, hover = true }) {
+  const [h, setH] = useState(false)
+  return (
+    <div
+      onMouseEnter={() => hover && setH(true)}
+      onMouseLeave={() => hover && setH(false)}
+      style={{
+        background: C.surface, border: `1.5px solid ${h ? C.p2 : C.border}`,
+        borderRadius: 16, transition: 'all 0.2s',
+        transform: h && hover ? 'translateY(-4px)' : 'none',
+        boxShadow: h && hover ? `0 16px 40px ${ac}1A` : '0 2px 8px rgba(0,0,0,0.04)',
+        ...style,
+      }}
+    >{children}</div>
+  )
+}
+
+/* ── Mockup frame (always dark, regardless of page theme) ── */
+function Mockup({ title, children }) {
+  return (
+    <div style={{
+      background: C.dark, borderRadius: 18,
+      border: '1px solid rgba(255,255,255,0.10)', overflow: 'hidden',
+      boxShadow: '0 24px 56px rgba(0,0,0,0.22)',
+    }}>
+      <div style={{
+        background: 'rgba(255,255,255,0.06)',
+        borderBottom: '1px solid rgba(255,255,255,0.08)',
+        padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 6,
+      }}>
+        {['#ff5f57', '#febc2e', '#28c840'].map((c) => (
+          <div key={c} style={{ width: 10, height: 10, borderRadius: '50%', background: c }} />
+        ))}
+        <span style={{
+          marginLeft: 10, fontSize: 11, color: C.muted,
+          background: 'rgba(255,255,255,0.06)', borderRadius: 4, padding: '3px 10px',
+        }}>{title}</span>
+      </div>
+      <div style={{ padding: 20 }}>{children}</div>
+    </div>
+  )
+}
+
+function CheckItem({ children }) {
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'flex-start', gap: 10,
+      fontSize: 14, color: C.head,
+      fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif",
+    }}>
+      <div style={{
+        width: 20, height: 20, borderRadius: '50%', background: `${C.green}18`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        flexShrink: 0, marginTop: 1,
+      }}>
+        <CheckCircle size={11} color={C.green} />
+      </div>
+      {children}
+    </div>
+  )
+}
+
+/* ── Light-themed diagram strip nodes and connectors ──
+   This page's diagram strip sits on C.surface (white), unlike the
+   dark-bg strip used in DEA Lookup / CS Inventory / Document Automation. ── */
+function DiagNodeLight({ icon, title, sub, pills = [], special = false }) {
+  return (
+    <div style={{
+      background: special ? `${C.green}18` : C.surface,
+      border: `1px solid ${special ? `${C.green}55` : C.border}`,
+      borderRadius: 16, padding: '22px 18px', textAlign: 'center',
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 10 }}>{icon}</div>
+      <div style={{ fontSize: 13, fontWeight: 600, color: C.head, marginBottom: 4 }}>{title}</div>
+      <div style={{ fontSize: 11, color: C.body, lineHeight: 1.4 }}>{sub}</div>
+      {pills.length > 0 && (
+        <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 5 }}>
+          {pills.map((p) => (
+            <div key={p} style={{
+              fontSize: 10, background: C.bg, border: `1px solid ${C.border}`,
+              color: C.body, borderRadius: 6, padding: '4px 8px',
+            }}>{p}</div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function DiagConnLight({ tag }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, padding: '0 6px' }}>
+      <div style={{
+        fontSize: 10, fontWeight: 600, color: C.green,
+        background: `${C.green}18`, border: `1px solid ${C.green}33`,
+        padding: '3px 10px', borderRadius: 100, whiteSpace: 'nowrap',
+      }}>{tag}</div>
+      <div style={{
+        width: '100%', height: 2, position: 'relative',
+        background: `linear-gradient(90deg, ${C.border}, ${C.green} 50%, ${C.border})`,
+      }}>
+        <div style={{
+          position: 'absolute', right: -1, top: -4,
+          borderLeft: `8px solid ${C.green}`,
+          borderTop: '5px solid transparent', borderBottom: '5px solid transparent',
+        }} />
       </div>
     </div>
-    <div class="hero-stats au au2"><div class="hstat"><div class="hstat-num">50+</div><div class="hstat-label">Pre-built LTC-specific reports</div></div><div class="hstat"><div class="hstat-num">Daily</div><div class="hstat-label">Data refresh cadence</div></div><div class="hstat"><div class="hstat-num">Multi-facility</div><div class="hstat-label">Benchmarking views</div></div><div class="hstat"><div class="hstat-num">Custom</div><div class="hstat-label">KPI dashboard builder</div></div></div>
-  </div></section><div class="diag-strip">
-  <div class="diag-inner">
-    <div class="diag-eyebrow">How your data becomes insight</div>
-    <div class="diag-track" style="grid-template-columns:200px 1fr 200px 1fr 200px;"><div class="dnode"><span class="dnode-icon">💊</span><div class="dnode-title">Your Data Sources</div><div class="dnode-sub">Pharmacy system, billing, PCC feed, and facility data</div><div class="dpills"><div class="dpill">Dispense records</div><div class="dpill">Claims data</div><div class="dpill">Census & payor</div></div></div><div class="dconn"><div class="dconn-tag">ingested & normalized</div><div class="dconn-line"></div></div><div class="dnode sp"><span class="dnode-icon">⚡</span><div class="dnode-title">Skypond Analytics</div><div class="dnode-sub">LTC-specific data models, daily refresh</div></div><div class="dconn"><div class="dconn-tag">delivered as dashboards</div><div class="dconn-line"></div></div><div class="dnode"><span class="dnode-icon">📊</span><div class="dnode-title">Your Dashboards</div><div class="dnode-sub">Ops, clinical, finance, and exec views</div><div class="dpills"><div class="dpill">Facility performance</div><div class="dpill">Cost analytics</div><div class="dpill">Compliance KPIs</div></div></div></div>
-  </div>
-</div>
-<section class="section light" id="features">
-  <div class="sec-inner">
-    <div class="sec-head">
-      <div class="sec-tag sec-tag--p">Capabilities</div>
-      <h2 class="sec-title">The metrics that matter in LTC pharmacy, surfaced automatically</h2>
-      <p class="sec-desc">Most analytics tools were built for retail pharmacy. LTC Analytics was built for long-term care — with the data models and KPIs that reflect how your operation actually works.</p>
-    </div>
-    <div class="feat-split">
-  <div class="fst-text"><h3>Facility-level performance benchmarking</h3><p>Break down utilization, adherence rates, and cost metrics facility by facility. Identify outliers, underperformers, and opportunities across your entire book of business — without pulling a dozen spreadsheets together.</p><ul class="checklist"><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Per-facility cost per resident day tracking</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Medication adherence rate by facility and unit</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Side-by-side facility benchmarking views</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Automatic flagging of cost or adherence outliers</li></ul></div>
-  <div class="mockup"><div class="mtbar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><div class="mtab">Facility Performance — All Locations</div></div><div class="mbody">
-<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-  <div style="font-size:12px;font-weight:600;color:var(--text-pale);text-transform:uppercase;letter-spacing:.06em;">Utilization by Facility · April 2026</div>
-  <div style="font-size:11px;color:var(--text-muted);">Updated today</div>
-</div>
-<div style="display:flex;flex-direction:column;gap:8px;">
-  <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:12px 14px;">
-    <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;color:var(--white);font-weight:500;">Sunrise SNF</span><span style="font-size:11px;color:var(--green);font-weight:600;">$42.18/resident/day</span></div>
-    <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:100px;overflow:hidden;"><div style="width:82%;height:100%;background:var(--green);border-radius:100px;"></div></div>
-    <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">142 residents · 96% adherence</div>
-  </div>
-  <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:12px 14px;">
-    <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;color:var(--white);font-weight:500;">Maplewood Care Center</span><span style="font-size:11px;color:#7eb8f7;font-weight:600;">$38.44/resident/day</span></div>
-    <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:100px;overflow:hidden;"><div style="width:74%;height:100%;background:#7eb8f7;border-radius:100px;"></div></div>
-    <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">87 residents · 91% adherence</div>
-  </div>
-  <div style="background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.18);border-radius:10px;padding:12px 14px;">
-    <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="font-size:12px;color:var(--white);font-weight:500;">Valley View SNF</span><span style="font-size:11px;color:#f5c96a;font-weight:600;">$61.09/resident/day ↑</span></div>
-    <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:100px;overflow:hidden;"><div style="width:91%;height:100%;background:#f5c96a;border-radius:100px;"></div></div>
-    <div style="font-size:10px;color:#f5c96a;margin-top:4px;">⚠ Cost outlier — 203 residents · Review recommended</div>
-  </div>
-</div></div></div>
-</div>
-    <div class="feat-split rev">
-  <div class="fst-text"><h3>Cost and margin analytics — by facility, drug, and month</h3><p>Monitor cost per resident day, cost per dispense, and facility-level margin. Surface high-cost outliers and identify formulary optimization opportunities that finance and ops can actually act on.</p><ul class="checklist"><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Cost per resident day tracked and trended over time</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Top cost drivers surfaced automatically each period</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Margin analytics by facility and portfolio</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Formulary optimization opportunity identification</li></ul></div>
-  <div class="mockup"><div class="mtbar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><div class="mtab">Cost & Margin Dashboard</div></div><div class="mbody">
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-  <div style="background:rgba(106,191,94,0.08);border:1px solid rgba(106,191,94,0.2);border-radius:12px;padding:16px;">
-    <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;">Avg Cost / Resident Day</div>
-    <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--green);">$44.21</div>
-    <div style="font-size:11px;color:var(--green);">↓ $2.14 vs last month</div>
-  </div>
-  <div style="background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:12px;padding:16px;">
-    <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;">Portfolio Margin</div>
-    <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:#7eb8f7;">18.4%</div>
-    <div style="font-size:11px;color:#7eb8f7;">↑ 1.2% vs last quarter</div>
-  </div>
-</div>
-<div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Top Cost Drivers This Month</div>
-<div style="display:flex;flex-direction:column;gap:6px;">
-  <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 12px;"><span style="color:var(--text-light);">Specialty injectables</span><span style="color:#f87171;font-weight:600;">+$8.42/res/day</span></div>
-  <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 12px;"><span style="color:var(--text-light);">Wound care supplies</span><span style="color:#f5c96a;font-weight:600;">+$3.16/res/day</span></div>
-  <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 12px;"><span style="color:var(--text-light);">Formulary conversions</span><span style="color:var(--green);font-weight:600;">-$1.88/res/day</span></div>
-</div></div></div>
-</div>
-    <div class="feat-split">
-  <div class="fst-text"><h3>Custom KPI dashboards — configured for each role</h3><p>Your VP of Operations, your clinical pharmacist, and your finance team all need different views of the same data. The dashboard builder lets each role configure exactly the metrics they own — without needing IT to build it.</p><p>Reports can be scheduled for automated delivery to facility partners, management, or compliance stakeholders.</p><ul class="checklist"><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Drag-and-drop dashboard builder — no IT required</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Role-specific views: ops, clinical, finance, exec</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Scheduled report delivery on any cadence</li><li><div class="chk"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#4a9e40" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Export to PDF or Excel for stakeholder meetings</li></ul></div>
-  <div class="mockup"><div class="mtbar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><div class="mtab">Custom KPI Dashboard Builder</div></div><div class="mbody">
-<div style="font-size:12px;font-weight:600;color:var(--text-pale);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;">Operations Director View</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
-  <div style="background:rgba(255,255,255,0.04);border:1px solid var(--bd-dark);border-radius:12px;padding:14px;text-align:center;">
-    <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;">Active Facilities</div>
-    <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--white);">24</div>
-  </div>
-  <div style="background:rgba(255,255,255,0.04);border:1px solid var(--bd-dark);border-radius:12px;padding:14px;text-align:center;">
-    <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px;">Portfolio Adherence</div>
-    <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--green);">93.4%</div>
-  </div>
-</div>
-<div style="display:flex;flex-direction:column;gap:6px;">
-  <div style="background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
-    <div><div style="font-size:12px;color:#f87171;font-weight:600;">Facilities needing attention</div><div style="font-size:11px;color:var(--text-muted);">Cost outlier or adherence below 85%</div></div>
-    <div style="font-family:'Fraunces',serif;font-size:20px;color:#f87171;font-weight:800;">3</div>
-  </div>
-  <div style="background:rgba(106,191,94,0.06);border:1px solid rgba(106,191,94,0.18);border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
-    <div><div style="font-size:12px;color:var(--green);font-weight:600;">Top performing facilities</div><div style="font-size:11px;color:var(--text-muted);">On target cost and adherence</div></div>
-    <div style="font-family:'Fraunces',serif;font-size:20px;color:var(--green);font-weight:800;">18</div>
-  </div>
-</div></div></div>
-</div>
-  </div>
-</section><section class="section how-it" id="how">
-  <div class="sec-inner">
-    <div class="sec-head" style="text-align:center;">
-      <div class="sec-tag sec-tag--p" style="margin:0 auto 14px;">How It Works</div>
-      <h2 class="sec-title">From data connection to working dashboards</h2>
-      <p class="sec-desc" style="margin:0 auto;">Most integrations are live within days. Pre-built reports are available on day one — no configuration required.</p>
-    </div>
-    <div class="hiw"><div class="hiw-step">
-      <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(106,191,94,0.12);">🔌</div><div class="hiw-n">01</div></div>
-      <h4>Connect data sources</h4><p>We ingest data from your pharmacy system, billing platform, and facility feeds. Most integrations complete in days, not months.</p>
-    </div><div class="hiw-step">
-      <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(59,130,246,0.12);">🔄</div><div class="hiw-n">02</div></div>
-      <h4>Data normalized to LTC models</h4><p>Incoming data is cleaned, validated, and organized into LTC-specific data models with consistent metric definitions.</p>
-    </div><div class="hiw-step">
-      <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(245,158,11,0.12);">📊</div><div class="hiw-n">03</div></div>
-      <h4>50+ reports ready on day one</h4><p>Pre-built LTC pharmacy reports covering facility performance, drug utilization, and compliance KPIs are available immediately.</p>
-    </div><div class="hiw-step">
-      <div class="hiw-circ"><div class="hiw-ico" style="background:rgba(106,191,94,0.12);">🎛️</div><div class="hiw-n">04</div></div>
-      <h4>Build and share custom views</h4><p>Use the dashboard builder to create custom views for each team and schedule automated delivery to stakeholders.</p>
-    </div></div>
-  </div>
-</section><section class="section alt">
-  <div class="sec-inner">
-    <div class="sec-head">
-      <div class="sec-tag">Who It's For</div>
-      <h2 class="sec-title">Analytics that drive real LTC pharmacy decisions</h2>
-      <p class="sec-desc">The best analytics are the ones that show up at exactly the right moment — before the meeting, before the review, before the problem becomes a crisis.</p>
-    </div>
-    <div class="uc-grid"><div class="uc">
-      <div class="uc-iw" style="background:rgba(106,191,94,0.12);">
-        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><rect x="3" y="3" width="24" height="24" rx="3" stroke="#6abf5e" stroke-width="1.8"/><path d="M8 20l5-7 4 4 4-8" stroke="#6abf5e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  )
+}
+
+/* ── DiagramStrip is a sibling of Hero in this page, not nested inside it ── */
+function DiagramStrip() {
+  return (
+    <div style={{ background: C.surface, borderTop: `1px solid ${C.border}`, padding: '44px 5vw 48px' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{
+          fontSize: 11, fontWeight: 600, letterSpacing: '0.1em',
+          textTransform: 'uppercase', color: C.muted, marginBottom: 32, textAlign: 'center',
+        }}>How your data becomes insight</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr 200px 1fr 200px', alignItems: 'center' }}>
+          <DiagNodeLight
+            icon={<Database size={28} color={C.body} />}
+            title="Your Data Sources"
+            sub="Pharmacy system, billing, PCC feed, and facility data"
+            pills={['Dispense records', 'Claims data', 'Census & payor']}
+          />
+          <DiagConnLight tag="ingested & normalized" />
+          <DiagNodeLight
+            icon={<Zap size={28} color={C.green} />}
+            title="Skypond Analytics"
+            sub="LTC-specific data models, daily refresh"
+            special
+          />
+          <DiagConnLight tag="delivered as dashboards" />
+          <DiagNodeLight
+            icon={<BarChart2 size={28} color={C.body} />}
+            title="Your Dashboards"
+            sub="Ops, clinical, finance, and exec views"
+            pills={['Facility performance', 'Cost analytics', 'Compliance KPIs']}
+          />
+        </div>
       </div>
-      <div><h4>Facility contract reviews</h4><p>Go into quarterly reviews with facility administrators armed with data — utilization trends, adherence rates, and cost benchmarks — not gut feel. Make the case for your value with numbers.</p><div class="uc-res">→ Data-backed contract conversations</div></div>
-    </div><div class="uc">
-      <div class="uc-iw" style="background:rgba(59,130,246,0.12);">
-        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><circle cx="15" cy="15" r="10" stroke="#7eb8f7" stroke-width="1.8"/><path d="M15 9v6l4 4" stroke="#7eb8f7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 15h2M19 15h2M15 9v2M15 19v2" stroke="#7eb8f7" stroke-width="1.3" stroke-linecap="round"/></svg>
-      </div>
-      <div><h4>Clinical program monitoring</h4><p>Track high-risk medication utilization, polypharmacy patterns, and adherence gaps to support clinical pharmacist interventions — before a resident event triggers a formal review.</p><div class="uc-res">→ Early identification of clinical risk</div></div>
-    </div><div class="uc">
-      <div class="uc-iw" style="background:rgba(245,158,11,0.12);">
-        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><rect x="4" y="4" width="10" height="22" rx="2" stroke="#f5c96a" stroke-width="1.8"/><rect x="16" y="10" width="10" height="16" rx="2" stroke="#f5c96a" stroke-width="1.8"/><path d="M7 15h4M19 17h4" stroke="#f5c96a" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </div>
-      <div><h4>Operations leadership visibility</h4><p>Give your VP of Operations a single view across all facilities and locations — cost, adherence, and outliers — without pulling a dozen spreadsheets together every week.</p><div class="uc-res">→ Portfolio visibility in one view</div></div>
-    </div><div class="uc">
-      <div class="uc-iw" style="background:rgba(168,85,247,0.12);">
-        <svg width="30" height="30" viewBox="0 0 30 30" fill="none"><path d="M15 4l3 6h7l-5.5 4 2 7-6.5-4-6.5 4 2-7L5 10h7z" stroke="#c79cf7" stroke-width="1.8" stroke-linejoin="round"/></svg>
-      </div>
-      <div><h4>Business development</h4><p>Use facility-level benchmarking data to demonstrate value when pitching new facility accounts — or to renegotiate contracts where your performance clearly exceeds expectations.</p><div class="uc-res">→ Data that wins and retains facility contracts</div></div>
-    </div></div>
-  </div>
-</section><section class="section dark" style="padding-top:0;">
-  <div class="sec-inner">
-    <div style="border-top:1px solid var(--bd-dark);padding-top:64px;">
-      <div class="sec-head">
-        <div class="sec-tag wt">Security &amp; Compliance</div>
-        <h2 class="sec-title wh">Data you can trust. Security you can rely on.</h2>
-        <p class="sec-desc wh">All pharmacy and patient data is handled under HIPAA Business Associate Agreement. Role-based access ensures the right people see the right data — nothing more.</p>
-      </div>
-      <div class="comp-grid"><div class="comp-item"><div class="comp-dot"></div><div><strong>HIPAA BAA Included</strong><span>Business Associate Agreement with every deployment</span></div></div><div class="comp-item"><div class="comp-dot"></div><div><strong>Role-Based Data Access</strong><span>Granular permissions on who sees which facilities</span></div></div><div class="comp-item"><div class="comp-dot"></div><div><strong>SOC 2 Type II</strong><span>Independently audited security controls</span></div></div><div class="comp-item"><div class="comp-dot"></div><div><strong>Encrypted Data Pipeline</strong><span>All data encrypted in transit and at rest</span></div></div><div class="comp-item"><div class="comp-dot"></div><div><strong>Audit-Ready Export</strong><span>All reports available for compliance or inspection use</span></div></div><div class="comp-item"><div class="comp-dot"></div><div><strong>No PHI Leaves Your Environment</strong><span>Patient data stays within your data perimeter</span></div></div></div>
     </div>
-  </div>
-</section><section class="section light">
-  <div class="sec-inner">
-    <div class="sec-head"><div class="sec-tag">Related Products</div><h2 class="sec-title">Works well with</h2></div>
-    <div class="rel-grid"><div class="rel"><div class="rel-ico">🔗</div><h4>PointClickCare Feed</h4><p>Connect PCC census and payor data for a complete facility performance picture.</p><a href="/products/pointclickcare-feed" class="rel-lnk">Learn more →</a></div><div class="rel"><div class="rel-ico">📋</div><h4>DEA Compliance Reporting</h4><p>Add compliance reporting metrics alongside your operational analytics.</p><a href="/products/dea-compliance-reporting" class="rel-lnk">Learn more →</a></div><div class="rel"><div class="rel-ico">📦</div><h4>CS Inventory</h4><p>Pull CS dispensing data into analytics for a full controlled substance utilization view.</p><a href="/products/cs-inventory" class="rel-lnk">Learn more →</a></div></div>
-  </div>
-</section><section class="cta-band">
-  <div class="cta-inner">
-    <div><h2>See your data come to life</h2><p>We'll connect to your data and show you a working dashboard in your first demo — not a slide deck.</p></div>
-    <div class="cta-btns">
-      <a href="/schedule-demo" class="btn-green" style="justify-content:center;">Schedule a Demo →</a>
-      <a href="/schedule-demo" class="btn-outline" style="justify-content:center;">Talk to Sales</a>
-       
-    </div>
-  </div>
-</section>`
+  )
+}
+
+/* ── Feature mockups ── */
+function MockupFacilityPerformance() {
+  const muted = 'rgba(255,255,255,0.45)'
+  const bright = 'rgba(255,255,255,0.85)'
+  const facilities = [
+    { name: 'Sunrise SNF',           cost: '$42.18/resident/day',   color: C.green,    bar: '82%', sub: '142 residents · 96% adherence', alert: false },
+    { name: 'Maplewood Care Center', cost: '$38.44/resident/day',   color: '#7eb8f7',  bar: '74%', sub: '87 residents · 91% adherence',  alert: false },
+    { name: 'Valley View SNF',       cost: '$61.09/resident/day ↑', color: '#f5c96a',  bar: '91%', sub: '⚠ Cost outlier — 203 residents · Review recommended', alert: true },
+  ]
+  return (
+    <Mockup title="Facility Performance — All Locations">
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+        <div style={{ fontSize: 12, fontWeight: 600, color: bright, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          Utilization by Facility · April 2026
+        </div>
+        <div style={{ fontSize: 11, color: muted }}>Updated today</div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {facilities.map((f, i) => (
+          <div key={i} style={{
+            background: f.alert ? 'rgba(245,158,11,0.07)' : 'rgba(255,255,255,0.04)',
+            border: `1px solid ${f.alert ? 'rgba(245,158,11,0.18)' : 'rgba(255,255,255,0.07)'}`,
+            borderRadius: 10, padding: '12px 14px',
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+              <span style={{ fontSize: 12, color: bright, fontWeight: 500 }}>{f.name}</span>
+              <span style={{ fontSize: 11, color: f.color, fontWeight: 600 }}>{f.cost}</span>
+            </div>
+            <div style={{ height: 6, background: 'rgba(255,255,255,0.06)', borderRadius: 100, overflow: 'hidden', marginBottom: 4 }}>
+              <div style={{ width: f.bar, height: '100%', background: f.color, borderRadius: 100 }} />
+            </div>
+            <div style={{ fontSize: 10, color: f.alert ? '#f5c96a' : muted }}>{f.sub}</div>
+          </div>
+        ))}
+      </div>
+    </Mockup>
+  )
+}
+
+function MockupCostMargin() {
+  const muted = 'rgba(255,255,255,0.45)'
+  const bright = 'rgba(255,255,255,0.88)'
+  const drivers = [
+    { label: 'Specialty injectables', value: '+$8.42/res/day', color: C.red   },
+    { label: 'Wound care supplies',   value: '+$3.16/res/day', color: '#f5c96a' },
+    { label: 'Formulary conversions', value: '-$1.88/res/day', color: C.green },
+  ]
+  return (
+    <Mockup title="Cost & Margin Dashboard">
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 14 }}>
+        <div style={{ background: `${C.green}14`, border: `1px solid ${C.green}33`, borderRadius: 12, padding: 16 }}>
+          <div style={{ fontSize: 11, color: muted, marginBottom: 6 }}>Avg Cost / Resident Day</div>
+          <div style={{ fontFamily: "'Akshar', sans-serif", fontSize: 28, fontWeight: 900, color: C.green }}>$44.21</div>
+          <div style={{ fontSize: 11, color: C.green }}>↓ $2.14 vs last month</div>
+        </div>
+        <div style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)', borderRadius: 12, padding: 16 }}>
+          <div style={{ fontSize: 11, color: muted, marginBottom: 6 }}>Portfolio Margin</div>
+          <div style={{ fontFamily: "'Akshar', sans-serif", fontSize: 28, fontWeight: 900, color: '#7eb8f7' }}>18.4%</div>
+          <div style={{ fontSize: 11, color: '#7eb8f7' }}>↑ 1.2% vs last quarter</div>
+        </div>
+      </div>
+      <div style={{ fontSize: 11, color: muted, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
+        Top Cost Drivers This Month
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {drivers.map((d, i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 12, background: 'rgba(255,255,255,0.04)', borderRadius: 8, padding: '8px 12px' }}>
+            <span style={{ color: bright }}>{d.label}</span>
+            <span style={{ color: d.color, fontWeight: 600 }}>{d.value}</span>
+          </div>
+        ))}
+      </div>
+    </Mockup>
+  )
+}
+
+function MockupKPIDashboard() {
+  const muted = 'rgba(255,255,255,0.45)'
+  const bright = 'rgba(255,255,255,0.85)'
+  return (
+    <Mockup title="Custom KPI Dashboard Builder">
+      <div style={{ fontSize: 12, fontWeight: 600, color: bright, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 14 }}>
+        Operations Director View
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 12 }}>
+        <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, padding: 14, textAlign: 'center' }}>
+          <div style={{ fontSize: 11, color: muted, marginBottom: 6 }}>Active Facilities</div>
+          <div style={{ fontFamily: "'Akshar', sans-serif", fontSize: 28, fontWeight: 900, color: bright }}>24</div>
+        </div>
+        <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, padding: 14, textAlign: 'center' }}>
+          <div style={{ fontSize: 11, color: muted, marginBottom: 6 }}>Portfolio Adherence</div>
+          <div style={{ fontFamily: "'Akshar', sans-serif", fontSize: 28, fontWeight: 900, color: C.green }}>93.4%</div>
+        </div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <div style={{ background: `${C.red}12`, border: `1px solid ${C.red}30`, borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: 12, color: C.red, fontWeight: 600 }}>Facilities needing attention</div>
+            <div style={{ fontSize: 11, color: muted }}>Cost outlier or adherence below 85%</div>
+          </div>
+          <div style={{ fontFamily: "'Akshar', sans-serif", fontSize: 20, color: C.red, fontWeight: 800 }}>3</div>
+        </div>
+        <div style={{ background: `${C.green}0A`, border: `1px solid ${C.green}2E`, borderRadius: 8, padding: '10px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: 12, color: C.green, fontWeight: 600 }}>Top performing facilities</div>
+            <div style={{ fontSize: 11, color: muted }}>On target cost and adherence</div>
+          </div>
+          <div style={{ fontFamily: "'Akshar', sans-serif", fontSize: 20, color: C.green, fontWeight: 800 }}>18</div>
+        </div>
+      </div>
+    </Mockup>
+  )
+}
+
+/* ── Page sections ── */
+
+function Hero() {
+  return (
+    <ProductHero
+      badge="Analytics Platform"
+      title={(
+        <>
+          Pharmacy analytics built for
+          <br />
+          <span style={{ color: C.p }}>long-term care</span>
+          {' '}— not retail
+        </>
+      )}
+      description="Surface the metrics that actually drive LTC pharmacy performance: utilization by facility, medication adherence rates, cost per resident day, and compliance KPIs. Built on data models that make sense for how LTC pharmacy actually works."
+      stats={[
+        { num: '50+', label: 'Pre-built LTC-specific reports' },
+        { num: 'Daily', label: 'Data refresh cadence' },
+        { num: 'Multi-facility', label: 'Benchmarking views' },
+        { num: 'Custom', label: 'KPI dashboard builder' },
+      ]}
+    />
+  )
+}
+
+function Features() {
+  const features = [
+    {
+      title: 'Facility-level performance benchmarking',
+      desc: 'Break down utilization, adherence rates, and cost metrics facility by facility. Identify outliers, underperformers, and opportunities across your entire book of business — without pulling a dozen spreadsheets together.',
+      checks: [
+        'Per-facility cost per resident day tracking',
+        'Medication adherence rate by facility and unit',
+        'Side-by-side facility benchmarking views',
+        'Automatic flagging of cost or adherence outliers',
+      ],
+      mockup: <MockupFacilityPerformance />,
+      reverse: false,
+    },
+    {
+      title: 'Cost and margin analytics — by facility, drug, and month',
+      desc: 'Monitor cost per resident day, cost per dispense, and facility-level margin. Surface high-cost outliers and identify formulary optimization opportunities that finance and ops can actually act on.',
+      checks: [
+        'Cost per resident day tracked and trended over time',
+        'Top cost drivers surfaced automatically each period',
+        'Margin analytics by facility and portfolio',
+        'Formulary optimization opportunity identification',
+      ],
+      mockup: <MockupCostMargin />,
+      reverse: true,
+    },
+    {
+      title: 'Custom KPI dashboards — configured for each role',
+      desc: 'Your VP of Operations, your clinical pharmacist, and your finance team all need different views of the same data. The dashboard builder lets each role configure exactly the metrics they own — without needing IT to build it.',
+      desc2: 'Reports can be scheduled for automated delivery to facility partners, management, or compliance stakeholders.',
+      checks: [
+        'Drag-and-drop dashboard builder — no IT required',
+        'Role-specific views: ops, clinical, finance, exec',
+        'Scheduled report delivery on any cadence',
+        'Export to PDF or Excel for stakeholder meetings',
+      ],
+      mockup: <MockupKPIDashboard />,
+      reverse: false,
+    },
+  ]
+  return (
+    <section id="features" style={{ padding: '88px 5vw', background: C.surface }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ marginBottom: 52 }}>
+          <div style={{ marginBottom: 14 }}><Badge c={C.p}>Capabilities</Badge></div>
+          <H size="h2" style={{ marginBottom: 12 }}>The metrics that matter in LTC pharmacy, surfaced automatically</H>
+          <P style={{ maxWidth: 580 }}>Most analytics tools were built for retail pharmacy. LTC Analytics was built for long-term care — with the data models and KPIs that reflect how your operation actually works.</P>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 72 }}>
+          {features.map((f, i) => (
+            <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center', direction: f.reverse ? 'rtl' : 'ltr' }}>
+              <div style={{ direction: 'ltr' }}>
+                <h3 style={{ fontFamily: "'Akshar', sans-serif", fontSize: 26, fontWeight: 800, color: C.head, marginBottom: 12, lineHeight: 1.2 }}>{f.title}</h3>
+                <P style={{ marginBottom: f.desc2 ? 12 : 16 }}>{f.desc}</P>
+                {f.desc2 && <P style={{ marginBottom: 16 }}>{f.desc2}</P>}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {f.checks.map((c, j) => <CheckItem key={j}>{c}</CheckItem>)}
+                </div>
+              </div>
+              <div style={{ direction: 'ltr' }}>{f.mockup}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function HowItWorks() {
+  const steps = [
+    { n: '01', icon: <Plug size={26} color={C.green} />,           bg: `${C.green}18`, title: 'Connect data sources',          desc: 'We ingest data from your pharmacy system, billing platform, and facility feeds. Most integrations complete in days, not months.' },
+    { n: '02', icon: <RefreshCw size={26} color={C.p} />,          bg: `${C.p}18`,     title: 'Data normalized to LTC models',  desc: 'Incoming data is cleaned, validated, and organized into LTC-specific data models with consistent metric definitions.' },
+    { n: '03', icon: <BarChart2 size={26} color={C.amber} />,       bg: `${C.amber}18`, title: '50+ reports ready on day one',   desc: 'Pre-built LTC pharmacy reports covering facility performance, drug utilization, and compliance KPIs are available immediately.' },
+    { n: '04', icon: <LayoutDashboard size={26} color={C.green} />, bg: `${C.green}18`, title: 'Build and share custom views',   desc: 'Use the dashboard builder to create custom views for each team and schedule automated delivery to stakeholders.' },
+  ]
+  return (
+    <section id="how" style={{ padding: '88px 5vw', background: C.bg }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: 60 }}>
+          <div style={{ marginBottom: 14 }}><Badge c={C.p}>How It Works</Badge></div>
+          <H size="h2" style={{ marginBottom: 14 }}>From data connection to working dashboards</H>
+          <P style={{ maxWidth: 440, margin: '0 auto' }}>Most integrations are live within days. Pre-built reports are available on day one — no configuration required.</P>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', position: 'relative' }}>
+          <div style={{ position: 'absolute', top: 44, left: '12%', right: '12%', height: 2, zIndex: 0, background: `repeating-linear-gradient(90deg, ${C.border} 0, ${C.border} 6px, transparent 6px, transparent 14px)` }} />
+          {steps.map((s, i) => (
+            <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '0 16px', position: 'relative', zIndex: 1 }}>
+              <div
+                style={{ width: 88, height: 88, borderRadius: '50%', background: C.surface, border: `2px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20, position: 'relative', transition: 'border-color 0.3s, box-shadow 0.3s', cursor: 'default' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.boxShadow = `0 0 0 6px ${C.green}18` }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.boxShadow = 'none' }}>
+                <div style={{ width: 60, height: 60, borderRadius: '50%', background: s.bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{s.icon}</div>
+                <div style={{ position: 'absolute', top: -6, right: -6, width: 22, height: 22, borderRadius: '50%', background: C.head, color: C.green, fontSize: 10, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', border: `2px solid ${C.border}` }}>{s.n}</div>
+              </div>
+              <h4 style={{ fontSize: 14, fontWeight: 600, color: C.head, marginBottom: 8, fontFamily: "'Akshar', sans-serif" }}>{s.title}</h4>
+              <p style={{ fontSize: 13, color: C.body, lineHeight: 1.6, fontWeight: 300, fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif" }}>{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* UseCases: C.alt background with WHITE cards, dark text, navy result links.
+   Completely different card style from the dark-themed product pages. */
+function UseCases() {
+  const cases = [
+    { icon: <LineChart size={30} color={C.green} />,  iconBg: `${C.green}18`,         title: 'Facility contract reviews',        desc: 'Go into quarterly reviews with facility administrators armed with data — utilization trends, adherence rates, and cost benchmarks — not gut feel. Make the case for your value with numbers.',           result: 'Data-backed contract conversations' },
+    { icon: <Activity size={30} color="#7eb8f7" />,   iconBg: 'rgba(59,130,246,0.12)', title: 'Clinical program monitoring',      desc: 'Track high-risk medication utilization, polypharmacy patterns, and adherence gaps to support clinical pharmacist interventions — before a resident event triggers a formal review.',                    result: 'Early identification of clinical risk' },
+    { icon: <Building2 size={30} color="#f5c96a" />,  iconBg: 'rgba(245,158,11,0.12)', title: 'Operations leadership visibility', desc: 'Give your VP of Operations a single view across all facilities and locations — cost, adherence, and outliers — without pulling a dozen spreadsheets together every week.',                              result: 'Portfolio visibility in one view' },
+    { icon: <Star size={30} color="#c79cf7" />,       iconBg: 'rgba(168,85,247,0.12)', title: 'Business development',             desc: 'Use facility-level benchmarking data to demonstrate value when pitching new facility accounts — or to renegotiate contracts where your performance clearly exceeds expectations.',                result: 'Data that wins and retains facility contracts' },
+  ]
+  return (
+    <section style={{ padding: '96px 5vw 100px', background: C.alt }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+        <div style={{ marginBottom: 52 }}>
+          <div style={{ marginBottom: 14 }}><Badge c={C.green}>Who It's For</Badge></div>
+          <H size="h2" style={{ marginBottom: 12 }}>Analytics that drive real LTC pharmacy decisions</H>
+          <P style={{ maxWidth: 580 }}>The best analytics are the ones that show up at exactly the right moment — before the meeting, before the review, before the problem becomes a crisis.</P>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+          {cases.map((c, i) => (
+            <div key={i}
+              style={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 18, padding: 32, display: 'grid', gridTemplateColumns: '64px 1fr', gap: 20, alignItems: 'start', boxShadow: '0 2px 12px rgba(20,49,86,0.06)', transition: 'border-color 0.25s, box-shadow 0.25s', cursor: 'default' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = `${C.green}88`; e.currentTarget.style.boxShadow = '0 10px 32px rgba(20,49,86,0.12)' }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = C.border; e.currentTarget.style.boxShadow = '0 2px 12px rgba(20,49,86,0.06)' }}>
+              <div style={{ width: 64, height: 64, borderRadius: 16, background: c.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{c.icon}</div>
+              <div>
+                <h4 style={{ fontSize: 16, fontWeight: 600, color: C.head, marginBottom: 8, lineHeight: 1.3, fontFamily: "'Akshar', sans-serif" }}>{c.title}</h4>
+                <p style={{ fontSize: 13.5, color: C.body, lineHeight: 1.65, fontWeight: 300, fontFamily: "'Gotham', 'Helvetica Neue', Arial, sans-serif" }}>{c.desc}</p>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginTop: 14, fontSize: 12, fontWeight: 600, color: C.p }}>→ {c.result}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Security() {
+  const items = [
+    { title: 'HIPAA BAA Included',              sub: 'Business Associate Agreement with every deployment' },
+    { title: 'Role-Based Data Access',           sub: 'Granular permissions on who sees which facilities' },
+    { title: 'SOC 2 Type II',                    sub: 'Independently audited security controls' },
+    { title: 'Encrypted Data Pipeline',          sub: 'All data encrypted in transit and at rest' },
+    { title: 'Audit-Ready Export',               sub: 'All reports available for compliance or inspection use' },
+    { title: 'No PHI Leaves Your Environment',   sub: 'Patient data stays within your data perimeter' },
+  ]
+  return (
+    <section style={{ padding: '0 5vw 88px', background: C.dark }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 64 }}>
+        <div style={{ marginBottom: 40 }}>
+          <div style={{ marginBottom: 14 }}><Badge c={C.green}>Security &amp; Compliance</Badge></div>
+          <H size="h2" color="#fff" style={{ marginBottom: 12 }}>Data you can trust. Security you can rely on.</H>
+          <P style={{ color: 'rgba(255,255,255,0.55)', maxWidth: 580 }}>All pharmacy and patient data is handled under HIPAA Business Associate Agreement. Role-based access ensures the right people see the right data — nothing more.</P>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
+          {items.map((it, i) => (
+            <div key={i} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 14, padding: 20, display: 'flex', alignItems: 'center', gap: 14 }}>
+              <div style={{ width: 10, height: 10, borderRadius: '50%', background: C.green, flexShrink: 0 }} />
+              <div>
+                <strong style={{ display: 'block', fontSize: 13, fontWeight: 600, color: '#fff', marginBottom: 2 }}>{it.title}</strong>
+                <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)' }}>{it.sub}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Related() {
+  const items = [
+    { icon: <Plug size={20} color={C.p} />,          title: 'PointClickCare Feed',      desc: 'Connect PCC census and payor data for a complete facility performance picture.',             href: '/products/pointclickcare-feed' },
+    { icon: <ClipboardList size={20} color={C.p} />, title: 'DEA Compliance Reporting', desc: 'Add compliance reporting metrics alongside your operational analytics.',                       href: '/products/dea-compliance-reporting' },
+    { icon: <Package size={20} color={C.p} />,       title: 'CS Inventory',             desc: 'Pull CS dispensing data into analytics for a full controlled substance utilization view.',     href: '/products/cs-inventory' },
+  ]
+  return (
+    <section style={{ padding: '80px 5vw', background: C.surface }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+        <div style={{ marginBottom: 40 }}>
+          <div style={{ marginBottom: 14 }}><Badge c={C.p}>Related Products</Badge></div>
+          <H size="h2">Works well with</H>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 18 }}>
+          {items.map((it, i) => (
+            <Card key={i} ac={C.p}>
+              <a href={it.href} style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '24px 22px', textDecoration: 'none' }}>
+                <div>{it.icon}</div>
+                <div style={{ color: C.head, fontWeight: 700, fontSize: 14, fontFamily: "'Akshar', sans-serif" }}>{it.title}</div>
+                <div style={{ color: C.body, fontSize: 13, lineHeight: 1.55, flex: 1, fontWeight: 300 }}>{it.desc}</div>
+                <div style={{ color: C.p, fontSize: 12, fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: 4 }}>Learn more <ChevronRight size={12} /></div>
+              </a>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* CTA: light-themed (C.bg) — matches hero. Dark text, standard Button variants. */
+function CTA() {
+  return (
+    <section style={{ padding: '80px 5vw', background: C.bg, borderTop: `1px solid ${C.border}` }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr auto', gap: 40, alignItems: 'center' }}>
+        <div>
+          <H size="h2" style={{ marginBottom: 12 }}>See your data come to life</H>
+          <P style={{ color: C.muted, maxWidth: 520 }}>
+            We'll connect to your data and show you a working dashboard in your first demo — not a slide deck.
+          </P>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, flexShrink: 0 }}>
+          <Button variant="primary" size="md" to="/schedule-demo">Schedule a Demo →</Button>
+          <Button variant="secondary" size="md" to="/schedule-demo">Talk to Sales</Button>
+        </div>
+      </div>
+    </section>
+  )
+}
 
 export default function LtcAnalytics() {
-  const tokenOverride = useMemo(() => `
-:root{
-  --alt-bg:${C.alt};
-  --navy:${C.p};
-  --navy-mid:${C.pd};
-  --navy-light:${C.p};
-  --green:${C.green};
-  --green-dark:${C.green};
-  --green-dk:${C.green};
-  --green-pale:rgba(131,183,98,0.15);
-  --green-ring:${C.green}26;
-  --white:${C.surface};
-  --off-white:${C.bg};
-  --hero-bg:${C.bg};
-  --how-bg:${C.bg};
-  --page-bg:${C.surface};
-  --text-navy:${C.head};
-  --text-mid:${C.body};
-  --text-muted:${C.muted};
-  --text-pale:rgba(255,255,255,0.72);
-  --text-light:rgba(255,255,255,0.88);
-  --bd-dark:rgba(255,255,255,0.10);
-  --bd-mid:rgba(255,255,255,0.16);
-  --bd-lite:rgba(255,255,255,0.24);
-  --bd-light:${C.border};
-}
-`, [])
-
   return (
     <>
       <Navbar />
       <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Products', href: '/products' }, { label: 'LTC Analytics Dashboard', href: null }]} />
-      <style>{SOURCE_STYLE}</style>
-      <style>{tokenOverride}</style>
-      <main dangerouslySetInnerHTML={{ __html: SOURCE_BODY }} />
+      <main>
+        <Hero />
+        <DiagramStrip />
+        <Features />
+        <HowItWorks />
+        <UseCases />
+        <Security />
+        <Related />
+        <CTA />
+      </main>
       <Footer />
     </>
   )

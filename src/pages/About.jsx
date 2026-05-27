@@ -300,7 +300,7 @@ function Location() {
 
 function CTA() {
   return (
-    <section style={{ padding:"80px 5vw", background:C.surface, borderTop:`1px solid ${C.border}`,
+    <section style={{ padding:"80px 5vw", background:C.bg, borderTop:`1px solid ${C.border}`,
       position:"relative" }}>
       <div style={{ maxWidth:640, margin:"0 auto", textAlign:"center", position:"relative", zIndex:1 }}>
         <H size="h2" style={{ color:C.head, marginBottom:14, fontFamily:"'Akshar', sans-serif", fontWeight:700 }}>
