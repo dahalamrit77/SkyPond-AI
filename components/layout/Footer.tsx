@@ -28,7 +28,6 @@ const SOCIAL_LINKS = [
 
 const NAV_COLUMNS = [
   ['Products', [
-    ['DEA Lookup Tool',             '/products/dea-lookup'],
     ['DEA Compliance Reporting',    '/products/dea-compliance-reporting'],
     ['CS Inventory',                '/products/cs-inventory'],
     ['LTC Analytics',               '/products/ltc-analytics'],

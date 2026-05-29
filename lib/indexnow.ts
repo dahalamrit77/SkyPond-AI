@@ -7,7 +7,7 @@
  *
  * HOW TO USE:
  *   import { pingIndexNow } from '@/lib/indexnow'
- *   await pingIndexNow(['/products/dea-lookup', '/about'])
+ *   await pingIndexNow(['/products/dea-compliance-reporting', '/about'])
  *
  * HOW TO ACTIVATE ON DEPLOY:
  *   In Vercel → Settings → Deploy Hooks, create a hook.
@@ -27,7 +27,7 @@ const INDEXNOW_API  = 'https://api.indexnow.org/indexnow'
  * Pings IndexNow for one or more URL paths.
  * Safe to call in server-side code (Route Handlers, server actions).
  *
- * @param paths - Array of absolute paths, e.g. ['/products/dea-lookup']
+ * @param paths - Array of absolute paths, e.g. ['/products/dea-compliance-reporting']
  * @returns The API response status
  */
 export async function pingIndexNow(paths: string[]): Promise<{ status: number; ok: boolean }> {
@@ -60,7 +60,7 @@ export async function pingAllPages(): Promise<{ status: number; ok: boolean }> {
     '/',
     '/about', '/our-values', '/industries', '/schedule-demo',
     '/products',
-    '/products/dea-lookup', '/products/dea-compliance-reporting',
+    '/products/dea-compliance-reporting',
     '/products/cs-inventory', '/products/ltc-analytics',
     '/products/pointclickcare-feed', '/products/document-automation',
     '/services',

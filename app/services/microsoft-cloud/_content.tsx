@@ -329,7 +329,7 @@ function UseCases() {
     <section style={{ padding:"88px 5vw", background:C.alt }}>
       <div style={{ maxWidth:1100, margin:"0 auto" }}>
         <div style={{ textAlign:"center", marginBottom:52 }}>
-          <div style={{ marginBottom:14 }}><Badge c={C.violet}>📁 Results</Badge></div>
+          <div style={{ marginBottom:14 }}><Badge c={C.p}>📁 Results</Badge></div>
           <H size="h2" style={{ marginBottom:14 }}>Microsoft Cloud Done Right for LTC Pharmacy</H>
           <P style={{ maxWidth:440, margin:"0 auto" }}>Real outcomes from Microsoft cloud engagements with LTC pharmacy operations.</P>
         </div>

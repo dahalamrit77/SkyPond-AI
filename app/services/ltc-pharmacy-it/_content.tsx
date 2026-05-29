@@ -159,7 +159,7 @@ function Capabilities() {
     {
       icon:<ShieldCheck size={20} />, title:"Regulatory Compliance Tooling",
       tag:"Compliance",
-      desc:"We build the compliance infrastructure that keeps LTC pharmacies audit-ready — DEA lookup, ARCOS reporting, CS inventory tracking, prior authorization management, and document archival systems with full audit trails.",
+      desc:"We build the compliance infrastructure that keeps LTC pharmacies audit-ready — ARCOS reporting, CS inventory tracking, prior authorization management, and document archival systems with full audit trails.",
       bullets:["DEA registration verification system","ARCOS and DEA Form 222 reporting","Controlled substance audit trail","Prior authorization workflow tooling","Document generation and archival","Regulatory reporting dashboards"],
       metric:"Audit-ready", ml:"Built-in from day one",
     },

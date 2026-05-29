@@ -122,7 +122,6 @@ export default function OGImage() {
         {/* Bottom: 6 product pills */}
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           {[
-            'DEA Lookup Tool',
             'DEA Compliance Reporting',
             'CS Inventory',
             'LTC Analytics',

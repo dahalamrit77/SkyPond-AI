@@ -342,8 +342,8 @@ function FAQ() {
 function Related() {
   const items = [
     { icon:<Hospital size={20} />, color:C.p, tag:"Service", title:"LTC Pharmacy IT", href:"/services/ltc-pharmacy-it", desc:"Telepharmacy platforms, system migrations, and compliance tooling for LTC pharmacies." },
-    { icon:<Settings size={20} />, color:C.accent, tag:"Service", title:"AI Automation", href:"/services/ai-automation", desc:"Intelligent workflow automation replacing manual bottlenecks in your pharmacy." },
-    { icon:<Cloud size={20} />, color:C.violet, tag:"Service", title:"Microsoft Cloud", href:"/services/microsoft-cloud", desc:"Azure, Microsoft 365, and Power Platform configured for healthcare compliance." },
+    { icon:<Settings size={20} />, color:C.green, tag:"Service", title:"AI Automation", href:"/services/ai-automation", desc:"Intelligent workflow automation replacing manual bottlenecks in your pharmacy." },
+    { icon:<Cloud size={20} />, color:C.amber, tag:"Service", title:"Microsoft Cloud", href:"/services/microsoft-cloud", desc:"Azure, Microsoft 365, and Power Platform configured for healthcare compliance." },
   ];
   return (
     <section style={{ padding:"72px 5vw", background:C.alt }}>

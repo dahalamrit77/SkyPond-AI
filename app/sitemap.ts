@@ -41,7 +41,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     // ── Product index + 6 product pages ──────────────────────────────────────
     url('/products',                         0.9, 'weekly'),
-    url('/products/dea-lookup',              0.8, 'monthly'),
     url('/products/dea-compliance-reporting',0.8, 'monthly'),
     url('/products/cs-inventory',            0.8, 'monthly'),
     url('/products/ltc-analytics',           0.8, 'monthly'),

@@ -26,17 +26,6 @@ function Badge({ c = C.p2, children }: { c?: string; children: React.ReactNode }
 const PRODUCTS = [
   {
     cat: 'compliance',
-    href: '/products/dea-lookup',
-    title: 'DEA Lookup Tool',
-    badge: 'Compliance',
-    desc: "Instantly validate DEA registrant information against live federal databases. Built for pharmacists who can't afford verification delays.",
-    icon: Search,
-    iconBg: 'rgba(20,184,166,0.18)',
-    iconColor: '#0d9488',
-    features: ['Real-time DEA number validation', 'Registrant schedule verification', 'Bulk CSV upload for batch validation', 'Audit-ready timestamped logs'],
-  },
-  {
-    cat: 'compliance',
     href: '/products/dea-compliance-reporting',
     title: 'DEA Compliance Reporting',
     badge: 'Compliance',

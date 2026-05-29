@@ -589,7 +589,6 @@ function Compliance() {
 function Related() {
   const items = [
     { icon: <FileText size={20} color={C.p} />, title: 'DEA Compliance Reporting', href: '/products/dea-compliance-reporting', desc: 'Automate ARCOS, CSOS, and Form 222 submissions with validated inventory data.' },
-    { icon: <Search size={20} color={C.p} />, title: 'DEA Lookup Tool', href: '/products/dea-lookup', desc: 'Verify prescriber DEA registrations before filling controlled substances.' },
     { icon: <Zap size={20} color={C.p} />, title: 'Document Automation', href: '/products/document-automation', desc: 'Auto-generate inventory reports, destruction records, and compliance letters.' },
   ]
   return (

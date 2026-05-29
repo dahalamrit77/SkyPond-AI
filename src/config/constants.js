@@ -1,6 +1,0 @@
-export const CONTACT_EMAIL = 'info@skypondtech.com'
-export const CONTACT_PHONE = '+17207246828'
-export const CONTACT_PHONE_DISPLAY = '(720) 724-6828'
-export const HUBSPOT_MEETINGS_URL = 'https://meetings-na2.hubspot.com/ramesh-kc?embed=true'
-export const HUBSPOT_SCRIPT_URL = 'https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js'
-export const SITE_URL = 'https://skypondtech.ai'

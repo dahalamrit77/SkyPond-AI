@@ -30,7 +30,6 @@ const SERVICES_NAV = [
 ]
 
 const PRODUCTS_NAV = [
-  { icon: <Search size={18} />,       label: 'DEA Lookup Tool',             slug: '/products/dea-lookup',              desc: 'Real-time prescriber verification' },
   { icon: <ClipboardList size={18} />, label: 'DEA Compliance Reporting',   slug: '/products/dea-compliance-reporting', desc: 'Automated ARCOS & DEA reporting' },
   { icon: <Pill size={18} />,          label: 'CS Inventory Management',    slug: '/products/cs-inventory',            desc: 'Real-time controlled substance tracking' },
   { icon: <TrendingUp size={18} />,    label: 'LTC Analytics Dashboard',    slug: '/products/ltc-analytics',           desc: 'Dispensing trends & facility benchmarks' },
@@ -427,7 +426,12 @@ export function Navbar() {
   const activeAbout      = p === '/about' || p === '/our-values' || p === '/privacy-policy'
   const activeContact    = p === '/' && hash === '#contact'
 
-  const navDark  = sc || p !== '/'
+  // Pages whose hero sections have dark gradient backgrounds.
+  // On these pages the navbar must always be dark (white text/logo) so it
+  // stays readable even before the user scrolls past the 30px threshold.
+  const DARK_HERO_PAGES = ['/', '/about', '/our-values', '/industries',
+                           '/privacy-policy', '/products', '/services']
+  const navDark  = sc || DARK_HERO_PAGES.includes(p)
   const closeMobile = () => setMobileOpen(false)
 
   const handleContact = () => {

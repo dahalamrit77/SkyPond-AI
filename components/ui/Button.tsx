@@ -21,8 +21,8 @@ const VARIANTS = {
     hover: { background: 'rgba(255,255,255,0.9)',    color: C.p },
   },
   secondary: {
-    base:  { background: 'transparent',              color: C.p,       border: `1.5px solid ${C.p}` },
-    hover: { background: `${C.p}0F`,                 color: C.p },
+    base:  { background: C.amber,  color: C.head, border: 'none' },
+    hover: { background: '#C49420', color: C.head },   // darker amber on hover
   },
   secondaryDark: {
     base:  { background: 'transparent',              color: '#FFFFFF',  border: '1.5px solid rgba(255,255,255,0.45)' },

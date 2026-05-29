@@ -6,7 +6,7 @@ import { SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'LTC Pharmacy Products — DEA Compliance, CS Inventory, Analytics & More',
-  description: 'Six purpose-built LTC pharmacy technology products: DEA Lookup, DEA Compliance Reporting, Controlled Substance Inventory, LTC Analytics, PointClickCare Feed, and Document Automation.',
+  description: 'Five purpose-built LTC pharmacy technology products: DEA Compliance Reporting, Controlled Substance Inventory, LTC Analytics, PointClickCare Feed, and Document Automation.',
   alternates: {
     canonical: `${SITE_URL}/products`,
   },

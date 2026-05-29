@@ -122,7 +122,7 @@ function CheckItem({ children }: { [key: string]: any }) {
 
 /* ── Light-themed diagram strip nodes and connectors ──
    This page's diagram strip sits on C.surface (white), unlike the
-   dark-bg strip used in DEA Lookup / CS Inventory / Document Automation. ── */
+   dark-bg strip used in CS Inventory / Document Automation. ── */
 function DiagNodeLight({ icon, title, sub, pills = [], special = false }: { [key: string]: any }) {
   return (
     <div style={{

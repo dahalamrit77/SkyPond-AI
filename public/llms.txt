@@ -6,7 +6,6 @@ SkyPond Tech is NOT a general-purpose IT company or generic AI platform. Every p
 
 ## Core Products
 
-- [DEA Lookup Tool](https://skypondtech.ai/products/dea-lookup): Real-time DEA registration verification against live federal databases. Single lookups, bulk CSV upload, expiration monitoring, and automated audit trail. Sub-1-second response time.
 
 - [DEA Compliance Reporting](https://skypondtech.ai/products/dea-compliance-reporting): Automated ARCOS submissions, CSOS electronic ordering, and DEA Form 222 digital workflow. Multi-site rollup reporting with exception flagging and 80% reduction in manual reporting time.
 

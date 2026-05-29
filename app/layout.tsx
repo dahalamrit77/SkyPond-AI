@@ -41,6 +41,15 @@ export const metadata: Metadata = {
       follow: true,
     },
   },
+
+  // ── Favicon / browser-tab icon ──────────────────────────────────────────
+  // To update the icon: replace app/icon.png with your logo file (32×32 px
+  // or larger square PNG). Next.js picks it up automatically on next build.
+  // For a multi-resolution .ico file, add app/favicon.ico alongside it.
+  icons: {
+    icon:    '/icon.png',
+    apple:   '/icon.png',
+  },
 }
 
 export default function RootLayout({

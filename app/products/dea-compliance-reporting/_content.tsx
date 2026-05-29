@@ -677,11 +677,6 @@ function SecurityCompliance() {
 function Related() {
   const items = [
     {
-      icon: <Search size={20} />, color: C.p, tag: "Product",
-      title: "DEA Lookup Tool", href: "/products/dea-lookup",
-      desc: "Instant prescriber DEA number verification against live federal databases.",
-    },
-    {
       icon: <Package size={20} />, color: C.p, tag: "Product",
       title: "CS Inventory", href: "/products/cs-inventory",
       desc: "Real-time controlled substance inventory with automated discrepancy alerts.",
