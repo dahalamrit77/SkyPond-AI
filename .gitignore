@@ -1,0 +1,47 @@
+# Next.js build output
+.next/
+out/
+
+# Dependencies
+node_modules/
+
+# Environment variables — NEVER commit these
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vercel deployment
+.vercel
+
+# TypeScript build info
+*.tsbuildinfo
+next-env.d.ts
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vite / legacy SPA artifacts — delete these before first push
+src/
+index.html
+vite.config.js
+vite.config.ts
+dist/
+
+# Migration documentation (move to docs/ or delete after deployment)
+# Uncomment to exclude from repo:
+# PHASE-*-COMPLETE.md
+# MIGRATION-COMPLETE.md
+# SEO-*.md
+# NEXTJS-MIGRATION-PLAN.md
+# DEPLOYMENT-GUIDE.md
+# claude-seo/
+
+# Temp TypeScript config created during migration
+tsconfig.srconly.json

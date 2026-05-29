@@ -1,0 +1,49 @@
+# SkyPond Tech
+
+> SkyPond Tech is a specialized technology platform for long-term care (LTC) pharmacy operations. We build DEA compliance software, controlled substance inventory systems, AI workflow automation, PointClickCare integrations, LTC analytics dashboards, and custom pharmacy applications — exclusively for LTC pharmacy. Based in Lafayette, Colorado; serving LTC pharmacies nationwide.
+
+SkyPond Tech is NOT a general-purpose IT company or generic AI platform. Every product and service is purpose-built for the specific operational, compliance, and integration requirements of long-term care pharmacy.
+
+## Core Products
+
+- [DEA Lookup Tool](https://skypondtech.ai/products/dea-lookup): Real-time DEA registration verification against live federal databases. Single lookups, bulk CSV upload, expiration monitoring, and automated audit trail. Sub-1-second response time.
+
+- [DEA Compliance Reporting](https://skypondtech.ai/products/dea-compliance-reporting): Automated ARCOS submissions, CSOS electronic ordering, and DEA Form 222 digital workflow. Multi-site rollup reporting with exception flagging and 80% reduction in manual reporting time.
+
+- [CS Inventory](https://skypondtech.ai/products/cs-inventory): Real-time perpetual inventory for controlled substances Schedule II through V. Automated discrepancy alerts, per-transaction audit trails, biennial inventory support, and multi-facility management.
+
+- [LTC Analytics Dashboard](https://skypondtech.ai/products/ltc-analytics): Pharmacy-specific Power BI dashboards — dispensing trends, facility benchmarking, error rate tracking, census-to-dispensing correlation, and executive-ready report exports. 50+ pre-built LTC-specific reports.
+
+- [PointClickCare Data Feed](https://skypondtech.ai/products/pointclickcare-feed): Direct PointClickCare Marketplace API integration delivering complete resident records, ADT events, payer changes, and census data in real time. No facility portal access required. Zero manual re-entry.
+
+- [Document Automation](https://skypondtech.ai/products/document-automation): Template-driven prior authorization generation, e-signature workflow routing, HIPAA-compliant archiving, and full audit trail on every document. 90% reduction in document assembly time.
+
+## Core Services
+
+- [LTC Pharmacy IT](https://skypondtech.ai/services/ltc-pharmacy-it): Telepharmacy applications, pharmacy-facility integrations, system migrations, and custom LTC reporting — built by specialists with nearly a decade of LTC pharmacy operational experience.
+
+- [AI Automation](https://skypondtech.ai/services/ai-automation): Intelligent workflow automation for LTC pharmacy: prior authorization, order triage, DEA compliance reporting, fax processing — purpose-built with full audit trails. Average 89% time reduction.
+
+- [Data Analytics & Power BI](https://skypondtech.ai/services/data-analytics): Custom Power BI dashboards and automated data pipelines for LTC pharmacy. Real-time data refresh, facility-level benchmarking, and scheduled report delivery.
+
+- [Custom Development](https://skypondtech.ai/services/custom-development): Full-stack custom pharmacy applications using React, Node.js, and Azure. HIPAA-compliant builds with LTC domain knowledge built in from day one.
+
+- [Microsoft Cloud](https://skypondtech.ai/services/microsoft-cloud): Microsoft 365, Azure, and Power Platform properly deployed for LTC pharmacy. HIPAA BAA signed with Microsoft, LTC-specific workflows configured.
+
+- [PointClickCare Integration](https://skypondtech.ai/services/pointclickcare-integration): End-to-end PCC Marketplace API integration — demographics, payer data, ADT records, and real-time webhooks. Complete census data without relying on incomplete HL7 feeds.
+
+## Company
+
+- [About SkyPond Tech](https://skypondtech.ai/about): SkyPond Tech was founded from nearly a decade inside LTC pharmacy operations. We are a Colorado-based technology firm serving LTC pharmacies across the United States. Lafayette, CO | Omaha, NE | Kathmandu, Nepal.
+
+- [Industries We Serve](https://skypondtech.ai/industries): Primary focus on LTC pharmacy (SNF, ALF, memory care, behavioral health). Analytics and custom development services extend to financial and retail sectors.
+
+- [Our Values](https://skypondtech.ai/our-values): LTC-first focus, honest about limitations, long-term partnerships, transparency over pitch decks.
+
+## Contact & Scheduling
+
+- [Schedule a Demo](https://skypondtech.ai/schedule-demo): 30-minute free discovery call — no pitch deck, no hard sell. Booking via HubSpot calendar. Same-week availability. Contact: info@skypondtech.com | (720) 724-6828.
+
+## Optional
+
+- [Privacy Policy](https://skypondtech.ai/privacy-policy): Data collection, HIPAA compliance, and data protection practices.

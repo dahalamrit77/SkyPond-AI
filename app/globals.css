@@ -1,0 +1,137 @@
+/*
+ * globals.css
+ * Global styles for SkyPond Tech
+ *
+ * Moved from the inline <style> tag in App.jsx.
+ * This is the single source of truth for:
+ *   - Font declarations (@font-face)
+ *   - CSS reset
+ *   - Body defaults
+ *   - Keyframe animations (referenced by inline style={{ animation: '...' }})
+ *   - Scrollbar styling
+ */
+
+/* ── Gotham Font (self-hosted, commercial license required) ───────────────── */
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-Book.woff2') format('woff2'),
+       url('/fonts/Gotham-Book.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('/fonts/Gotham-Light.woff2') format('woff2'),
+       url('/fonts/Gotham-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── CSS Reset ────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ── Body Defaults ────────────────────────────────────────────────────────── */
+body {
+  background: #C6DBE7;
+  color: #1E3A5C;
+  font-family: 'Gotham', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Keyframe Animations ──────────────────────────────────────────────────── */
+/* Used via inline style={{ animation: 'fadeUp 0.6s ease both' }} */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Used by Navbar dropdown */
+@keyframes dropIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/*
+ * Navigation progress bar animations (NavigationProgress component).
+ *
+ * navLoading: bar sweeps to ~80% over 2.5s with ease-out deceleration.
+ *   Looks like it's "waiting" for the page to finish loading.
+ * navDone: bar snaps to 100% width then fades out — signals completion.
+ *
+ * Both are CSS-only, GPU-composited (opacity + transform only — no layout).
+ */
+@keyframes navLoading {
+  from { transform: scaleX(0);    opacity: 1; }
+  to   { transform: scaleX(0.82); opacity: 1; }
+}
+
+@keyframes navDone {
+  0%   { transform: scaleX(0.82); opacity: 1; }
+  60%  { transform: scaleX(1);    opacity: 1; }
+  100% { transform: scaleX(1);    opacity: 0; }
+}
+
+/* Used by the ticker/marquee on Home page */
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Used by mobile nav slide-in */
+@keyframes navMobilePanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Used by app/loading.tsx pulsing dot */
+@keyframes loadingPulse {
+  0%, 100% { opacity: 0.25; transform: scale(1); }
+  50%       { opacity: 0.6;  transform: scale(1.4); }
+}
+
+/* ── Custom Scrollbar ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #C6DBE7;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8AB8E3;
+  border-radius: 3px;
+}
