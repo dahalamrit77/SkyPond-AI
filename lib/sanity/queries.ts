@@ -10,23 +10,19 @@
 
 // Testimonials — used on the Home page
 // Sorted by creation date, newest first
+// DEBUG: fetch all raw fields to identify correct schema field names
 export const TESTIMONIALS_QUERY = `
   *[_type == "testimonial"] | order(_createdAt desc) {
-    _id,
-    a,
-    role,
-    company,
-    text,
-    "avatar": avatar.asset->url
+    ...
   }
 `
 
 // TypeScript type for a single testimonial result
 export interface Testimonial {
-  _id:     string
-  a:       string   // author name
-  role?:   string
-  company?: string
-  text:    string
-  avatar?: string
+  _id:      string
+  a:        string   // author name  (Sanity field: author)
+  role?:    string   // job title    (Sanity field: role)
+  company?: string   // company      (Sanity field: company)
+  text:     string   // quote text   (Sanity field: quote)
+  avatar?:  string
 }

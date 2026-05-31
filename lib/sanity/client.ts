@@ -27,6 +27,6 @@ export const sanityClient = createClient({
   // useCdn in production only — apicdn.sanity.io has CORS restrictions that
   // block requests from localhost during development.
   useCdn: process.env.NODE_ENV === 'production',
-  // Only fetch published (not draft) content in production
-  perspective: 'published',
+  // 'published' in production, 'previewDrafts' in dev so drafts show locally
+  perspective: process.env.NODE_ENV === 'production' ? 'published' : 'previewDrafts',
 })
