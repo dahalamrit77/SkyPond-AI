@@ -10,10 +10,14 @@
 
 // Testimonials — used on the Home page
 // Sorted by creation date, newest first
-// DEBUG: fetch all raw fields to identify correct schema field names
 export const TESTIMONIALS_QUERY = `
   *[_type == "testimonial"] | order(_createdAt desc) {
-    ...
+    _id,
+    "a":    author,
+    "role": role,
+    company,
+    "text": quote,
+    "avatar": avatar.asset->url
   }
 `
 

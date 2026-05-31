@@ -845,22 +845,10 @@ function Testimonials() {
   const [active, setActive]   = useState(0)
   const [data, setData]       = useState<Testimonial[]>([])
   const [loading, setLoading] = useState(true)
-  const [fetchError, setFetchError] = useState('')
-
   useEffect(() => {
-    console.log('[Testimonials] Fetching from Sanity...')
-    console.log('[Testimonials] Project ID:', process.env.NEXT_PUBLIC_SANITY_PROJECT_ID)
     sanityClient.fetch<Testimonial[]>(TESTIMONIALS_QUERY)
-      .then((res) => {
-        console.log('[Testimonials] Success — count:', res.length, 'data:', res)
-        setData(res)
-        setLoading(false)
-      })
-      .catch((err: Error) => {
-        console.error('[Testimonials] FAILED:', err?.message, err)
-        setFetchError(err?.message || 'Unknown error')
-        setLoading(false)
-      })
+      .then((res) => { setData(res); setLoading(false) })
+      .catch(() => { setLoading(false) })
   }, [])
   useEffect(() => {
     if (data.length === 0) return
@@ -870,22 +858,7 @@ function Testimonials() {
   const getInitials = (name: string) =>
     name ? name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2) : '??'
 
-  if (loading) return null
-
-  if (process.env.NODE_ENV !== 'production' && (fetchError || data.length === 0)) {
-    return (
-      <section style={{ padding: '40px 5vw', background: '#fff3cd', border: '2px dashed #ffc107' }}>
-        <div style={{ maxWidth: 820, margin: '0 auto', fontFamily: 'monospace', fontSize: 13 }}>
-          <strong>⚠ Testimonials Debug:</strong><br />
-          {fetchError ? <>Error: {fetchError}</> : <>No documents returned — check field names and published status.</>}<br />
-          Project ID: {process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'NOT SET'} | Dataset: {process.env.NEXT_PUBLIC_SANITY_DATASET || 'NOT SET'}<br />
-          Open browser console (F12) for full details.
-        </div>
-      </section>
-    )
-  }
-
-  if (data.length === 0) return null
+  if (loading || data.length === 0) return null
 
   return (
     <section id="about" style={{ padding: '100px 5vw', background: C.alt }}>
